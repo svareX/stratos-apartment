@@ -13,12 +13,11 @@ class UsersTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('name')->label(__('Name'))->searchable()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('email')->label(__('Email'))->searchable()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('created_at')->label(__('Created at'))->dateTime()->sortable(),
             ])
             ->filters([
-                //
             ])
             ->recordActions([
                 EditAction::make(),

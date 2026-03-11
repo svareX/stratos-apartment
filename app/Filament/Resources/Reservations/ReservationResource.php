@@ -20,6 +20,16 @@ class ReservationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    public static function getModelLabel(): string
+    {
+        return __('Reservation');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Reservations');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ReservationForm::configure($schema);
@@ -33,7 +43,6 @@ class ReservationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

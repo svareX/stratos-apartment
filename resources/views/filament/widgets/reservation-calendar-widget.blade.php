@@ -7,7 +7,6 @@
             .fc-title { font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.75rem; }
             .dark .fc-title { color: #ffffff; }
             
-            /* Month Navigation Controls */
             .fc-controls { display: flex; align-items: center; gap: 1rem; }
             .fc-month-label { font-size: 1.125rem; font-weight: 700; color: #111827; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; min-width: 140px; margin: 0; }
             .dark .fc-month-label { color: #ffffff; }
@@ -17,7 +16,6 @@
             .dark .fc-btn:hover { background-color: #374151; color: #ffffff; }
             .fc-btn svg { width: 1.25rem; height: 1.25rem; }
 
-            /* Grid Layout */
             .fc-grid-wrap { border: 1px solid #e5e7eb; border-radius: 0.75rem; overflow: hidden; background: #ffffff; }
             .dark .fc-grid-wrap { border-color: #374151; background: #18181b; }
             .fc-weekdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
@@ -28,7 +26,6 @@
             .fc-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: #e5e7eb; }
             .dark .fc-days { background: #374151; }
             
-            /* Cells */
             .fc-cell-empty { min-height: 100px; background: #f9fafb; }
             .dark .fc-cell-empty { background: rgba(39, 39, 42, 0.5); }
             .fc-cell { min-height: 100px; padding: 0.5rem; display: flex; flex-direction: column; background: #ffffff; transition: background-color 0.2s; }
@@ -36,14 +33,12 @@
             .fc-cell.is-booked { background-color: rgba(65, 76, 232, 0.05); }
             .dark .fc-cell.is-booked { background-color: rgba(65, 76, 232, 0.15); }
             
-            /* Typography & Badges */
             .fc-date-num { font-size: 0.875rem; font-weight: 700; color: #374151; align-self: flex-start; margin-bottom: 0.25rem; }
             .dark .fc-date-num { color: #d4d4d8; }
             .fc-date-num.is-today { color: #414CE8; text-decoration: underline; text-underline-offset: 4px; }
             .dark .fc-date-num.is-today { color: #818cf8; }
             .fc-tag { margin-top: 0.25rem; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.375rem; background-color: #414CE8; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); cursor: default; }
 
-            /* Legend */
             .fc-legend { display: flex; gap: 1.5rem; padding-top: 0.5rem; align-items: center; }
             .fc-legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #4b5563; }
             .dark .fc-legend-item { color: #9ca3af; }
@@ -56,7 +51,7 @@
         <div class="fc-wrapper">
             
             <div class="fc-header">
-                <h2 class="fc-title">Přehled rezervací</h2>
+                <h2 class="fc-title">{{ __('Reservation overview') }}</h2>
                 <div class="fc-controls">
                     <button type="button" wire:click="prevMonth" class="fc-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -78,7 +73,7 @@
 
             <div class="fc-grid-wrap">
                 <div class="fc-weekdays">
-                    @foreach(['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'] as $dayName)
+                    @foreach([__('Mo'), __('Tu'), __('We'), __('Th'), __('Fr'), __('Sa'), __('Su')] as $dayName)
                         <div class="fc-weekday">{{ $dayName }}</div>
                     @endforeach
                 </div>
@@ -113,11 +108,11 @@
             <div class="fc-legend">
                 <div class="fc-legend-item">
                     <div class="fc-dot booked"></div>
-                    <span>Obsazeno</span>
+                    <span>{{ __('Booked') }}</span>
                 </div>
                 <div class="fc-legend-item">
                     <div class="fc-dot free"></div>
-                    <span>Volno</span>
+                    <span>{{ __('Available') }}</span>
                 </div>
             </div>
 

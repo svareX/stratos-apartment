@@ -16,12 +16,13 @@ class ReservationsTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('apartment.name')->label('Apartment')->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('user.email')->label('User')->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('check_in')->date()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('check_out')->date()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('price')->money('CZK'),
+                \Filament\Tables\Columns\TextColumn::make('apartment.name')->label(__('Apartment'))->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('user.email')->label(__('User'))->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('check_in')->label(__('Check in'))->date()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('check_out')->label(__('Check out'))->date()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('price')->label(__('Price'))->money('CZK'),
                 \Filament\Tables\Columns\TextColumn::make('status')
+                    ->label(__('Status'))
                     ->badge()
                     ->getStateUsing(fn ($record) => $record->status?->value ?? '')
                     ->color(fn ($state) => match ($state) {
@@ -31,20 +32,19 @@ class ReservationsTable
                         'completed' => 'gray',
                         default => 'secondary',
                     }),
-                \Filament\Tables\Columns\TextColumn::make('booking_source')->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('booking_source')->label(__('Booking Source'))->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('created_at')->label(__('Created at'))->dateTime()->sortable(),
             ])
             ->filters([
-                //
             ])
             ->recordActions([
                 EditAction::make(),
                 Action::make('updateStatus')
-                    ->label('Update Status')
+                    ->label(__('Update Status'))
                     ->icon('heroicon-o-arrow-path')
                     ->schema([
                         \Filament\Forms\Components\Select::make('status')
-                            ->label('Status')
+                            ->label(__('Status'))
                             ->options(ReservationStatus::options())
                             ->required(),
                     ])
@@ -52,17 +52,17 @@ class ReservationsTable
                         $record->status = $data['status'];
                         $record->save();
                     })
-                    ->modalHeading('Update Reservation Status'),
+                    ->modalHeading(__('Update Reservation Status')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     BulkAction::make('updateStatus')
-                        ->label('Update Status')
+                        ->label(__('Update Status'))
                         ->icon('heroicon-o-arrow-path')
                         ->schema([
                             \Filament\Forms\Components\Select::make('status')
-                                ->label('Status')
+                                ->label(__('Status'))
                                 ->options(ReservationStatus::options())
                                 ->required(),
                         ])
@@ -72,7 +72,7 @@ class ReservationsTable
                                 $record->save();
                             }
                         })
-                        ->modalHeading('Update Reservation Status for Selected'),
+                        ->modalHeading(__('Update Reservation Status for Selected')),
                 ]),
             ]);
     }

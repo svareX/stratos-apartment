@@ -22,6 +22,16 @@ class ApartmentResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getModelLabel(): string
+    {
+        return __('Apartment');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Apartments');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ApartmentForm::configure($schema);
@@ -35,7 +45,6 @@ class ApartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

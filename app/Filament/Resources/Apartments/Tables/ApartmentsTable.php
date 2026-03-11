@@ -13,15 +13,14 @@ class ApartmentsTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('address')->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('capacity'),
-                \Filament\Tables\Columns\TextColumn::make('base_price')->money('CZK'),
-                \Filament\Tables\Columns\IconColumn::make('active')->boolean(),
-                \Filament\Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('name')->label(__('Name'))->searchable()->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('address')->label(__('Address'))->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('capacity')->label(__('Capacity')),
+                \Filament\Tables\Columns\TextColumn::make('base_price')->label(__('Base price'))->money('CZK'),
+                \Filament\Tables\Columns\IconColumn::make('active')->label(__('Active'))->boolean(),
+                \Filament\Tables\Columns\TextColumn::make('created_at')->label(__('Created at'))->dateTime()->sortable(),
             ])
             ->filters([
-                //
             ])
             ->recordActions([
                 EditAction::make(),
