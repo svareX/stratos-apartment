@@ -8,6 +8,83 @@
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
 }
 
+/* Calendar styles for fake monthly calendar in pricing view */
+.calendar {
+    --cell-border: rgba(0,0,0,0.08);
+    --cell-hover: rgba(0,0,0,0.03);
+}
+.calendar-header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 0.75rem;
+}
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #f7f7fb;
+    border: 1px solid var(--cell-border);
+    border-bottom: none;
+}
+.calendar-weekdays .weekday {
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 12px;
+    color: #4b5563;
+    border-right: 1px solid var(--cell-border);
+}
+.calendar-weekdays .weekday:last-child { border-right: none; }
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border: 1px solid var(--cell-border);
+}
+.calendar-cell {
+    min-height: 84px;
+    padding: 8px;
+    border-right: 1px solid var(--cell-border);
+    border-bottom: 1px solid var(--cell-border);
+    background: #ffffff;
+    transition: background 120ms ease, transform 100ms ease;
+}
+.calendar-cell:hover {
+    background: var(--cell-hover);
+    transform: translateY(-3px);
+}
+.calendar-cell .date {
+    font-weight: 600;
+    font-size: 14px;
+}
+.calendar-cell.booked {
+    position: relative;
+    background: linear-gradient(90deg, rgba(65,76,232,0.18), rgba(65,76,232,0.10));
+    border-left: 3px solid rgba(65,76,232,0.4);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+    cursor: not-allowed;
+}
+
+.calendar-cell.booked::after {
+    content: "Booked";
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--color-primary);
+    color: #2600be;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    opacity: 0.95;
+}
+
+.calendar-cell.booked:hover {
+    background: linear-gradient(90deg, rgba(65,76,232,0.22), rgba(65,76,232,0.12));
+    transform: none;
+}
+
+.calendar-cell:not(.booked) { cursor: pointer; }
+.calendar-legend { margin-top: 0.75rem; display:flex; gap:1rem; align-items:center; }
+.calendar-legend .dot { width:12px; height:12px; display:inline-block; border-radius:2px; }
+
 [x-cloak] {
     display: none;
 }
@@ -24,6 +101,11 @@
 .text-custom-lg {
     font-size: 64px;
     line-height: 80px;
+}
+
+.text-custom-md {
+    font-size: 48px;
+    line-height: 64px;
 }
 
 .gap-xl {
