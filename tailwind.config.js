@@ -14,8 +14,11 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"IBM Plex Mono"', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'primary': '#414CE8',
+            }
         },
     },
 
