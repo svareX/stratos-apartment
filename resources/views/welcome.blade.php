@@ -2,8 +2,8 @@
     <div class="flex flex-col justify-start gap-lg h-screen">
         <h1 class="font-bold text-custom-xl">Stratos</h1>
         <h1 class="font-bold text-custom-xl">Apartments</h1>
-        <h3 class="font-light text-custom-lg tracking-low">Navštivte nejlepší apartmán</h3>
-        <h3 class="font-light text-custom-lg tracking-low">v <span class="font-medium italic text-custom-lg tracking-low leading-[80px]">Laa an der Thaya</span></h3>
+        <h4 class="font-light text-custom-lg tracking-low">Navštivte nejlepší apartmán</h4>
+        <h4 class="font-light text-custom-lg tracking-low">v <span class="font-medium italic text-custom-lg tracking-low leading-[80px]">Laa an der Thaya</span></h4>
         <div class="flex justify-center text-center bg-white w-[220px] h-[64px] rounded-[24px] cursor-pointer">
             <a href="{{ route('reservation') }}">
                 <span class="text-primary font-light text-[36px] tracking-low hover:underline">
@@ -14,7 +14,7 @@
     </div>
 
     <div class="flex flex-col justify-start gap-xl">
-        <span class="font-medium text-[48px] leading-[32px] tracking-[-8%]">Proč zvolit Apartmán Stratos?</span>
+        <h3 class="font-medium text-[48px] leading-[32px] tracking-[-8%]">Proč zvolit Apartmán Stratos?</h3>
         <div class="flex gap-[48px] px-[10px]">
             @for ($i = 0; $i < 5; $i++)
                 <div class="flex flex-col justify-center text-center w-[200px] h-[200px] bg-red-400 gap-[12px] p-[12px]">
@@ -29,14 +29,14 @@
             @endfor
         </div>
 
-        <span class="font-medium text-[48px] leading-[32px] tracking-[-8%]">Vybavení našeho apartmánu</span>
+        <h3 class="font-medium text-[48px] leading-[32px] tracking-[-8%]">Vybavení našeho apartmánu</h3>
         <div class="flex justify-start gap-md px-[10px]">
             @for ($i = 0; $i < 6; $i++)
                 <img src="https://picsum.photos/{{rand(180, 420)}}/280" alt="random image">
             @endfor
         </div>
 
-        <span class="font-medium text-[48px] leading-[32px] tracking-[-8%]">Kde apartmán najdete?</span>
+        <h3 class="font-medium text-[48px] leading-[32px] tracking-[-8%]">Kde apartmán najdete?</h3>
         <div class="w-full grid grid-cols-1 sm:grid-cols-7 gap-10">
             <div class="w-full h-[60vh] rounded-lg overflow-hidden col-span-5">
                 <iframe
