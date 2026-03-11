@@ -170,7 +170,7 @@ class ReservationForm extends Component
 
         if ($this->step === 1) {
             if (!$this->start_date || !$this->end_date) {
-                $this->addError('dates', 'Prosím vyberte datum od a do.');
+                $this->addError('dates', __('Please select a date from and to.'));
                 return;
             }
         }

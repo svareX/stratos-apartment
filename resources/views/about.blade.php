@@ -1,8 +1,8 @@
 <x-app-layout>
     <div x-data="{ shown: false }" x-init="setTimeout(() => shown = true, 150)" class="flex flex-col justify-start gap-lg h-screen">
-        <h2 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="transition-all duration-700 ease-out font-bold text-custom-xl">Lokalita</h2>
+        <h2 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="transition-all duration-700 ease-out font-bold text-custom-xl">{{ __('Location') }}</h2>
         
-        <h3 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 200ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low w-[860px]">Česko-rakouské pohraniční městečko skrývá v okolí mnoho krásy</h3>
+        <h3 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 200ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low w-[860px]">{{ __('Czech-Austrian border town hides a lot of beauty around') }}</h3>
 
         <div class="grid grid-cols-3 justify-start w-[700px] gap-[40px] px-[10px]">
             @for ($i = 0; $i < 6; $i++)
@@ -14,7 +14,7 @@
                     </svg>
                     
                     <span class="text-[20px] leading-[32px] tracking-[-6%]">
-                        Nejaky prvek z oblasti
+                        {{ __('Some element from the area') }}
                     </span>
                 </div>
             @endfor
@@ -23,11 +23,11 @@
 
     <div class="flex flex-col justify-start gap-xl">
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-lg">
-            <h3 x-cloak :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-custom-xl">Termální prameny</h3>
+            <h3 x-cloak :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-custom-xl">{{ __('Thermal springs') }}</h3>
             <div class="grid grid-cols-2 sm:grid-cols-7 gap-lg">
                 <div x-cloak :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'" style="transition-delay: 300ms;" class="transition-all duration-700 ease-out col-span-3">
                     <h6 class="font-light text-custom-lg tracking-low">
-                        V městečku se nachází <span class="font-medium italic">termální prameny</span> a kolem nich <span class="font-medium italic">moderní aquapark</span>.
+                        {{ __('In the town, there are') }} <span class="font-medium italic">{{ __('thermal springs') }}</span> {{ __('and around them a') }} <span class="font-medium italic">{{ __('modern aquapark') }}</span>.
                     </h6>
                 </div>
                 <img x-cloak :class="shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'" style="transition-delay: 500ms;" class="transition-all duration-1000 ease-out col-span-4 h-[400px]" src="https://picsum.photos/1000/400" alt="Termální prameny">
@@ -35,12 +35,12 @@
         </div>
 
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-lg">
-            <h3 x-cloak :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-custom-xl">Pivovar Hubertus</h3>
+            <h3 x-cloak :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-custom-xl">{{ __('Brewery Hubertus') }}</h3>
             <div class="grid grid-cols-2 sm:grid-cols-7 gap-lg">
                 <img x-cloak :class="shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'" style="transition-delay: 500ms;" class="transition-all duration-1000 ease-out col-span-4 h-[400px]" src="https://picsum.photos/1000/400" alt="Pivovar Hubertus">
                 <div x-cloak :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'" style="transition-delay: 300ms;" class="transition-all duration-700 ease-out col-span-3">
                     <h6 class="font-light text-custom-lg tracking-low">
-                        Kromě toho zde také můžete najít <span class="font-medium italic">pivovar</span>, ve kterém se vaří rakouské <span class="font-medium italic">pivo Hubertus</span>.
+                        {{ __('Besides that, you can also find a') }} <span class="font-medium italic">{{ __('brewery') }}</span>{{ __(', where Austrian') }} <span class="font-medium italic">{{ __('beer Hubertus') }}</span> {{ __('is brewed.') }}
                     </h6>
                 </div>
             </div>

@@ -9,14 +9,14 @@
         
         <h1 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 150ms;" class="transition-all duration-700 ease-out font-bold text-custom-xl">Apartments</h1>
         
-        <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 300ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">Navštivte nejlepší apartmán</h4>
+        <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 300ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">{{ __('Visit the best apartment') }}</h4>
         
-        <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 450ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">v <span class="font-medium italic text-custom-lg tracking-low leading-[80px]">Laa an der Thaya</span></h4>
+        <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 450ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">{{ __('in') }} <span class="font-medium italic text-custom-lg tracking-low leading-[80px]">Laa an der Thaya</span></h4>
         
         <div x-cloak :class="shown ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-90'" style="transition-delay: 600ms;" class="transition-all duration-700 ease-out flex justify-center text-center bg-white w-[220px] h-[64px] rounded-[24px] cursor-pointer">
             <a href="{{ route('reservation') }}" class="w-full h-full flex items-center justify-center">
                 <span class="text-primary font-light text-[36px] tracking-low hover:underline">
-                    rezervovat
+                    {{ __('reserve') }}
                 </span>
             </a>
         </div>
@@ -24,7 +24,7 @@
 
     <div class="flex flex-col justify-start gap-xl">
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
-            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">Proč zvolit Apartmán Stratos?</h3>
+            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">{{ __('Why choose Apartment Stratos?') }}</h3>
             <div class="flex gap-[48px] px-[10px]">
                 @for ($i = 0; $i < 5; $i++)
                     <div :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'" 
@@ -35,7 +35,7 @@
                         </svg>
                         
                         <span class="text-[20px] leading-[32px] tracking-[-6%]">
-                            Nejaky prvek z oblasti
+                            {{ __('Some element from the area') }}
                         </span>
                     </div>
                 @endfor
@@ -43,7 +43,7 @@
         </div>
 
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
-            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">Vybavení našeho apartmánu</h3>
+            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">{{ __('Amenities of our apartment') }}</h3>
             
             @php
                 $apartmentImages = [
@@ -61,7 +61,7 @@
         </div>
 
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
-            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">Kde apartmán najdete?</h3>
+            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">{{ __('Where to find the apartment?') }}</h3>
             <div class="w-full grid grid-cols-1 sm:grid-cols-7 gap-10">
                 <div :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'" style="transition-delay: 200ms;" class="transition-all duration-1000 ease-out w-full h-[60vh] rounded-lg overflow-hidden col-span-5">
                     <iframe
@@ -74,20 +74,20 @@
                 </div>
                 <div class="col-span-2 flex flex-col gap-md">
                     <div :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'" style="transition-delay: 400ms;" class="transition-all duration-700 ease-out">
-                        <h3 class="font-medium text-[40px] mb-2">Adresa</h3>
+                        <h3 class="font-medium text-[40px] mb-2">{{ __('Address') }}</h3>
                         <p class="text-[24px] leading-[28px] mb-4">
                             Feldstraße 4<br>
                             2136 Laa an der Thaya<br>
                             Rakousko
                         </p>
                             
-                        <a href="https://www.google.com/maps?q=48.7179556,16.3910199" target="_blank" rel="noopener" class="inline-block bg-primary text-white px-2 rounded-lg hover:underline">Zobrazit trasu</a>
+                        <a href="https://www.google.com/maps?q=48.7179556,16.3910199" target="_blank" rel="noopener" class="inline-block bg-primary text-white px-2 rounded-lg hover:underline">{{ __('Show route') }}</a>
                     </div>
 
                     <div :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'" style="transition-delay: 600ms;" class="transition-all duration-700 ease-out">
-                        <h4 class="font-medium text-[40px] mb-2">Kontakt</h4>
+                        <h4 class="font-medium text-[40px] mb-2">{{ __('Contact') }}</h4>
                         <p class="text-[20px] leading-[28px] mb-4">
-                            Telefon: <a href="tel:+420123456789" class="hover:underline">+420 732 558 978</a><br>
+                            {{ __('Phone') }}: <a href="tel:+420123456789" class="hover:underline">+420 732 558 978</a><br>
                             Email: <a href="mailto:info@apartmanstratos.example" class="hover:underline">info@apartmanstratos.cz</a>
                         </p>
                     </div>

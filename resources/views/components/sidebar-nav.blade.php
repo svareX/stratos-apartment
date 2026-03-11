@@ -28,29 +28,31 @@
                  x-transition:leave="transition ease-in duration-400 transform"
                  x-transition:leave-start="translate-x-0"
                  x-transition:leave-end="translate-x-full"
-                 class="fixed inset-y-0 right-0 z-[70] w-full sm:w-[40%] lg:w-[30%] bg-primary flex flex-col justify-center items-center shadow-2xl border-l border-white/10">
+                 class="fixed inset-y-0 right-0 z-[70] w-full sm:w-[40%] lg:w-[30%] bg-primary shadow-2xl border-l border-white/10 flex flex-col">
                  
-                 <button @click="open = false" class="absolute top-8 right-8 text-white/50 hover:text-secondary transition-colors duration-300 focus:outline-none cursor-pointer p-2">
+                 <button @click="open = false" class="absolute top-8 right-8 text-white/50 hover:text-secondary transition-colors duration-300 focus:outline-none cursor-pointer p-2 z-[80]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-10 h-10">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                  </button>
 
-                 <nav class="flex flex-col gap-10 text-center text-white">
-                     <a href="{{ route('home') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">DOMŮ</a>
-                     <a href="{{ route('about') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">LOKALITA</a>
-                     <a href="{{ route('pricing') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">CENÍK</a>
-                     <a href="{{ route('reservation') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">REZERVACE</a>
+                 <div class="flex-grow flex flex-col justify-center items-center">
+                     <nav class="flex flex-col gap-10 text-center text-white">
+                         <a href="{{ route('home') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">{{ __('Home') }}</a>
+                         <a href="{{ route('about') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">{{ __('Location') }}</a>
+                         <a href="{{ route('pricing') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">{{ __('Pricing') }}</a>
+                         <a href="{{ route('reservation') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">{{ __('Reservation') }}</a>
+                     </nav>
+                 </div>
 
-                     <div class="mt-6">
-                         <div class="flex justify-center items-center gap-6">
-                             @php $current = app()->getLocale(); @endphp
-                             <a href="{{ route('locale.switch', 'cs') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'cs' ? 'text-secondary' : '' }}">Česky</a>
-                             <a href="{{ route('locale.switch', 'en') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'en' ? 'text-secondary' : '' }}">English</a>
-                             <a href="{{ route('locale.switch', 'de') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'de' ? 'text-secondary' : '' }}">Deutsch</a>
-                         </div>
+                 <div class="w-full pb-12 pt-6">
+                     <div class="flex justify-center items-center gap-6 text-white">
+                         @php $current = app()->getLocale(); @endphp
+                         <a href="{{ route('locale.switch', 'cs') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'cs' ? 'text-secondary' : '' }}">Česky</a>
+                         <a href="{{ route('locale.switch', 'en') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'en' ? 'text-secondary' : '' }}">English</a>
+                         <a href="{{ route('locale.switch', 'de') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'de' ? 'text-secondary' : '' }}">Deutsch</a>
                      </div>
-                 </nav>
+                 </div>
             </div>
         </div>
     </template>
