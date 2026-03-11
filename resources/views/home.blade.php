@@ -1,4 +1,9 @@
 <x-app-layout>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+
     <div x-data="{ shown: false }" x-init="setTimeout(() => shown = true, 150)" class="flex flex-col justify-start gap-lg h-screen">
         <h1 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="transition-all duration-700 ease-out font-bold text-custom-xl">Stratos</h1>
         
@@ -9,7 +14,7 @@
         <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 450ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">v <span class="font-medium italic text-custom-lg tracking-low leading-[80px]">Laa an der Thaya</span></h4>
         
         <div x-cloak :class="shown ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-90'" style="transition-delay: 600ms;" class="transition-all duration-700 ease-out flex justify-center text-center bg-white w-[220px] h-[64px] rounded-[24px] cursor-pointer">
-            <a href="{{ route('reservation') }}">
+            <a href="{{ route('reservation') }}" class="w-full h-full flex items-center justify-center">
                 <span class="text-primary font-light text-[36px] tracking-low hover:underline">
                     rezervovat
                 </span>
@@ -24,7 +29,7 @@
                 @for ($i = 0; $i < 5; $i++)
                     <div :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'" 
                          style="transition-delay: {{ $i * 150 }}ms;"
-                         class="transition-all duration-700 ease-out flex flex-col justify-center text-center w-[200px] h-[200px] bg-red-400 gap-[12px] p-[12px]">
+                         class="transition-all duration-700 ease-out flex flex-col justify-center text-center w-[200px] h-[200px] bg-red-400 gap-[12px] p-[12px] rounded-lg shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="mx-auto size-[60px]">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
                         </svg>
@@ -39,14 +44,20 @@
 
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
             <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">Vybavení našeho apartmánu</h3>
-            <div class="flex justify-start gap-md px-[10px]">
-                @for ($i = 0; $i < 6; $i++)
-                    <img :class="shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'" 
-                         style="transition-delay: {{ $i * 100 }}ms;"
-                         class="transition-all duration-700 ease-out" 
-                         src="https://picsum.photos/{{rand(180, 420)}}/280" alt="random image">
-                @endfor
-            </div>
+            
+            @php
+                $apartmentImages = [
+                    'https://picsum.photos/800/600?random=1',
+                    'https://picsum.photos/800/600?random=2',
+                    'https://picsum.photos/800/600?random=3',
+                    'https://picsum.photos/800/600?random=4',
+                    'https://picsum.photos/800/600?random=5',
+                    'https://picsum.photos/800/600?random=6',
+                ];
+            @endphp
+            
+            <x-image-carousel :images="$apartmentImages" />
+            
         </div>
 
         <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
