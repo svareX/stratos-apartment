@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 })->name('home');
 
 Route::get('/about', function () {
@@ -17,6 +17,13 @@ Route::get('/pricing', function () {
 Route::get('/reservation', function () {
     return view('reservation');
 })->name('reservation');
+
+Route::get('/reservation/success', function () {
+    if (!session('reservation_completed')) {
+        return redirect()->route('reservation');
+    }
+    return view('reservation-success');
+})->name('reservation.success');
 
 Route::middleware([
     'auth:sanctum',
