@@ -1,6 +1,6 @@
 <x-app-layout>
     <div x-data="{ shown: false }" x-init="setTimeout(() => shown = true, 150)" class="flex flex-col justify-start gap-lg h-screen">
-        <h2 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="transition-all duration-700 ease-out font-bold text-custom-xl">O regionu</h2>
+        <h2 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="transition-all duration-700 ease-out font-bold text-custom-xl">Lokalita</h2>
         
         <h3 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 200ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low w-[860px]">Česko-rakouské pohraniční městečko skrývá v okolí mnoho krásy</h3>
 

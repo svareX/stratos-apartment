@@ -47,6 +47,14 @@
                     <h5 class="font-medium italic text-custom-md tracking-low">
                         Těšíme se na vás!
                     </h5>
+                    
+                    <div x-cloak :class="shown ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-90'" style="transition-delay: 600ms;" class="transition-all mt-4 duration-700 ease-out flex justify-center text-center bg-white w-[220px] h-[64px] rounded-[24px] cursor-pointer">
+                        <a href="{{ route('reservation') }}" class="w-full h-full flex items-center justify-center">
+                            <span class="text-primary font-light text-[36px] tracking-low hover:underline">
+                                rezervovat
+                            </span>
+                        </a>
+                    </div>
                 </div>
 
                 <div x-cloak x-show="shown" x-transition:enter="transition ease-out duration-700 delay-400" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" class="w-[920px]">

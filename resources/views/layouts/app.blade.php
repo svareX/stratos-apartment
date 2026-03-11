@@ -16,6 +16,8 @@
     <body class="font-sans antialiased font-sans text-white">
         <x-banner />
 
+        <x-sidebar-nav />
+
         <div class="min-h-screen bg-primary px-[40px] pt-[40px] pb-[64px]">
 
             <!-- Page Heading -->
