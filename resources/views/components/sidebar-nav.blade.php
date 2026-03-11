@@ -41,6 +41,15 @@
                      <a href="{{ route('about') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">LOKALITA</a>
                      <a href="{{ route('pricing') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">CENÍK</a>
                      <a href="{{ route('reservation') }}" class="text-3xl font-medium tracking-[0.1em] hover:text-secondary transition-colors duration-300">REZERVACE</a>
+
+                     <div class="mt-6">
+                         <div class="flex justify-center items-center gap-6">
+                             @php $current = app()->getLocale(); @endphp
+                             <a href="{{ route('locale.switch', 'cs') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'cs' ? 'text-secondary' : '' }}">Česky</a>
+                             <a href="{{ route('locale.switch', 'en') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'en' ? 'text-secondary' : '' }}">English</a>
+                             <a href="{{ route('locale.switch', 'de') }}" class="text-xl font-medium tracking-[0.1em] transition-colors duration-300 hover:text-secondary {{ $current === 'de' ? 'text-secondary' : '' }}">Deutsch</a>
+                         </div>
+                     </div>
                  </nav>
             </div>
         </div>

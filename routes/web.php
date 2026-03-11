@@ -34,3 +34,15 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/locale/{locale}', function ($locale) {
+    $available = ['en', 'cs', 'de'];
+    if (!in_array($locale, $available)) {
+        abort(404);
+    }
+
+    session(['locale' => $locale]);
+    app()->setLocale($locale);
+
+    return redirect()->back();
+})->name('locale.switch');
