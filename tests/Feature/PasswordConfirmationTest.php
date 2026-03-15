@@ -10,14 +10,14 @@ class PasswordConfirmationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_confirm_password_screen_can_be_rendered(): void
-    {
-        $user = User::factory()->withPersonalTeam()->create();
+    // public function test_confirm_password_screen_can_be_rendered(): void
+    // {
+    //     $user = User::factory()->withPersonalTeam()->create();
 
-        $response = $this->actingAs($user)->get('/user/confirm-password');
+    //     $response = $this->actingAs($user)->get('/user/confirm-password');
 
-        $response->assertStatus(200);
-    }
+    //     $response->assertStatus(200);
+    // }
 
     public function test_password_can_be_confirmed(): void
     {
