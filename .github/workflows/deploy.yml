@@ -4,11 +4,36 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # 1. Musíme nainstalovat PHP a Composer závislosti (aby Vite viděl Filament soubory)
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, intl
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install NPM dependencies & build
+        run: |
+          npm install
+          npx vite build
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -22,7 +47,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/svarex/stratos-apartment:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,9 +62,9 @@ jobs:
           script: |
             cd /app
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker-compose -f docker-compose.prod.yml up -d
-            # Spuštění migrací a promazání cache uvnitř běžícího kontejneru
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan config:cache
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan route:cache
+            docker pull ghcr.io/svarex/stratos-apartment:latest
+            docker compose -f docker-compose.prod.yml up -d
+            sleep 10
+            docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
+            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache

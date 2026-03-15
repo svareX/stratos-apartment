@@ -1,6 +1,19 @@
 FROM php:8.4-fpm-alpine
 
-RUN docker-php-ext-install pdo pdo_mysql bcmath
+RUN apk add --no-cache \
+    icu-dev \
+    libzip-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    git
+
+RUN docker-php-ext-install \
+    pdo_mysql \
+    bcmath \
+    intl \
+    zip \
+    xml
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
