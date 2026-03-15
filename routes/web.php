@@ -1,48 +1,68 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// Password form routes (not protected by the middleware)
+Route::get('/password', function () {
+    return view('website-password');
+})->name('password.form');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+Route::post('/password', function (Request $request) {
+    $password = env('WEBSITE_PASSWORD', '');
 
-Route::get('/pricing', function () {
-    return view('pricing');
-})->name('pricing');
-
-Route::get('/reservation', function () {
-    return view('reservation');
-})->name('reservation');
-
-Route::get('/reservation/success', function () {
-    if (!session('reservation_completed')) {
-        return redirect()->route('reservation');
+    if ($password !== '' && $request->input('website_password') === $password) {
+        $request->session()->put('website_authenticated', true);
+        return redirect()->intended('/');
     }
-    return view('reservation-success');
-})->name('reservation.success');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    return back()->withErrors(['website_password' => 'Invalid password']);
+})->name('password.submit');
+
+// The rest of the site's web routes are protected by the website password middleware
+Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(function () {
+    Route::get('/', function () {
+        return view('home');
+    })->name('home');
+
+    Route::get('/about', function () {
+        return view('about');
+    })->name('about');
+
+    Route::get('/pricing', function () {
+        return view('pricing');
+    })->name('pricing');
+
+    Route::get('/reservation', function () {
+        return view('reservation');
+    })->name('reservation');
+
+    Route::get('/reservation/success', function () {
+        if (!session('reservation_completed')) {
+            return redirect()->route('reservation');
+        }
+        return view('reservation-success');
+    })->name('reservation.success');
+
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ])->group(function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+    });
+
+    Route::get('/locale/{locale}', function ($locale) {
+        $available = ['en', 'cs', 'de'];
+        if (!in_array($locale, $available)) {
+            abort(404);
+        }
+
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
+
+        return redirect()->back();
+    })->name('locale.switch');
 });
-
-Route::get('/locale/{locale}', function ($locale) {
-    $available = ['en', 'cs', 'de'];
-    if (!in_array($locale, $available)) {
-        abort(404);
-    }
-
-    session(['locale' => $locale]);
-    app()->setLocale($locale);
-
-    return redirect()->back();
-})->name('locale.switch');
