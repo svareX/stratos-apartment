@@ -28,11 +28,13 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - name: Copy Environment File
-        run: cp .env.example .env
-
-      - name: Generate Application Key
-        run: php artisan key:generate
+      - name: Prepare Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
       - name: Run Tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
         run: php vendor/bin/pest
