@@ -18,7 +18,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: '8.4'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl
           coverage: none
 
@@ -34,4 +34,4 @@ jobs:
           php artisan key:generate
 
       - name: Run Tests
-        run: php vendor/bin/pest
+        run: ./vendor/bin/pest
