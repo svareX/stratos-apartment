@@ -2,35 +2,48 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Carbon\Carbon;
-use App\Models\User;
+use App\Enums\BookingSource;
+use App\Enums\ReservationStatus;
 use App\Models\Apartment;
 use App\Models\Reservation;
-use App\Enums\ReservationStatus;
-use App\Enums\BookingSource;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Livewire\Component;
 
 class ReservationForm extends Component
 {
     public $step = 1;
+
     public $displayMonth;
+
     public $displayYear;
+
     public $bookedDates = [];
 
     public $start_date;
+
     public $end_date;
+
     public $pricePerNight = 1790;
+
     public $cleaningFee = 600;
 
     public $first_name;
+
     public $last_name;
+
     public $email;
+
     public $phone;
+
     public $address;
+
     public $city;
+
     public $postal_code;
+
     public $country;
 
     protected $rules = [
@@ -49,7 +62,7 @@ class ReservationForm extends Component
         $now = Carbon::now();
         $this->displayMonth = $now->month;
         $this->displayYear = $now->year;
-        
+
         $this->loadBookedDates();
     }
 
@@ -61,11 +74,12 @@ class ReservationForm extends Component
                 $dates = [];
                 $start = Carbon::parse($reservation->check_in);
                 $end = Carbon::parse($reservation->check_out);
-                
+
                 while ($start->lte($end)) {
                     $dates[] = $start->toDateString();
                     $start->addDay();
                 }
+
                 return $dates;
             })
             ->unique()
@@ -76,7 +90,7 @@ class ReservationForm extends Component
     public function render()
     {
         return view('livewire.reservation-form', [
-            'calendarCells' => $this->generateCalendar()
+            'calendarCells' => $this->generateCalendar(),
         ]);
     }
 
@@ -114,9 +128,11 @@ class ReservationForm extends Component
 
     public function selectDate($date)
     {
-        if (in_array($date, $this->bookedDates)) return;
+        if (in_array($date, $this->bookedDates)) {
+            return;
+        }
 
-        if (!$this->start_date || ($this->start_date && $this->end_date)) {
+        if (! $this->start_date || ($this->start_date && $this->end_date)) {
             $this->start_date = $date;
             $this->end_date = null;
         } else {
@@ -131,6 +147,7 @@ class ReservationForm extends Component
                     if (in_array($tempDate->toDateString(), $this->bookedDates)) {
                         $this->start_date = $date;
                         $this->end_date = null;
+
                         return;
                     }
                     $tempDate->addDay();
@@ -142,25 +159,32 @@ class ReservationForm extends Component
 
     public function nights()
     {
-        if (!$this->start_date || !$this->end_date) return 0;
+        if (! $this->start_date || ! $this->end_date) {
+            return 0;
+        }
+
         return Carbon::parse($this->start_date)->diffInDays(Carbon::parse($this->end_date));
     }
 
     public function cleaningApplies()
     {
         $n = $this->nights();
+
         return $n > 0 && $n <= 3;
     }
 
     public function total()
     {
         $n = $this->nights();
-        if ($n === 0) return 0;
-        
+        if ($n === 0) {
+            return 0;
+        }
+
         $total = $n * $this->pricePerNight;
         if ($this->cleaningApplies()) {
             $total += $this->cleaningFee;
         }
+
         return $total;
     }
 
@@ -169,8 +193,9 @@ class ReservationForm extends Component
         $this->resetErrorBag();
 
         if ($this->step === 1) {
-            if (!$this->start_date || !$this->end_date) {
+            if (! $this->start_date || ! $this->end_date) {
                 $this->addError('dates', __('Please select a date from and to.'));
+
                 return;
             }
         }
@@ -194,14 +219,14 @@ class ReservationForm extends Component
         $user = User::firstOrCreate(
             ['email' => $this->email],
             [
-                'name' => trim($this->first_name . ' ' . $this->last_name),
+                'name' => trim($this->first_name.' '.$this->last_name),
                 'password' => Hash::make(Str::random(12)),
             ]
         );
 
         $apartment = Apartment::first();
 
-        if (!$apartment) {
+        if (! $apartment) {
             $apartment = Apartment::create([
                 'name' => 'Main Apartment',
                 'address' => 'Default Address',
@@ -222,7 +247,7 @@ class ReservationForm extends Component
         ]);
 
         session()->flash('reservation_completed', true);
-        
+
         $this->redirectRoute('reservation.success', navigate: true);
     }
 }

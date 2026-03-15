@@ -2,19 +2,21 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\Widget;
-use Carbon\Carbon;
-use App\Models\Reservation;
 use App\Enums\ReservationStatus;
+use App\Models\Reservation;
+use Carbon\Carbon;
+use Filament\Widgets\Widget;
 
 class ReservationCalendarWidget extends Widget
 {
     protected string $view = 'filament.widgets.reservation-calendar-widget';
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     public $displayMonth;
+
     public $displayYear;
+
     public $bookedDates = [];
 
     public function mount()
@@ -22,19 +24,19 @@ class ReservationCalendarWidget extends Widget
         $now = Carbon::now();
         $this->displayMonth = $now->month;
         $this->displayYear = $now->year;
-        
+
         $this->loadBookedDates();
     }
 
     public function loadBookedDates()
     {
         $reservations = Reservation::whereIn('status', [ReservationStatus::Confirmed, ReservationStatus::Pending])->get();
-        
+
         $dates = [];
         foreach ($reservations as $reservation) {
             $start = Carbon::parse($reservation->check_in);
             $end = Carbon::parse($reservation->check_out);
-            
+
             while ($start->lte($end)) {
                 $dates[] = [
                     'date' => $start->toDateString(),
@@ -44,7 +46,7 @@ class ReservationCalendarWidget extends Widget
                 $start->addDay();
             }
         }
-        
+
         $this->bookedDates = collect($dates)->groupBy('date')->toArray();
     }
 
@@ -55,7 +57,7 @@ class ReservationCalendarWidget extends Widget
         $startOffset = $firstDay->dayOfWeekIso - 1;
 
         $cells = [];
-        
+
         for ($i = 0; $i < $startOffset; $i++) {
             $cells[] = null;
         }
