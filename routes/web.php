@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 // Password form routes (not protected by the middleware)
 Route::get('/password', function () {
@@ -13,6 +13,7 @@ Route::post('/password', function (Request $request) {
 
     if ($password !== '' && $request->input('website_password') === $password) {
         $request->session()->put('website_authenticated', true);
+
         return redirect()->intended('/');
     }
 
@@ -38,9 +39,10 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
     })->name('reservation');
 
     Route::get('/reservation/success', function () {
-        if (!session('reservation_completed')) {
+        if (! session('reservation_completed')) {
             return redirect()->route('reservation');
         }
+
         return view('reservation-success');
     })->name('reservation.success');
 
@@ -56,7 +58,7 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
 
     Route::get('/locale/{locale}', function ($locale) {
         $available = ['en', 'cs', 'de'];
-        if (!in_array($locale, $available)) {
+        if (! in_array($locale, $available)) {
             abort(404);
         }
 

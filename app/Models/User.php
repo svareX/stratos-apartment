@@ -16,6 +16,7 @@ class User extends Authenticatable
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
@@ -64,6 +65,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
