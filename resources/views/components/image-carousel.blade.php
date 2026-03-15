@@ -113,12 +113,16 @@
 
         <div x-ref="slider" @scroll.passive="handleScroll" class="flex justify-start gap-md overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 scroll-smooth">
             <template x-for="item in displayItems" :key="item.uniqueId">
-                <img @click="openLightbox(item.originalIndex)"
-                     :class="shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'" 
-                     :style="`transition-delay: ${item.originalIndex * 100}ms;`"
-                     class="transition-all duration-700 ease-out h-[300px] w-[400px] object-cover rounded-xl snap-center snap-always cursor-pointer hover:opacity-90 hover:shadow-lg shrink-0" 
-                     :src="item.src" 
-                     alt="Gallery image">
+                <div x-data="{ loaded: false }" class="relative">
+                    <div x-show="!loaded" x-transition class="flux-skeleton rounded h-[300px] w-[400px] shrink-0"></div>
+                    <img @click="openLightbox(item.originalIndex)"
+                         @load="loaded = true"
+                         :class="loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
+                         :style="`transition-delay: ${item.originalIndex * 100}ms;`"
+                         class="transition-all duration-700 ease-out h-[300px] w-[400px] object-cover rounded-xl snap-center snap-always cursor-pointer hover:opacity-90 hover:shadow-lg shrink-0" 
+                         :src="item.src" 
+                         alt="Gallery image">
+                </div>
             </template>
         </div>
 
@@ -130,11 +134,11 @@
     </div>
 
     <template x-teleport="body">
-        <div x-show="lightboxOpen" 
-             x-transition.opacity.duration.300ms
-             @click.self="closeLightbox"
-             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md"
-             style="display: none;">
+              <div x-show="lightboxOpen" 
+          x-transition.opacity.duration.300ms
+          @click.self="closeLightbox"
+          class="fixed inset-0 z-[100] flex items-center justify-center lightbox-backdrop backdrop-blur-md"
+          style="display: none;">
             
             <button @click="closeLightbox" class="absolute top-6 right-6 sm:top-10 sm:right-10 text-white/70 hover:text-white transition-colors z-50 p-2 bg-black/20 hover:bg-black/40 rounded-full cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
@@ -148,9 +152,9 @@
                 </svg>
             </button>
 
-            <img :src="images[activeIndex]" 
-                 class="max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl" 
-                 alt="Fullscreen image">
+              <img :src="images[activeIndex]" 
+                  class="lightbox-img shadow-2xl" 
+                  alt="Fullscreen image">
 
             <button @click="nextImage" class="absolute right-4 sm:right-10 text-white/70 hover:text-white transition-colors z-50 p-4 bg-black/20 hover:bg-black/40 rounded-full cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">

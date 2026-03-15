@@ -1,98 +1,245 @@
 <x-app-layout>
-    <style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+    @php
+        $heroImages = [
+            asset('images/hero-ramzova-1.jpg'),
+            asset('images/hero-ramzova-2.jpg'),
+            asset('images/hero-ramzova-3.jpg'),
+        ];
 
-    <div x-data="{ shown: false }" x-init="setTimeout(() => shown = true, 150)" class="flex flex-col justify-start gap-lg h-screen">
-        <h1 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" class="transition-all duration-700 ease-out font-bold text-custom-xl">Stratos</h1>
-        
-        <h1 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 150ms;" class="transition-all duration-700 ease-out font-bold text-custom-xl">Apartments</h1>
-        
-        <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 300ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">{{ __('Visit the best apartment') }}</h4>
-        
-        <h4 x-cloak :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition-delay: 450ms;" class="transition-all duration-700 ease-out font-light text-custom-lg tracking-low">{{ __('in') }} <span class="font-medium italic text-custom-lg tracking-low leading-[80px]">Laa an der Thaya</span></h4>
-        
-        <div x-cloak :class="shown ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-90'" style="transition-delay: 600ms;" class="transition-all duration-700 ease-out flex justify-center text-center bg-white w-[220px] h-[64px] rounded-[24px] cursor-pointer">
-            <a href="{{ route('reservation') }}" class="w-full h-full flex items-center justify-center">
-                <span class="text-primary font-light text-[36px] tracking-low hover:underline">
-                    {{ __('reserve') }}
-                </span>
+        $apartmentImages = [
+            'https://picsum.photos/1200/900?random=1',
+            'https://picsum.photos/1200/900?random=2',
+            'https://picsum.photos/1200/900?random=3',
+            'https://picsum.photos/1200/900?random=4',
+            'https://picsum.photos/1200/900?random=5',
+            'https://picsum.photos/1200/900?random=6',
+        ];
+    @endphp
+
+    <div class="flex items-center justify-between sticky top-0 z-50 bg-white border-b border-border px-14 h-16 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-purple flex items-center justify-center text-white">S</div>
+            <div class="font-bold text-sm text-text">Apartmán Stratos</div>
+        </div>
+        <div class="flex justify-between gap-4">
+            <div class="flex justify-center gap-1 bg-purple rounded-lg pl-2 pr-3">
+                <div class="w-9 h-9 rounded-full bg-purple flex items-center justify-center text-white">M</div>
+                <div class="font-bold text-white text-sm my-auto">Ramzová / Jeseníky</div>
+            </div>
+            <div class="flex justify-center gap-1 bg-purple rounded-lg pl-2 pr-3">
+                <div class="w-9 h-9 rounded-full bg-purple flex items-center justify-center text-white">*</div>
+                <div class="font-bold text-white text-sm my-auto">Laa an der Thaya</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            @php $current = app()->getLocale(); @endphp
+            <a href="{{ route('locale.switch', 'cs') }}"
+                class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'cs' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
+                <span class="inline-block mr-2" aria-hidden>🇨🇿</span>CZ
             </a>
+            <a href="{{ route('locale.switch', 'en') }}"
+                class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'en' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
+                <span class="inline-block mr-2" aria-hidden>🇩🇪</span>DE
+            </a>
+            <a href="{{ route('locale.switch', 'de') }}"
+                class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'de' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
+                <span class="inline-block mr-2" aria-hidden>🇺🇸</span>EN
+            </a>
+            <a href="{{ route('reservation') }}"
+                class="ml-6 inline-flex items-center px-4 py-2 rounded-lg bg-[var(--teal)] text-white font-bold">Rezervovat</a>
         </div>
     </div>
 
-    <div class="flex flex-col justify-start gap-xl">
-        <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
-            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">{{ __('Why choose Apartment Stratos?') }}</h3>
-            <div class="flex gap-[48px] px-[10px]">
-                @for ($i = 0; $i < 5; $i++)
-                    <div :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'" 
-                         style="transition-delay: {{ $i * 150 }}ms;"
-                         class="transition-all duration-700 ease-out flex flex-col justify-center text-center w-[200px] h-[200px] bg-red-400 gap-[12px] p-[12px] rounded-lg shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="mx-auto size-[60px]">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
-                        </svg>
-                        
-                        <span class="text-[20px] leading-[32px] tracking-[-6%]">
-                            {{ __('Some element from the area') }}
+    <!-- Hero -->
+    <section class="relative h-[90vh] min-h-[520px] overflow-hidden">
+        <div x-data="{ idx: 0, slides: {{ Js::from($heroImages) }} }" x-init="setInterval(() => idx = (idx + 1) % slides.length, 5500)" class="h-full">
+            <div class="apt-slides flex h-full transition-transform duration-700" :style="`transform:translateX(-${idx * 100}%);`">
+                <template x-for="(s, i) in slides" :key="i">
+                    <div class="apt-slide min-w-full h-full relative">
+                        <div class="sc-r1 absolute inset-0 bg-cover bg-center" :style="`background-image: url('${s}')`"></div>
+                        <div class="apt-slide-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="apt-slide-content absolute bottom-0 left-0 right-0 p-12 z-10 text-white">
+                            <div class="slide-label">Novinka</div>
+                            <h1 class="font-serif text-5xl md:text-6xl leading-tight mb-3">Luxusní apartmán <em class="text-[var(--teal)]">u až</em></h1>
+                            <p class="max-w-xl text-white/80 mb-6">Komfortní ubytování s výhledem, sauna a soukromé parkování.</p>
+                            <div class="flex gap-3">
+                                <a href="#" class="btn-pri inline-flex items-center px-6 py-3 rounded-xl bg-[var(--teal)] text-white font-bold">Rezervovat</a>
+                                <a href="#" class="btn-gho inline-flex items-center px-5 py-3 rounded-xl border border-white/30 text-white">Najít ideální pobyt</a>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="c-arrow prev absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 text-white w-11 h-11 rounded-full flex items-center justify-center cursor-pointer" @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
+            <div class="c-arrow next absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 text-white w-11 h-11 rounded-full flex items-center justify-center cursor-pointer" @click="idx = (idx + 1) % slides.length">›</div>
+        </div>
+    </section>
+
+    <section class="relative bottom-28 px-14 py-10">
+        <div class="max-w-[94vw] min-h-[30vh] mx-auto grid grid-cols-5 gap-6 gap-y-1 bg-white border border-border rounded-2xl pt-4 p-6 shadow-lg">
+            <div class="col-span-5 mt-auto mb-2">
+                <span class="text-purple text-xs font-bold uppercase tracking-[8%] inline-block">Zkontroloval dostupnost</span>
+            </div>
+            <div class="col-span-1">
+                <div class="w-full h-full bg-blue-600"></div>
+            </div>
+            <div class="col-span-4">
+                <div class="grid grid-cols-4 gap-2 gap-y-4 text-black">
+                    <div class="col-span-1">
+                        Lokalita
+                    </div>
+                    <div class="col-span-1">
+                        Příjezd
+                    </div>
+                    <div class="col-span-1">
+                        Odjezd
+                    </div>
+                    <div class="col-span-1">
+                        Hosté
+                    </div>
+                    <div class="col-span-4">
+                        <a href="#" class="w-full inline-flex justify-center px-4 py-2 rounded-xl bg-teal text-white font-bold">
+                            Zkontroloval dostupnost
+                        </a>
+                    </div>
+                    <div class="col-span-4 flex justify-start gap-4">
+                        <span class="text-teal font-bold text-xs border-l-1 border-0 border-l-[3px] border-teal px-2 h-8 pt-2">Pouze 3 volné víkendy v únoru - termíny se rychle plní!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    {{-- <section class="px-14">
+        <div class="gallery-inner grid grid-cols-[2fr_1fr_1fr] grid-rows-[200px_200px] gap-2 rounded-b-2xl overflow-hidden">
+            <div class="gi col-span-1 row-span-2 bg-gray-200">
+                <x-flux.skeleton />
+                <img src="{{ $apartmentImages[0] }}" alt="" class="w-full h-full object-cover">
+                <div class="gi-lbl">Interiér</div>
+            </div>
+            <div class="gi bg-gray-300">
+                <img src="{{ $apartmentImages[1] }}" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="gi bg-gray-300">
+                <img src="{{ $apartmentImages[2] }}" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="gi bg-gray-300">
+                <img src="{{ $apartmentImages[3] }}" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="gi bg-[var(--purple)] text-white flex items-center justify-center">
+                <div class="gi-more">View Gallery</div>
+            </div>
+        </div>
+    </section> --}}
+
+    <!-- Marquee -->
+    <section class="relative bottom-32 bg-purplePale border-t border-b border-border overflow-hidden py-3 mt-6 rounded-md">
+        <style>
+            @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        </style>
+        <div class="flex whitespace-nowrap items-center" style="animation: marquee 26s linear infinite;">
+            <span class="text-sm font-medium text-purple px-7">Wellness & sauna</span>
+            <span class="text-sm font-medium text-teal px-7">Free parking</span>
+            <span class="text-sm font-medium text-muted px-7">Only 3 weekends left in Feb</span>
+            <span class="text-sm font-medium text-purple px-7">Pet friendly</span>
+            <span class="text-sm font-medium text-teal px-7">Direct booking saves fees</span>
+            <!-- duplicate for seamless loop -->
+            <span class="text-sm font-medium text-purple px-7">Wellness & sauna</span>
+            <span class="text-sm font-medium text-teal px-7">Free parking</span>
+            <span class="text-sm font-medium text-muted px-7">Only 3 weekends left in Feb</span>
+            <span class="text-sm font-medium text-purple px-7">Pet friendly</span>
+            <span class="text-sm font-medium text-teal px-7">Direct booking saves fees</span>
+        </div>
+    </section>
+
+    <!-- Apartment selection -->
+    <section class="flex flex-col relative bottom-16; gap-2 px-14">
+        <h5 class="text-teal font-bold text-xs tracking-[8%] uppercase">Vyberte svůj pobyt</h5>
+        <h4 class="font-serif text-3xl text-navy">Dvě destinace, <br> jeden apartmán pro vás</h4>
+        <p class="text-smm text-muted">Každé místo ma svou vlastní duši - vyberte tu svou.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
+            <div class="w-full h-full rounded-lg border">
+                <!-- Card image -->
+                <div class="flex flex-col py-6 px-5 gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">S</div>
+                        <div class="flex flex-col">
+                            <div class="flex gap-2">
+                                <div class="font-bold text-xs uppercase text-teal">Ramzová</div>
+                                <div class="font-bold text-xs uppercase text-teal">Jeseníky</div>
+                            </div>                            
+                            <div class="text-lg font-serif">Apartmán Ramzová</div>
+                        </div>
+                    </div>
+                    <p class="px-1 text-sm text-muted">Vaše základna v srdci Jeseníků. Sjezdovka za dveřmi, trailové stezky za rohem, Priessnitzovy lázně 13 km.</p>
+                    <div class="flex px-2 gap-2 mt-1 mb-2">
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Lyže za dveřmi
+                        </span>
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Traily
+                        </span>
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Kolo
+                        </span>
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Psi vítani
                         </span>
                     </div>
-                @endfor
-            </div>
-        </div>
-
-        <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
-            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">{{ __('Amenities of our apartment') }}</h3>
-            
-            @php
-                $apartmentImages = [
-                    'https://picsum.photos/800/600?random=1',
-                    'https://picsum.photos/800/600?random=2',
-                    'https://picsum.photos/800/600?random=3',
-                    'https://picsum.photos/800/600?random=4',
-                    'https://picsum.photos/800/600?random=5',
-                    'https://picsum.photos/800/600?random=6',
-                ];
-            @endphp
-            
-            <x-image-carousel :images="$apartmentImages" />
-            
-        </div>
-
-        <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-xl">
-            <h3 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'" class="transition-all duration-700 ease-out font-medium text-[48px] leading-[32px] tracking-[-8%]">{{ __('Where to find the apartment?') }}</h3>
-            <div class="w-full grid grid-cols-1 sm:grid-cols-7 gap-10">
-                <div :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'" style="transition-delay: 200ms;" class="transition-all duration-1000 ease-out w-full h-[60vh] rounded-lg overflow-hidden col-span-5">
-                    <iframe
-                        class="w-full h-full border-0"
-                        loading="lazy"
-                        allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"
-                        src="https://www.google.com/maps?q=48.7179556,16.3910199&z=15&output=embed">
-                    </iframe>
+                    <a href="{{ route('reservation') }}" class="ml-2 inline-flex items-center px-4 py-2 rounded-xl bg-teal text-white font-bold text-sm w-fit">
+                        Prozkoumat apartmán
+                    </a>
                 </div>
-                <div class="col-span-2 flex flex-col gap-md">
-                    <div :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'" style="transition-delay: 400ms;" class="transition-all duration-700 ease-out">
-                        <h3 class="font-medium text-[40px] mb-2">{{ __('Address') }}</h3>
-                        <p class="text-[24px] leading-[28px] mb-4">
-                            Feldstraße 4<br>
-                            2136 Laa an der Thaya<br>
-                            Rakousko
-                        </p>
-                            
-                        <a href="https://www.google.com/maps?q=48.7179556,16.3910199" target="_blank" rel="noopener" class="inline-block bg-primary text-white px-2 rounded-lg hover:underline">{{ __('Show route') }}</a>
+            </div>
+            <div class="w-full h-full rounded-lg border">
+                <!-- Card image -->
+                <div class="flex flex-col py-6 px-5 gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">S</div>
+                        <div class="flex flex-col">
+                            <div class="flex gap-2">
+                                <div class="font-bold text-xs uppercase text-teal">Laa ab der Thaya</div>
+                                <div class="font-bold text-xs uppercase text-teal">Dolní rakousy</div>
+                            </div>                            
+                            <div class="text-lg font-serif">Apartmán Laa</div>
+                        </div>
                     </div>
-
-                    <div :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'" style="transition-delay: 600ms;" class="transition-all duration-700 ease-out">
-                        <h4 class="font-medium text-[40px] mb-2">{{ __('Contact') }}</h4>
-                        <p class="text-[20px] leading-[28px] mb-4">
-                            {{ __('Phone') }}: <a href="tel:+420123456789" class="hover:underline">+420 732 558 978</a><br>
-                            Email: <a href="mailto:info@apartmanstratos.example" class="hover:underline">info@apartmanstratos.cz</a>
-                        </p>
+                    <p class="px-1 text-sm text-muted">Wellness únik pár kroků od Therme Laa. Vídeň hodinu autem, vinohrady Weinviertelu za oknem.</p>
+                    <div class="flex px-2 gap-2 mt-1 mb-2">
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Lyže za dveřmi
+                        </span>
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Traily
+                        </span>
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Kolo
+                        </span>
+                        <span class="py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
+                            Psi vítani
+                        </span>
                     </div>
+                    <a href="{{ route('reservation') }}" class="ml-2 inline-flex items-center px-4 py-2 rounded-xl bg-teal text-white font-bold text-sm w-fit">
+                        Prozkoumat apartmán
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="px-14 py-16 bg-purplePale rounded-t-lg mt-8">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div>
+                <h2 class="font-serif text-3xl text-navy">Rezervujte dřív,<br>než to udělá <br> váš soused.</h2>
+                <p class="text-muted mt-2">Přímo u nás – bez provize,<br> s osobním přístupem hostitele.</p>
+            </div>
+            <div class="cta-btns flex gap-4">
+                <a href="#" class="btn-teal px-6 py-3 rounded-lg">Rezervovat →</a>
+                <a href="#" class="btn-outline-purple px-6 py-3 rounded-lg">Napsat hostiteli</a>
+            </div>
+        </div>
+    </section>
+
 </x-app-layout>

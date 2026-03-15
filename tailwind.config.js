@@ -14,11 +14,29 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"IBM Plex Mono"', ...defaultTheme.fontFamily.sans],
+                sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+                serif: ['Playfair Display', ...defaultTheme.fontFamily.serif],
             },
             colors: {
-                'primary': '#414CE8',
-                'secondary': '#f6ac18',
+                'purple': '#4B2EA2',
+                'purpleMid': '#6B47C8',
+                'purplePale': '#F0ECFF',
+                'purpleGhost': '#F8F6FF',
+
+                'teal': '#00C9A7',
+                'tealD': '#00A88C',
+                'tealL': '#E0FAF5',
+
+                'red': '#E53935',
+
+                'navy': '#1A0A3B',
+                'text': '#1C1530',
+                'muted': '#7A7090',
+
+                'border': '#E2DCF5',
+                'white': '#FFFFFF',
+                'cream': '#FDFCFF',
+                'gray': '#F5F3FA',
             }
         },
     },
