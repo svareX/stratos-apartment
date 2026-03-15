@@ -4,11 +4,13 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [dev, main]
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    environment: Testing
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,25 +18,15 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: 8.4
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl
           coverage: none
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
 
       - name: Add Flux Credentials
         run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
-      - name: Install PHP Dependencies
+      - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist
-
-      - name: Install Node Dependencies & Build
-        run: |
-          npm install
-          npm run build
 
       - name: Prepare Laravel
         run: |
