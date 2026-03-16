@@ -239,6 +239,14 @@ body { font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'He
     line-height: 1.6;
 }
 
+.text-25xl {
+    font-size: 26px;
+}
+
 .card-shadow {
     box-shadow: 0 4px 24px rgba(75,46,162,0.1);
+}
+
+.bg-review {
+    background: linear-gradient(135deg,var(--navy) 0%,#2D1B6B 100%);
 }

@@ -136,7 +136,7 @@
     </section> --}}
 
     <!-- Marquee -->
-    <section class="relative bottom-32 bg-purplePale border-t border-b border-border overflow-hidden py-3 mt-6 rounded-md">
+    <section class="relative bottom-20 bg-purplePale border-t border-b border-border overflow-hidden py-3 mt-6 rounded-md">
         <style>
             @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         </style>
@@ -156,7 +156,7 @@
     </section>
 
     <!-- Apartment selection -->
-    <section class="flex flex-col relative bottom-16; gap-2 px-14">
+    <section class="flex flex-col gap-2 px-14">
         <h5 class="text-teal font-bold text-xs tracking-[8%] uppercase">Vyberte svůj pobyt</h5>
         <h4 class="font-serif text-3xl text-navy">Dvě destinace, <br> jeden apartmán pro vás</h4>
         <p class="text-smm text-muted">Každé místo ma svou vlastní duši - vyberte tu svou.</p>
@@ -241,7 +241,7 @@
     </section>
 
     <!-- Photogallery -->
-    <section class="flex flex-col gap-4 px-14 py-16 rounded-t-lg mt-8">
+    <section class="flex flex-col gap-4 px-14 py-16 rounded-t-lg">
         <h5 class="text-2xl font-serif text-navy">Fotogalerie - oba apartmány</h5>
         <div class="grid grid-cols-4 grid-rows-2 gap-3 h-80 w-full">
             <div class="flex flex-col justify-end col-span-2 row-span-2 bg-violet-300 rounded-l-3xl">
@@ -324,48 +324,166 @@
     <section class="flex flex-col px-14 py-10">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-4">Proč stratos?</p>
         <h6 class="text-4xl text-navy font-serif">Jo, postel taky máme. Ale to je ta nejméně zajímavá část.</h6>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <span class="text-2xl">🍳</span>
-                <p>Vlastní kuchyň</p>
-                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-12 bg-white">
+            <div class="flex flex-col p-6 py-8 rounded-2xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-25xl">🍳</span>
+                <p class="my-2 text-navy font-bold">Vlastní kuchyň</p>
+                <p class="text-text">Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
             </div>
 
-            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <span class="text-2xl">🍳</span>
-                <p>Vlastní kuchyň</p>
-                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            <div class="flex flex-col p-6 py-8 rounded-2xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-25xl">🐾</span>
+                <p class="my-2 text-navy font-bold">Přátelé psům</p>
+                <p class="text-text">Váš pes je vítán stejně jako vy. Bez příplatků, bez kompromisů.</p>
             </div>
 
-            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <span class="text-2xl">🍳</span>
-                <p>Vlastní kuchyň</p>
-                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            <div class="flex flex-col p-6 py-8 rounded-2xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-25xl">🚗</span>
+                <p class="my-2 text-navy font-bold">Parkování zdarma</p>
+                <p class="text-text">Auto zaparkujete. Starosti taky.</p>
             </div>
 
-            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <span class="text-2xl">🍳</span>
-                <p>Vlastní kuchyň</p>
-                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            <div class="flex flex-col p-6 py-8 rounded-2xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-25xl">📶</span>
+                <p class="my-2 text-navy font-bold">Rychlé WiFi + Netflix</p>
+                <p class="text-text">Netflix máme. Ale venku je to lepší.</p>
             </div>
 
-            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <span class="text-2xl">🍳</span>
-                <p>Vlastní kuchyň</p>
-                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            <div class="flex flex-col p-6 py-8 rounded-2xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-25xl">💰</span>
+                <p class="my-2 text-navy font-bold">Lepší cena než hotel</p>
+                <p class="text-text">Celý apartmán jen pro vás, za cenu hotelového pokoje pro dva.</p>
             </div>
 
-            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <span class="text-2xl">🍳</span>
-                <p>Vlastní kuchyň</p>
-                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            <div class="flex flex-col p-6 py-8 rounded-2xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-25xl">🏠</span>
+                <p class="my-2 text-navy font-bold">Osobní přístup</p>
+                <p class="text-text">Nejsme řetězec. Dostanete tipy od hostitele, ne lamináčový leták.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="bg-review w-full">
+        <div class="flex flex-col px-14 py-20">
+            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-3">Recenze hostů</p>
+            <h6 class="text-5xl text-white font-serif mb-2">Co říkají hosté.</h6>
+            <p class="flex gap-2 text-[rgba(255,255,255,0.5)]">
+                <span>
+                    Přes 9.8 na Booking.com
+                </span>
+                <span>
+                    ·
+                </span>
+                <span>
+                    Přes 150 recenzí
+                </span>
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
+                <div class="flex flex-col gap-y-4 p-6 border-[1px] border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06);] rounded-2xl">
+                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
+                    <p class="italic text-[15px]">„Perfektní základna na lyže. Ráno jsme byli na sjezdovce za 3 minuty. Večer vyhřátý apartmán a víno."</p>
+                    <div class="flex gap-3">
+                        <div class="w-9 h-9 my-auto rounded-full bg-teal flex items-center justify-center text-white font-bold">K</div>
+                        <div class="flex flex-col">
+                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                            <div class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]">
+                                <span>
+                                    Brno
+                                </span>
+                                <span>
+                                    ·
+                                </span>
+                                <span>
+                                    Booking.com 
+                                </span>
+                                <span>
+                                    ⭐ 9.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-y-4 p-6 border-[1px] border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06);] rounded-2xl">
+                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
+                    <p class="italic text-[15px]">„Perfektní základna na lyže. Ráno jsme byli na sjezdovce za 3 minuty. Večer vyhřátý apartmán a víno."</p>
+                    <div class="flex gap-3">
+                        <div class="w-9 h-9 my-auto rounded-full bg-teal flex items-center justify-center text-white font-bold">K</div>
+                        <div class="flex flex-col">
+                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                            <div class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]">
+                                <span>
+                                    Brno
+                                </span>
+                                <span>
+                                    ·
+                                </span>
+                                <span>
+                                    Booking.com 
+                                </span>
+                                <span>
+                                    ⭐ 9.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-y-4 p-6 border-[1px] border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06);] rounded-2xl">
+                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
+                    <p class="italic text-[15px]">„Perfektní základna na lyže. Ráno jsme byli na sjezdovce za 3 minuty. Večer vyhřátý apartmán a víno."</p>
+                    <div class="flex gap-3">
+                        <div class="w-9 h-9 my-auto rounded-full bg-teal flex items-center justify-center text-white font-bold">K</div>
+                        <div class="flex flex-col">
+                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                            <div class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]">
+                                <span>
+                                    Brno
+                                </span>
+                                <span>
+                                    ·
+                                </span>
+                                <span>
+                                    Booking.com 
+                                </span>
+                                <span>
+                                    ⭐ 9.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     
+    <!-- Socials -->
+    <section class="flex flex-col p-14 bg-purpleGhost">
+        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">Sledujte nás</p>
+        <div class="flex justify-between w-full">
+            <h6 class="text-4xl text-navy font-serif hover:text-purple transition-colors duration-300">
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                    @stratosapartments
+                </a>
+            </h6>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="text-sm text-purple font-semibold hover:text-purpleMid transition-colors duration-300">
+                Otevřít Instagram →
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-3 mt-8">
+            @for ($i = 0; $i < 6; $i++)
+                <div class="h-60 bg-violet-300 rounded-xl hover:scale-105 transition-transform duration-300">
+                    <img src="{{ $apartmentImages[$i] }}" alt="" class="w-full h-full object-cover rounded-xl">
+                </div>
+            @endfor
+        </div>
+    </section>
 
     <!-- CTA -->
-    <section class="px-14 py-16 bg-purplePale rounded-t-lg mt-8">
+    <section class="px-14 py-16 bg-purplePale rounded-t-lg">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
             <div>
                 <h2 class="font-serif text-3xl text-navy">Rezervujte dřív,<br>než to udělá <br> váš soused.</h2>
