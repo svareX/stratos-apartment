@@ -27,7 +27,7 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="bg-cream">
                 {{ $slot }}
             </main>
 

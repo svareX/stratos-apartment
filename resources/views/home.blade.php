@@ -16,6 +16,7 @@
         ];
     @endphp
 
+    <!-- Navbar -->
     <div class="flex items-center justify-between sticky top-0 z-50 bg-white border-b border-border px-14 h-16 shadow-sm">
         <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-full bg-purple flex items-center justify-center text-white">S</div>
@@ -43,7 +44,7 @@
             </a>
             <a href="{{ route('locale.switch', 'de') }}"
                 class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'de' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
-                <span class="inline-block mr-2" aria-hidden>🇺🇸</span>EN
+                <span class="inline-block mr-2" aria-hidden>🇬🇧</span>EN
             </a>
             <a href="{{ route('reservation') }}"
                 class="ml-6 inline-flex items-center px-4 py-2 rounded-lg bg-[var(--teal)] text-white font-bold">Rezervovat</a>
@@ -75,6 +76,7 @@
         </div>
     </section>
 
+    <!-- Reservation -->
     <section class="relative bottom-28 px-14 py-10">
         <div class="max-w-[94vw] min-h-[30vh] mx-auto grid grid-cols-5 gap-6 gap-y-1 bg-white border border-border rounded-2xl pt-4 p-6 shadow-lg">
             <div class="col-span-5 mt-auto mb-2">
@@ -158,9 +160,14 @@
         <h5 class="text-teal font-bold text-xs tracking-[8%] uppercase">Vyberte svůj pobyt</h5>
         <h4 class="font-serif text-3xl text-navy">Dvě destinace, <br> jeden apartmán pro vás</h4>
         <p class="text-smm text-muted">Každé místo ma svou vlastní duši - vyberte tu svou.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
-            <div class="w-full h-full rounded-lg border">
-                <!-- Card image -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
+            <div class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow">
+                <div class="flex flex-col justify-end w-full h-60 bg-violet-300 rounded-t-2xl">
+                    <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
+                        Výhled z apartmánu
+                    </div>
+                </div>
+
                 <div class="flex flex-col py-6 px-5 gap-2">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">S</div>
@@ -168,7 +175,7 @@
                             <div class="flex gap-2">
                                 <div class="font-bold text-xs uppercase text-teal">Ramzová</div>
                                 <div class="font-bold text-xs uppercase text-teal">Jeseníky</div>
-                            </div>                            
+                            </div>
                             <div class="text-lg font-serif">Apartmán Ramzová</div>
                         </div>
                     </div>
@@ -192,8 +199,13 @@
                     </a>
                 </div>
             </div>
-            <div class="w-full h-full rounded-lg border">
-                <!-- Card image -->
+            <div class="w-full h-full rounded-2xl border-[1.5px] border-border shadow-md card-shadow">
+                <div class="flex flex-col justify-end w-full h-60 bg-violet-300 rounded-t-2xl">
+                    <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
+                        Therme Laa - 5 minut
+                    </div>
+                </div>
+
                 <div class="flex flex-col py-6 px-5 gap-2">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">S</div>
@@ -201,7 +213,7 @@
                             <div class="flex gap-2">
                                 <div class="font-bold text-xs uppercase text-teal">Laa ab der Thaya</div>
                                 <div class="font-bold text-xs uppercase text-teal">Dolní rakousy</div>
-                            </div>                            
+                            </div>
                             <div class="text-lg font-serif">Apartmán Laa</div>
                         </div>
                     </div>
@@ -227,6 +239,130 @@
             </div>
         </div>
     </section>
+
+    <!-- Photogallery -->
+    <section class="flex flex-col gap-4 px-14 py-16 rounded-t-lg mt-8">
+        <h5 class="text-2xl font-serif text-navy">Fotogalerie - oba apartmány</h5>
+        <div class="grid grid-cols-4 grid-rows-2 gap-3 h-80 w-full">
+            <div class="flex flex-col justify-end col-span-2 row-span-2 bg-violet-300 rounded-l-3xl">
+                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
+                    Ramzová - výhled
+                </div>
+            </div>
+            <div class="flex flex-col justify-end col-span-1 row-span-1 bg-violet-300">
+                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
+                    Laa - therme
+                </div>
+            </div>
+            <div class="flex flex-col justify-end col-span-1 row-span-1 bg-violet-300 rounded-tr-3xl">
+                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
+                    Kuchyň
+                </div>
+            </div>
+            <div class="flex flex-col justify-end col-span-1 row-span-1 bg-violet-300">
+                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
+                    Lyžování
+                </div>
+            </div>
+            <div class="flex flex-col justify-center col-span-1 row-span-1 bg-violet-300 rounded-br-3xl">
+                <div class="mx-auto font-semibold w-fit text-white">
+                    +24 fotek →
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="flex flex-col gap-5 pt-10 pb-14 bg-gray w-full border-y-[1px] border-border">
+        <p class="mx-auto text-xs text-teal uppercase font-bold tracking-[8%] mb-4">Ideální pro</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 px-16">
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg sm:border-r-[1px]     border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">👫</span>
+                <span class="text-xs text-navy font-semibold">Páry</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg md:border-r-[1px] border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">👩‍🦰🐕</span>
+                <span class="text-xs text-navy font-semibold">Pejskaři</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg sm:border-r-[1px] border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">👨‍👩‍👧</span>
+                <span class="text-xs text-navy font-semibold">Rodiny s dětmi</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg lg:border-r-[1px] border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">💻</span>
+                <span class="text-xs text-navy font-semibold">Práce na dálku</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg sm:border-r-[1px] border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">🏃</span>
+                <span class="text-xs text-navy font-semibold">Turistika a trail</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg md:border-r-[1px] border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">⛷</span>
+                <span class="text-xs text-navy font-semibold">Lyžování</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg sm:border-r-[1px] border-border hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">🧘</span>
+                <span class="text-xs text-navy font-semibold">Welness pobyt</span>
+            </div>
+
+            <div class="flex flex-col justify-center text-center px-3 pt-4 pb-4 rounded-lg hover:bg-purplePale transition-colors duration-300">
+                <span class="text-[28px]">🏢</span>
+                <span class="text-xs text-navy font-semibold">Firemní výjezd</span>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Features2 -->
+    <section class="flex flex-col px-14 py-10">
+        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-4">Proč stratos?</p>
+        <h6 class="text-4xl text-navy font-serif">Jo, postel taky máme. Ale to je ta nejméně zajímavá část.</h6>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-2xl">🍳</span>
+                <p>Vlastní kuchyň</p>
+                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            </div>
+
+            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-2xl">🍳</span>
+                <p>Vlastní kuchyň</p>
+                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            </div>
+
+            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-2xl">🍳</span>
+                <p>Vlastní kuchyň</p>
+                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            </div>
+
+            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-2xl">🍳</span>
+                <p>Vlastní kuchyň</p>
+                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            </div>
+
+            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-2xl">🍳</span>
+                <p>Vlastní kuchyň</p>
+                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            </div>
+
+            <div class="flex flex-col p-5 rounded-xl bg-cream border-[1px] border-border hover:border-purple transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <span class="text-2xl">🍳</span>
+                <p>Vlastní kuchyň</p>
+                <p>Snídaně kdy chcete. Recepce vás budit nebude, protože žádná není.</p>
+            </div>
+        </div>
+    </section>
+    
 
     <!-- CTA -->
     <section class="px-14 py-16 bg-purplePale rounded-t-lg mt-8">
