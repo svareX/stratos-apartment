@@ -32,22 +32,23 @@
                 <div class="font-bold text-white text-sm my-auto">Laa an der Thaya</div>
             </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
             @php $current = app()->getLocale(); @endphp
             <a href="{{ route('locale.switch', 'cs') }}"
-                class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'cs' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
+                class="p-1 px-3 rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-purple {{ $current === 'cs' ? 'bg-[var(--purplePale)] border-[1px] border-border' : 'hover:bg-[var(--purplePale)]' }}">
                 <span class="inline-block mr-2" aria-hidden>🇨🇿</span>CZ
             </a>
-            <a href="{{ route('locale.switch', 'en') }}"
-                class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'en' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
+            <a href="{{ route('locale.switch', 'de') }}"
+                class="p-1 px-3 rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-purple {{ $current === 'de' ? 'bg-[var(--purplePale)] border-[1px] border-border' : 'hover:bg-[var(--purplePale)]' }}">
                 <span class="inline-block mr-2" aria-hidden>🇩🇪</span>DE
             </a>
-            <a href="{{ route('locale.switch', 'de') }}"
-                class="p-1 px-3 border border-1 border-border rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-[var(--purple)] {{ $current === 'de' ? 'bg-[var(--purplePale)]' : 'hover:bg-[var(--purplePale)]' }}">
+            <a href="{{ route('locale.switch', 'en') }}"
+                class="p-1 px-3 rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-purple {{ $current === 'en' ? 'bg-[var(--purplePale)] border-[1px] border-border' : 'hover:bg-[var(--purplePale)]' }}">
                 <span class="inline-block mr-2" aria-hidden>🇬🇧</span>EN
             </a>
-            <a href="{{ route('reservation') }}"
-                class="ml-6 inline-flex items-center px-4 py-2 rounded-lg bg-[var(--teal)] text-white font-bold">Rezervovat</a>
+            <a href="#" class="bg-teal text-white teal-shadow px-5 py-2 rounded-lg font-bold text-sm duration-200 transition-all hover:bg-tealD">
+                Rezervovat
+            </a>
         </div>
     </div>
 
@@ -64,15 +65,15 @@
                             <h1 class="font-serif text-5xl md:text-6xl leading-tight mb-3">Luxusní apartmán <em class="text-[var(--teal)]">u až</em></h1>
                             <p class="max-w-xl text-white/80 mb-6">Komfortní ubytování s výhledem, sauna a soukromé parkování.</p>
                             <div class="flex gap-3">
-                                <a href="#" class="btn-pri inline-flex items-center px-6 py-3 rounded-xl bg-[var(--teal)] text-white font-bold">Rezervovat</a>
-                                <a href="#" class="btn-gho inline-flex items-center px-5 py-3 rounded-xl border border-white/30 text-white">Najít ideální pobyt</a>
+                                <a href="#" class="btn-teal px-6 py-3 rounded-xl font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">Rezervovat →</a>
+                                <a href="#" class="btn-gho inline-flex items-center px-5 py-3 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">Najít ideální pobyt</a>
                             </div>
                         </div>
                     </div>
                 </template>
             </div>
-            <div class="c-arrow prev absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 text-white w-11 h-11 rounded-full flex items-center justify-center cursor-pointer" @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
-            <div class="c-arrow next absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 text-white w-11 h-11 rounded-full flex items-center justify-center cursor-pointer" @click="idx = (idx + 1) % slides.length">›</div>
+            <div class="c-arrow prev absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center cursor-pointer" @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
+            <div class="c-arrow next absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center cursor-pointer" @click="idx = (idx + 1) % slides.length">›</div>
         </div>
     </section>
 
@@ -112,29 +113,6 @@
         </div>
     </section>
 
-    <!-- Gallery -->
-    {{-- <section class="px-14">
-        <div class="gallery-inner grid grid-cols-[2fr_1fr_1fr] grid-rows-[200px_200px] gap-2 rounded-b-2xl overflow-hidden">
-            <div class="gi col-span-1 row-span-2 bg-gray-200">
-                <x-flux.skeleton />
-                <img src="{{ $apartmentImages[0] }}" alt="" class="w-full h-full object-cover">
-                <div class="gi-lbl">Interiér</div>
-            </div>
-            <div class="gi bg-gray-300">
-                <img src="{{ $apartmentImages[1] }}" alt="" class="w-full h-full object-cover">
-            </div>
-            <div class="gi bg-gray-300">
-                <img src="{{ $apartmentImages[2] }}" alt="" class="w-full h-full object-cover">
-            </div>
-            <div class="gi bg-gray-300">
-                <img src="{{ $apartmentImages[3] }}" alt="" class="w-full h-full object-cover">
-            </div>
-            <div class="gi bg-[var(--purple)] text-white flex items-center justify-center">
-                <div class="gi-more">View Gallery</div>
-            </div>
-        </div>
-    </section> --}}
-
     <!-- Marquee -->
     <section class="relative bottom-20 bg-purplePale border-t border-b border-border overflow-hidden py-3 mt-6 rounded-md">
         <style>
@@ -161,11 +139,31 @@
         <h4 class="font-serif text-3xl text-navy">Dvě destinace, <br> jeden apartmán pro vás</h4>
         <p class="text-smm text-muted">Každé místo ma svou vlastní duši - vyberte tu svou.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
-            <div class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow">
-                <div class="flex flex-col justify-end w-full h-60 bg-violet-300 rounded-t-2xl">
-                    <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
-                        Výhled z apartmánu
+            <div class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <div x-data="{ idx: 0, slides: {{ Js::from(array_slice($apartmentImages, 3, 5)) }} }" class="relative flex flex-col justify-end w-full h-60 rounded-t-2xl overflow-hidden rounded-2xl">
+                    <div class="apt-slides flex h-full transition-transform duration-700" :style="`transform:translateX(-${idx * 100}%);`">
+                        <template x-for="(s, i) in slides" :key="i">
+                            <div class="apt-slide min-w-full h-full relative">
+                                <img :src="s" alt="Výhled z apartmánu" class="w-full h-full object-cover" />
+                                <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">Výhled z apartmánu</div>
+                            </div>
+                        </template>
                     </div>
+                    <div class="absolute bottom-3 right-4 flex gap-1 z-20">
+                        <template x-for="i in slides.length" :key="i">
+                            <div
+                                :class="[
+                                    'transition-all duration-300 cursor-pointer',
+                                    idx === i-1
+                                        ? 'bg-teal w-6 h-2 rounded-full'
+                                        : 'bg-teal/60 w-2 h-2 rounded-full opacity-60'
+                                ]"
+                                @click="idx = i-1"
+                            ></div>
+                        </template>
+                    </div>
+                    <div class="c-arrow prev absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base" @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
+                    <div class="c-arrow next absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base" @click="idx = (idx + 1) % slides.length">›</div>
                 </div>
 
                 <div class="flex flex-col py-6 px-5 gap-2">
@@ -194,16 +192,36 @@
                             Psi vítani
                         </span>
                     </div>
-                    <a href="{{ route('reservation') }}" class="ml-2 inline-flex items-center px-4 py-2 rounded-xl bg-teal text-white font-bold text-sm w-fit">
+                    <a href="#" class="btn-teal px-4 py-1.5 ml-2 w-fit rounded-xl font-bold duration-200 transition-all hover:translate-x-1 teal-shadow text-sm">
                         Prozkoumat apartmán
                     </a>
                 </div>
             </div>
-            <div class="w-full h-full rounded-2xl border-[1.5px] border-border shadow-md card-shadow">
-                <div class="flex flex-col justify-end w-full h-60 bg-violet-300 rounded-t-2xl">
-                    <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
-                        Therme Laa - 5 minut
+            <div class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
+                <div x-data="{ idx: 0, slides: {{ Js::from(array_slice($apartmentImages, 0, 3)) }} }" class="relative flex flex-col justify-end w-full h-60 rounded-t-2xl overflow-hidden rounded-2xl">
+                    <div class="apt-slides flex h-full transition-transform duration-700" :style="`transform:translateX(-${idx * 100}%);`">
+                        <template x-for="(s, i) in slides" :key="i">
+                            <div class="apt-slide min-w-full h-full relative">
+                                <img :src="s" alt="Výhled z apartmánu" class="w-full h-full object-cover" />
+                                <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">Therme Laa - 5 minut</div>
+                            </div>
+                        </template>
                     </div>
+                    <div class="absolute bottom-3 right-4 flex gap-1 z-20">
+                        <template x-for="i in slides.length" :key="i">
+                            <div
+                                :class="[
+                                    'transition-all duration-300 cursor-pointer',
+                                    idx === i-1
+                                        ? 'bg-teal w-6 h-2 rounded-full'
+                                        : 'bg-teal/60 w-2 h-2 rounded-full opacity-60'
+                                ]"
+                                @click="idx = i-1"
+                            ></div>
+                        </template>
+                    </div>
+                    <div class="c-arrow prev absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base" @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
+                    <div class="c-arrow next absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base" @click="idx = (idx + 1) % slides.length">›</div>
                 </div>
 
                 <div class="flex flex-col py-6 px-5 gap-2">
@@ -232,7 +250,7 @@
                             Psi vítani
                         </span>
                     </div>
-                    <a href="{{ route('reservation') }}" class="ml-2 inline-flex items-center px-4 py-2 rounded-xl bg-teal text-white font-bold text-sm w-fit">
+                    <a href="#" class="btn-teal px-4 py-1.5 ml-2 w-fit rounded-xl font-bold duration-200 transition-all hover:translate-x-1 teal-shadow text-sm">
                         Prozkoumat apartmán
                     </a>
                 </div>
@@ -243,32 +261,45 @@
     <!-- Photogallery -->
     <section class="flex flex-col gap-4 px-14 py-16 rounded-t-lg">
         <h5 class="text-2xl font-serif text-navy">Fotogalerie - oba apartmány</h5>
-        <div class="grid grid-cols-4 grid-rows-2 gap-3 h-80 w-full">
-            <div class="flex flex-col justify-end col-span-2 row-span-2 bg-violet-300 rounded-l-3xl">
-                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
-                    Ramzová - výhled
-                </div>
+        <div x-data="{ lightbox: false, lightboxIdx: 0, images: {{ Js::from($apartmentImages) }} }" class="grid grid-cols-4 grid-rows-2 gap-3 h-80 w-full">
+            <div class="flex flex-col justify-end col-span-2 row-span-2 rounded-l-3xl cursor-pointer group overflow-hidden relative" @click="lightbox = true; lightboxIdx = 0">
+                <img :src="images[0]" alt="Ramzová - výhled" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">Ramzová - výhled</div>
             </div>
-            <div class="flex flex-col justify-end col-span-1 row-span-1 bg-violet-300">
-                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
-                    Laa - therme
-                </div>
+            <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative" @click="lightbox = true; lightboxIdx = 1">
+                <img :src="images[1]" alt="Laa - therme" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">Laa - therme</div>
             </div>
-            <div class="flex flex-col justify-end col-span-1 row-span-1 bg-violet-300 rounded-tr-3xl">
-                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
-                    Kuchyň
-                </div>
+            <div class="flex flex-col justify-end col-span-1 row-span-1 rounded-tr-3xl cursor-pointer group overflow-hidden relative" @click="lightbox = true; lightboxIdx = 2">
+                <img :src="images[2]" alt="Kuchyň" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">Kuchyň</div>
             </div>
-            <div class="flex flex-col justify-end col-span-1 row-span-1 bg-violet-300">
-                <div class="ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.3)] border-[1px] border-[rgba(255,255,255,0.15)]" style="backdrop-filter: blur(4px);">
-                    Lyžování
-                </div>
+            <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative" @click="lightbox = true; lightboxIdx = 3">
+                <img :src="images[3]" alt="Lyžování" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">Lyžování</div>
             </div>
-            <div class="flex flex-col justify-center col-span-1 row-span-1 bg-violet-300 rounded-br-3xl">
-                <div class="mx-auto font-semibold w-fit text-white">
-                    +24 fotek →
-                </div>
+            <div class="flex flex-col justify-center col-span-1 row-span-1 rounded-br-3xl cursor-pointer group overflow-hidden relative" @click="lightbox = true; lightboxIdx = 4">
+                <img :src="images[4]" alt="Další fotky" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">+24 fotek →</div>
             </div>
+
+            <!-- Lightbox Modal -->
+            <template x-if="lightbox">
+                <div 
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80" 
+                    @click.self="lightbox = false"
+                    @keydown.window.escape="lightbox = false"
+                    @keydown.window.arrow-right="lightboxIdx = (lightboxIdx + 1) % images.length"
+                    @keydown.window.arrow-left="lightboxIdx = (lightboxIdx - 1 + images.length) % images.length"
+                    tabindex="0"
+                    x-init="$el.focus()"
+                >
+                    <button class="absolute top-6 right-8 text-white text-3xl font-bold" @click="lightbox = false">&times;</button>
+                    <button class="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl font-bold" @click="lightboxIdx = (lightboxIdx - 1 + images.length) % images.length">&#8592;</button>
+                    <img :src="images[lightboxIdx]" class="max-h-[80vh] max-w-[90vw] rounded-xl shadow-2xl border-4 border-white" />
+                    <button class="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl font-bold" @click="lightboxIdx = (lightboxIdx + 1) % images.length">&#8594;</button>
+                </div>
+            </template>
         </div>
     </section>
 
@@ -484,14 +515,14 @@
 
     <!-- CTA -->
     <section class="px-14 py-16 bg-purplePale rounded-t-lg">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="mx-auto flex items-center justify-between">
             <div>
-                <h2 class="font-serif text-3xl text-navy">Rezervujte dřív,<br>než to udělá <br> váš soused.</h2>
+                <h2 class="font-serif text-4xl text-navy font-bold">Rezervujte dřív,<br>než to udělá  váš soused.</h2>
                 <p class="text-muted mt-2">Přímo u nás – bez provize,<br> s osobním přístupem hostitele.</p>
             </div>
             <div class="cta-btns flex gap-4">
-                <a href="#" class="btn-teal px-6 py-3 rounded-lg">Rezervovat →</a>
-                <a href="#" class="btn-outline-purple px-6 py-3 rounded-lg">Napsat hostiteli</a>
+                <a href="#" class="btn-teal px-10 py-3 rounded-xl font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">Rezervovat →</a>
+                <a href="#" class="btn-outline-purple px-6 py-3 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1">Najít ideální pobyt</a>
             </div>
         </div>
     </section>

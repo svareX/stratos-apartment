@@ -250,3 +250,7 @@ body { font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'He
 .bg-review {
     background: linear-gradient(135deg,var(--navy) 0%,#2D1B6B 100%);
 }
+
+.teal-shadow {
+    box-shadow: 0 6px 24px rgba(0,201,167,0.35);
+}
