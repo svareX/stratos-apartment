@@ -1,10 +1,10 @@
-<footer class="bg-[#1A0A3B] text-white">
+<footer class="bg-navy text-white">
     <div class="max-w-7xl mx-auto px-8 md:px-12 pt-14 pb-8">
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 gap-y-6 md:gap-8 border-b border-white/10 pb-6 md:pb-10 mb-3 md:mb-6">
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center gap-3 mb-4">
                     <div
-                        class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">
+                        class="w-9 h-9 rounded-full bg-purple flex items-center justify-center text-white font-bold">
                         S</div>
                     <div class="font-bold md:text-lg">Apartmán Stratos</div>
                 </div>
