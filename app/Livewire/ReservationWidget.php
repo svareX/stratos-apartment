@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 
 class ReservationWidget extends Component
 {
@@ -22,9 +23,14 @@ class ReservationWidget extends Component
         $now = Carbon::now();
         $this->displayMonth = $now->month;
         $this->displayYear = $now->year;
-        
         $this->dateStart = $now->format('Y-m-d');
         $this->dateEnd = $now->addDays(2)->format('Y-m-d');
+    }
+
+    public function getNightsProperty()
+    {
+        if (!$this->dateStart || !$this->dateEnd) return 0;
+        return Carbon::parse($this->dateStart)->diffInDays(Carbon::parse($this->dateEnd));
     }
 
     public function prevMonth()
@@ -59,24 +65,19 @@ class ReservationWidget extends Component
     private function generateCalendar()
     {
         $startOfMonth = Carbon::create($this->displayYear, $this->displayMonth, 1)->startOfMonth();
-        $endOfMonth = $startOfMonth->copy()->endOfMonth();
-        
         $calendar = [];
-
         $startOfCalendar = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
-        $endOfCalendar = $endOfMonth->copy()->endOfWeek(Carbon::SUNDAY);
+        $endOfCalendar = $startOfMonth->copy()->endOfMonth()->endOfWeek(Carbon::SUNDAY);
 
         $currentDay = $startOfCalendar->copy();
-
         while ($currentDay->lte($endOfCalendar)) {
             $calendar[] = [
                 'date' => $currentDay->format('Y-m-d'),
                 'day' => $currentDay->day,
-                'isCurrentMonth' => $currentDay->month === $this->displayMonth,
+                'isCurrentMonth' => $currentDay->month === (int)$this->displayMonth,
             ];
             $currentDay->addDay();
         }
-
         return $calendar;
     }
 
