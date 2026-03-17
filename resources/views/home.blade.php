@@ -53,7 +53,7 @@
     </div>
 
     <!-- Hero -->
-    <section class="relative h-[90vh] min-h-[520px] overflow-hidden">
+    <section class="relative h-[94vh] min-h-[520px] overflow-hidden">
         <div x-data="{ idx: 0, slides: {{ Js::from($heroImages) }} }" x-init="setInterval(() => idx = (idx + 1) % slides.length, 5500)" class="h-full relative">
             
             <div class="apt-slides flex h-full transition-transform duration-700" :style="`transform:translateX(-${idx * 100}%);`">
@@ -62,7 +62,7 @@
                         <div class="sc-r1 absolute inset-0 bg-cover bg-center" :style="`background-image: url('${s}')`"></div>
                         <div class="apt-slide-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         
-                        <div class="apt-slide-content absolute bottom-16 left-0 sm:left-10 md:left-12 w-full p-8 md:p-12 z-10 text-white">
+                        <div class="apt-slide-content absolute bottom-28 sm:bottom-20 md:bottom-16 left-0 sm:left-10 md:left-12 w-full p-8 md:p-12 z-10 text-white">
                             <div class="max-w-7xl mx-auto">
                                 <div class="slide-label">Novinka</div>
                                 <h1 class="font-serif text-5xl md:text-6xl leading-tight mb-3">Dobrodružství ve dne, <em class="text-teal">víno v noci.</em></h1>
@@ -92,43 +92,10 @@
     </section>
 
     <!-- Reservation -->
-    <section class="relative bottom-28 px-8 md:px-14 py-10">
-        <div class="max-w-[94vw] min-h-[30vh] mx-auto grid grid-cols-5 gap-6 gap-y-1 bg-white border border-border rounded-2xl pt-4 p-6 shadow-lg">
-            <div class="col-span-5 mt-auto mb-2">
-                <span class="text-purple text-xs font-bold uppercase tracking-[8%] inline-block">Zkontroloval dostupnost</span>
-            </div>
-            <div class="col-span-5 lg:col-span-1">
-                <div class="w-full h-full bg-blue-600 min-h-48"></div>
-            </div>
-            <div class="col-span-5 lg:col-span-4">
-                <div class="grid grid-cols-4 gap-2 gap-y-4 text-black">
-                    <div class="col-span-2 md:col-span-1">
-                        Lokalita
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        Příjezd
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        Odjezd
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        Hosté
-                    </div>
-                    <div class="col-span-4">
-                        <a href="#" class="w-full inline-flex justify-center px-4 py-2 rounded-xl bg-teal teal-shadow text-white font-bold duration-300 transition-all hover:bg-tealD">
-                            Zkontroloval dostupnost
-                        </a>
-                    </div>
-                    <div class="col-span-4 flex justify-start gap-4">
-                        <span class="text-teal font-bold text-xs border-l-1 border-0 border-l-[3px] border-teal px-2 h-8 md:pt-2">⚡ Pouze 3 volné víkendy v únoru - termíny se rychle plní!</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <livewire:reservation-widget />
 
     <!-- Marquee -->
-    <section class="relative bottom-8 sm:bottom-12 md:bottom-16 bg-purplePale border-t border-b border-border overflow-hidden py-3 mt-6 rounded-md">
+    <section class="bg-purplePale border-t border-b border-border overflow-hidden py-3 mb-10 rounded-md">
         <style>
             @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         </style>
@@ -273,7 +240,7 @@
     </section>
 
     <!-- Photogallery -->
-    <section class="flex flex-col gap-4 p-8 md:px-14 md:py-16 rounded-t-lg">
+    <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg">
         <h5 class="text-2xl font-serif text-navy">Fotogalerie - oba apartmány</h5>
         <div x-data="{ lightbox: false, lightboxIdx: 0, images: {{ Js::from($apartmentImages) }} }" class="w-full">
             <div class="block md:hidden h-64 w-full rounded-3xl cursor-pointer group overflow-hidden relative" @click="lightbox = true; lightboxIdx = 0">
@@ -374,7 +341,7 @@
     </section>
 
     <!-- Features2 -->
-    <section class="flex flex-col px-8 md:px-14 py-10">
+    <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">Proč stratos?</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif">Jo, postel taky máme. Ale to je ta nejméně zajímavá část.</h6>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 sm:mt-9 md:mt-12 bg-white">
@@ -418,7 +385,7 @@
 
     <!-- Reviews -->
     <section class="bg-review w-full">
-        <div class="flex flex-col px-8 md:px-14 py-12 md:py-20">
+        <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">Recenze hostů</p>
             <h6 class="text-4xl md:text-5xl text-white font-serif mb-2">Co říkají hosté.</h6>
             <p class="flex gap-2 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
@@ -513,7 +480,7 @@
     </section>
 
     <!-- Socials -->
-    <section class="flex flex-col px-8 py-10 md:p-14 bg-purpleGhost">
+    <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-2">Sledujte nás</p>
         <div class="flex flex-col md:flex-row gap-y-2 justify-between w-full">
             <h6 class="text-3xl md:text-4xl text-navy font-serif hover:text-purple transition-colors duration-300">
@@ -543,7 +510,7 @@
                 <p class="text-muted mt-2">Přímo u nás – bez provize,<br> s osobním přístupem hostitele.</p>
             </div>
             <div class="cta-btns flex gap-4">
-                <a href="#" class="btn-teal px-5 sm:px-7 lg:px-10 py-1 sm:py-2 md:py-3 rounded-xl text-sm sm:text-base font-normal sm:font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">Rezervovat</a>
+                <a href="#" class="btn-teal px-5 sm:px-7 lg:px-10 pt-2 pb-1 sm:py-2 md:py-3 rounded-xl text-sm sm:text-base font-normal sm:font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">Rezervovat</a>
                 <a href="#" class="btn-outline-purple px-3 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 rounded-xl font-normal sm:font-semibold duration-200 transition-all hover:-translate-y-1">Najít pobyt</a>
             </div>
         </div>
