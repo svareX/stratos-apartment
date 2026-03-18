@@ -29,7 +29,7 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
 
     Route::get('/', HomeController::class)->name('home');
 
-    Route::get('/apartments/{apartment}', ApartmentDetailController::class)->name('apartments.show');
+    Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)->name('apartments.show');
 
     Route::get('/about', function () {
         return view('about');

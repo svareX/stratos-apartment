@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Apartments;
 use App\Filament\Resources\Apartments\Pages\CreateApartment;
 use App\Filament\Resources\Apartments\Pages\EditApartment;
 use App\Filament\Resources\Apartments\Pages\ListApartments;
-use App\Filament\Resources\Apartments\Schemas\ApartmentForm;
+use App\Filament\Resources\Apartments\Schemas\ApartmentFormV2;
 use App\Filament\Resources\Apartments\Tables\ApartmentsTable;
 use App\Models\Apartment;
 use BackedEnum;
@@ -34,7 +34,7 @@ class ApartmentResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return ApartmentForm::configure($schema);
+        return ApartmentFormV2::configure($schema);
     }
 
     public static function table(Table $table): Table

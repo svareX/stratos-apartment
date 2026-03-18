@@ -8,14 +8,16 @@ enum ReservationStatus: string
     case Confirmed = 'confirmed';
     case Cancelled = 'cancelled';
     case Completed = 'completed';
+    case Refunded = 'refunded';
 
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Confirmed => 'Confirmed',
-            self::Cancelled => 'Cancelled',
-            self::Completed => 'Completed',
+            self::Pending => __('Pending'),
+            self::Confirmed => __('Confirmed'),
+            self::Cancelled => __('Cancelled'),
+            self::Completed => __('Completed'),
+            self::Refunded => __('Refunded'),
         };
     }
 
@@ -26,6 +28,7 @@ enum ReservationStatus: string
             self::Confirmed->value => self::Confirmed->label(),
             self::Cancelled->value => self::Cancelled->label(),
             self::Completed->value => self::Completed->label(),
+            self::Refunded->value => self::Refunded->label(),
         ];
     }
 }

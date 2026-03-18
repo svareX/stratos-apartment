@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Apartment extends Model
 {
@@ -15,14 +16,16 @@ class Apartment extends Model
         'address',
         'capacity',
         'amenities',
-        'photos',
+        'slug',
+        'type',
+        'tags',
         'base_price',
         'active',
     ];
 
     protected $casts = [
         'amenities' => 'array',
-        'photos' => 'array',
+        'tags' => 'array',
         'active' => 'boolean',
         'base_price' => 'decimal:2',
     ];
@@ -30,5 +33,34 @@ class Apartment extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
+    public function photosMain()
+    {
+        return $this->hasMany(Photo::class)->where('is_main', true)->orderBy('position');
+    }
+
+    public function photosOther()
+    {
+        return $this->hasMany(Photo::class)->where('is_main', false)->orderBy('position');
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($apartment) {
+            if (empty($apartment->slug) && !empty($apartment->name)) {
+                $apartment->slug = Str::slug($apartment->name);
+            }
+        });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
