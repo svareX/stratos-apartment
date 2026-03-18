@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\ApartmentDetailController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 // Password form routes (not protected by the middleware)
 Route::get('/password', function () {
@@ -22,9 +26,10 @@ Route::post('/password', function (Request $request) {
 
 // The rest of the site's web routes are protected by the website password middleware
 Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(function () {
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
+
+    Route::get('/', HomeController::class)->name('home');
+
+    Route::get('/apartments/{apartment}', ApartmentDetailController::class)->name('apartments.show');
 
     Route::get('/about', function () {
         return view('about');

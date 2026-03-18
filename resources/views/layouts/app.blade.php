@@ -13,26 +13,19 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased font-sans text-white">
-        <x-banner />
+    <body class="font-sans antialiased">
 
-        <x-sidebar-nav />
+        <div class="min-h-screen">
+            <!-- Navigation -->
+            @include('layouts.navigation')
 
-        <div class="min-h-screen bg-primary px-[40px] pt-[40px] pb-[64px]">
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
+            <!-- Main Page Content -->
+            <main class="bg-cream">
                 {{ $slot }}
             </main>
+
+            <!-- Footer -->
+            @include('layouts.footer')
         </div>
 
         @stack('modals')

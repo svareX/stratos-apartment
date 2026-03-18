@@ -12,24 +12,27 @@
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
         @if ($step === 1)
-            <div class="flex flex-col lg:flex-row gap-12">
-                <div class="flex-1">
-                    <div class="flex justify-between items-center mb-6">
-                        <button wire:click="prevMonth" class="p-2 hover:bg-gray-100 rounded-full text-primary">&larr;</button>
-                        <h3 class="text-2xl font-bold text-primary">{{ \Carbon\Carbon::create($displayYear, $displayMonth, 1)->translatedFormat('F Y') }}</h3>
-                        <button wire:click="nextMonth" class="p-2 hover:bg-gray-100 rounded-full text-primary">&rarr;</button>
+            <div class="relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                <div class="col-span-2 bg-white p-6 rounded-lg border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <button wire:click="prevMonth" class="p-2 hover:bg-gray-100 rounded-full text-primary">&larr;</button>
+                            <h3 class="text-2xl font-bold text-primary">{{ \Carbon\Carbon::create($displayYear, $displayMonth, 1)->translatedFormat('F Y') }}</h3>
+                            <button wire:click="nextMonth" class="p-2 hover:bg-gray-100 rounded-full text-primary">&rarr;</button>
+                        </div>
+                        <div class="text-sm text-muted">Tip: pick start and end dates</div>
                     </div>
 
-                    <div class="calendar w-full">
+                    <div class="calendar w-full bg-white">
                         <div class="calendar-weekdays grid grid-cols-7 mb-2">
                             @foreach([__('Mo'), __('Tu'), __('We'), __('Th'), __('Fr'), __('Sa'), __('Su')] as $dayName)
                                 <div class="text-center text-xs font-bold text-gray-400 uppercase py-2">{{ $dayName }}</div>
                             @endforeach
                         </div>
-                        <div class="grid grid-cols-7 gap-1">
+                        <div class="grid grid-cols-7 gap-2">
                             @foreach($calendarCells as $date)
                                 @if(!$date)
-                                    <div class="h-16"></div>
+                                    <div class="h-14"></div>
                                 @else
                                     @php
                                         $isBooked = in_array($date, $bookedDates);
@@ -40,13 +43,13 @@
                                     <button 
                                         wire:click="selectDate('{{ $date }}')"
                                         @if($isBooked) disabled @endif
-                                        class="h-16 relative flex flex-col items-center justify-center rounded-md transition-all
-                                        {{ $isBooked ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'hover:bg-blue-50 text-primary' }}
-                                        {{ $isStart || $isEnd ? 'bg-primary text-white hover:bg-primary shadow-md z-10' : '' }}
-                                        {{ $isInRange ? 'bg-blue-100' : '' }}
+                                        class="h-14 relative flex flex-col items-center justify-center rounded-md transition-all text-sm
+                                        {{ $isBooked ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'hover:bg-[var(--purplePale)] text-primary' }}
+                                        {{ $isStart || $isEnd ? 'bg-[var(--purple)] text-white shadow-md z-10' : '' }}
+                                        {{ $isInRange ? 'bg-[var(--purplePale)] text-[var(--purple)]' : '' }}
                                         "
                                     >
-                                        <span class="text-sm font-bold">{{ \Carbon\Carbon::parse($date)->day }}</span>
+                                        <span class="font-bold">{{ \Carbon\Carbon::parse($date)->day }}</span>
                                         @if($isBooked) <span class="text-[10px] uppercase font-bold opacity-50">{{ __('Booked') }}</span> @endif
                                     </button>
                                 @endif
@@ -56,30 +59,32 @@
                     @error('dates') <span class="text-red-500 text-sm mt-2 block">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="w-full lg:w-80 bg-gray-50 p-6 rounded-lg h-fit">
-                    <h4 class="font-bold text-primary mb-4 uppercase tracking-wider text-sm">{{ __('Stay summary') }}</h4>
-                    <div class="space-y-3 border-b border-gray-200 pb-4 mb-4">
-                        <div class="flex justify-between text-sm text-primary">
-                            <span class="text-gray-500">{{ __('Accommodation:') }}</span>
-                            <span class="font-bold">{{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</span>
-                        </div>
-                        
-                        @if($this->cleaningApplies())
-                            <div class="flex justify-between text-sm text-primary">
-                                <span class="text-gray-500">{{ __('Cleaning:') }}</span>
-                                <span class="font-bold">+ {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                <div class="col-span-1 relative">
+                    <div class="absolute -top-12 right-0 w-full">
+                        <div class="bg-white p-6 rounded-lg shadow-xl border border-gray-100">
+                            <h4 class="font-bold text-[13px] mb-4 uppercase tracking-wider text-sm">{{ __('Stay summary') }}</h4>
+                            <div class="space-y-3 border-b border-gray-200 pb-4 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">{{ __('Accommodation:') }}</span>
+                                    <span class="font-bold">{{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                </div>
+                                @if($this->cleaningApplies())
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-500">{{ __('Cleaning:') }}</span>
+                                        <span class="font-bold">+ {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    </div>
+                                @endif
+                                <div class="flex justify-between text-sm pt-2">
+                                    <span class="text-gray-500">{{ __('Number of nights:') }}</span>
+                                    <span class="font-bold">{{ $this->nights() }}</span>
+                                </div>
                             </div>
-                        @endif
-
-                        <div class="flex justify-between text-sm text-primary pt-2">
-                            <span class="text-gray-500">{{ __('Number of nights:') }}</span>
-                            <span class="font-bold">{{ $this->nights() }}</span>
+                            <div class="text-2xl font-bold mb-4">
+                                {{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}
+                            </div>
+                            <button wire:click="nextStep" class="w-full py-3 bg-[var(--teal)] text-white rounded-lg font-bold hover:opacity-90 transition-opacity">{{ __('Continue') }}</button>
                         </div>
                     </div>
-                    <div class="text-2xl font-bold text-primary mb-6">
-                        {{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}
-                    </div>
-                    <button wire:click="nextStep" class="w-full py-3 bg-primary text-white rounded-lg font-bold hover:opacity-90 transition-opacity">{{ __('Continue') }}</button>
                 </div>
             </div>
 
