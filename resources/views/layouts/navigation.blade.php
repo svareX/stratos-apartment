@@ -10,7 +10,7 @@
         @endphp
         @if (Route::currentRouteName() === 'home')
             @forelse ($apartments as $apartment )
-                <a class="flex justify-center gap-1 bg-white hover:bg-purple text-purple hover:text-white duration-300 transition-all border-[1px] border-border rounded-lg pl-2 pr-3 hover:cursor-pointer"  href="{{ route('apartments.show', $apartment) }}">
+                <a class="flex justify-center gap-1 bg-white hover:bg-purple text-purple hover:text-white duration-300 transition-all border-[1px] border-border rounded-lg pl-2 pr-3 hover:cursor-pointer"  href="{{ route('apartments.show', $apartment->slug) }}">
                     <div class="w-9 h-9 rounded-full flex items-center justify-center">
                         {{-- @if ($apartment->type === \App\Enums\ApartmentType::Mountains)
                            <svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M8 36 L18 16 L24 26 L30 16 L40 36" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
