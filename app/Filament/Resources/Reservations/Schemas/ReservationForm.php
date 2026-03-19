@@ -2,6 +2,11 @@
 
 namespace App\Filament\Resources\Reservations\Schemas;
 
+use App\Enums\BookingSource;
+use App\Enums\ReservationStatus;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class ReservationForm
@@ -10,33 +15,52 @@ class ReservationForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\Select::make('apartment_id')
+                Select::make('apartment_id')
                     ->label(__('Apartment'))
                     ->relationship('apartment', 'name')
+                    ->preload()
+                    ->searchable()
                     ->required(),
-                \Filament\Forms\Components\Select::make('user_id')
+
+                Select::make('user_id')
                     ->label(__('User'))
                     ->relationship('user', 'email')
                     ->preload()
                     ->searchable()
                     ->nullable(),
-                \Filament\Forms\Components\DatePicker::make('check_in')->label(__('Check in'))->required(),
-                \Filament\Forms\Components\DatePicker::make('check_out')->label(__('Check out'))->required(),
-                \Filament\Forms\Components\TextInput::make('price')->label(__('Price'))->numeric()->required(),
-                \Filament\Forms\Components\Select::make('status')
+
+                DatePicker::make('check_in')
+                    ->label(__('Check in'))
+                    ->required(),
+
+                DatePicker::make('check_out')
+                    ->label(__('Check out'))
+                    ->required(),
+
+                TextInput::make('price')
+                    ->label(__('Price'))
+                    ->placeholder(__('Enter total price for the reservation'))
+                    ->numeric()
+                    ->suffix(__('CZK'))
+                    ->required(),
+
+                Select::make('status')
                     ->label(__('Status'))
-                    ->options(\App\Enums\ReservationStatus::options())
-                    ->default(\App\Enums\ReservationStatus::Pending->value)
+                    ->options(ReservationStatus::options())
+                    ->default(ReservationStatus::Pending->value)
                     ->searchable()
                     ->required(),
-                \Filament\Forms\Components\Select::make('booking_source')
+
+                Select::make('booking_source')
                     ->label(__('Booking Source'))
-                    ->options(\App\Enums\BookingSource::options())
-                    ->default(\App\Enums\BookingSource::Local->value)
+                    ->options(BookingSource::options())
+                    ->default(BookingSource::Local->value)
                     ->required()
                     ->reactive(),
-                \Filament\Forms\Components\TextInput::make('external_booking_id')
+
+                TextInput::make('external_booking_id')
                     ->label(__('External booking id'))
+                    ->placeholder(__('Enter booking id from external system'))
                     ->nullable()
                     ->visible(fn ($get) => $get('booking_source') === \App\Enums\BookingSource::External->value),
             ]);

@@ -1,8 +1,11 @@
 name: Deploy to Droplet
 
 on:
-  push:
+  workflow_run:
+    workflows: ["tests"]
     branches: [main]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -10,18 +13,21 @@ permissions:
 
 jobs:
   build-and-push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     needs: [ci]
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Musíme nainstalovat PHP a Composer závislosti (aby Vite viděl Filament soubory)
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, intl
           coverage: none
+
+      - name: Add Flux Credentials
+        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
       - name: Install Composer dependencies
         run: composer install --no-ansi --no-interaction --no-progress --prefer-dist

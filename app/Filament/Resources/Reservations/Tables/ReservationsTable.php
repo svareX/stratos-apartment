@@ -2,13 +2,19 @@
 
 namespace App\Filament\Resources\Reservations\Tables;
 
+use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReservationsTable
 {
@@ -16,24 +22,48 @@ class ReservationsTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('apartment.name')->label(__('Apartment'))->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('user.email')->label(__('User'))->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('check_in')->label(__('Check in'))->date()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('check_out')->label(__('Check out'))->date()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('price')->label(__('Price'))->money('CZK'),
-                \Filament\Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
                     ->getStateUsing(fn ($record) => $record->status?->value ?? '')
+                    ->formatStateUsing(fn ($state) => ReservationStatus::from($state)->label() ?? '')
                     ->color(fn ($state) => match ($state) {
-                        'pending' => 'warning',
-                        'confirmed' => 'success',
-                        'cancelled' => 'danger',
-                        'completed' => 'gray',
-                        default => 'secondary',
-                    }),
-                \Filament\Tables\Columns\TextColumn::make('booking_source')->label(__('Booking Source'))->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('created_at')->label(__('Created at'))->dateTime()->sortable(),
+                        ReservationStatus::Pending->value => 'warning',
+                        ReservationStatus::Confirmed->value => 'info',
+                        ReservationStatus::Cancelled->value => 'danger',
+                        ReservationStatus::Completed->value => 'success',
+                        default => 'gray',
+                    })
+                    ->sortable(),
+
+                TextColumn::make('apartment.name')
+                    ->label(__('Apartment'))
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('user.email')
+                    ->label(__('User'))
+                    ->sortable(),
+
+                TextColumn::make('check_in')
+                    ->label(__('Check in'))
+                    ->date($format = 'd.m.Y')
+                    ->sortable(),
+
+                TextColumn::make('check_out')
+                    ->label(__('Check out'))
+                    ->date($format = 'd.m.Y')
+                    ->sortable(),
+
+                TextColumn::make('price')
+                    ->label(__('Price'))
+                    ->money('CZK')
+                    ->sortable(),
+
+                TextColumn::make('booking_source')
+                    ->label(__('Booking Source'))
+                    ->formatStateUsing(fn ($state) => BookingSource::from($state)->label() ?? '')
+                    ->sortable(),
             ])
             ->filters([
             ])
@@ -52,7 +82,9 @@ class ReservationsTable
                         $record->status = $data['status'];
                         $record->save();
                     })
-                    ->modalHeading(__('Update Reservation Status')),
+                    ->modalHeading(__('Update Reservation Status'))
+                    ->successNotificationTitle(__('Status Updated Successfully'))
+                    ->failureNotificationTitle(__('Failed to Update Status')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -72,8 +104,43 @@ class ReservationsTable
                                 $record->save();
                             }
                         })
-                        ->modalHeading(__('Update Reservation Status for Selected')),
+                        ->modalHeading(__('Update Reservation Status for Selected'))
+                        ->successNotificationTitle(__('Status Updated Successfully'))
+                        ->failureNotificationTitle(__('Failed to Update Status')),
                 ]),
+            ])
+            ->filters([
+                SelectFilter::make('status')
+                    ->label(__('Status'))
+                    ->options(ReservationStatus::options()),
+
+                SelectFilter::make('booking_source')
+                    ->label(__('Booking Source'))
+                    ->options(BookingSource::options()),
+
+                Filter::make('check_in')
+                    ->label(__('Check-in period'))
+                    ->schema([
+                        DatePicker::make('from')->label(__('Check-in from')),
+                        DatePicker::make('to')->label(__('Check-in to')),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], fn (Builder $query, $date): Builder => $query->whereDate('check_in', '>=', $date))
+                            ->when($data['to'], fn (Builder $query, $date): Builder => $query->whereDate('check_in', '<=', $date));
+                    }),
+
+                Filter::make('check_out')
+                    ->label(__('Check-out period'))
+                    ->schema([
+                        DatePicker::make('from')->label(__('Check-out from')),
+                        DatePicker::make('to')->label(__('Check-out to')),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], fn (Builder $query, $date): Builder => $query->whereDate('check_out', '>=', $date))
+                            ->when($data['to'], fn (Builder $query, $date): Builder => $query->whereDate('check_out', '<=', $date));
+                    }),
             ]);
     }
 }

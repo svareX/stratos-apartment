@@ -10,8 +10,8 @@ enum BookingSource: string
     public function label(): string
     {
         return match ($this) {
-            self::Local => 'Local',
-            self::External => 'External',
+            self::Local => __('Local'),
+            self::External => __('External'),
         };
     }
 
