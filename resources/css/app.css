@@ -260,5 +260,9 @@ body { font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'He
 }
 
 .bg-spa {
-    background:linear-gradient(135deg,#04101e 0%,#071828 100%);
+    background: linear-gradient(135deg,#04101e 0%,#071828 100%);
+}
+
+.bg-skiing {
+    background: linear-gradient(135deg,#0a1f3d 0%,#0f2d52 100%);
 }

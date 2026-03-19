@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ApartmentType
+enum ApartmentType: string
 {
     case Mountains = 'mountains';
     case Vineyard = 'vineyards';

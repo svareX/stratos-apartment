@@ -136,76 +136,199 @@
         </div>
     </section>
 
-    <!-- Review Section -->
-    <section class="bg-spa w-full">
-        <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
-            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Therme Laa') }}</p>
-            <h6 class="text-4xl text-white font-serif">{{ __('No excuses.') }}</h6>
-            <h6 class="text-4xl text-white font-serif mb-3">{{ __('Thermals are 5 minutes away.') }}</h6>
-            <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
-                <span>
-                    {{ __('Therme Laa - one of the most beautiful thermal baths in lower Austria.') }}
-                </span>
-                <span>
-                    {{ __('Swimming pools, saunas, relaxation zones and more!') }}
-                </span>
-            </p>
-
-            <div class="grid grid-cols-1 max-w-6xl gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
-                <div
-                    class="flex flex-col md:flex-row gap-y-4 p-6 border-[1px] border-[rgba(0,201,167,.2)] bg-[rgba(255,255,255,0.06);] rounded-2xl">
-                    <span class="text-8xl">
-                        🛁
+    @if ($apartment?->type != null && $apartment->type === \App\Enums\ApartmentType::Vineyard)
+        <!-- Thermals Section -->
+        <section class="bg-spa w-full">
+            <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
+                <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Therme Laa') }}</p>
+                <h6 class="text-4xl text-white font-serif">{{ __('No excuses.') }}</h6>
+                <h6 class="text-4xl text-white font-serif mb-3">{{ __('Thermals are 5 minutes away.') }}</h6>
+                <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
+                    <span>
+                        {{ __('Therme Laa - one of the most beautiful thermal baths in lower Austria.') }}
                     </span>
-                    <div class="flex flex-col gap-2">
+                    <span>
+                        {{ __('Swimming pools, saunas, relaxation zones and more!') }}
+                    </span>
+                </p>
 
-                        <div class="flex flex-col">
-                            <p class="text-xl text-[rgba(255,255,255,0.85)]">
-                                {{ __('Spa & Stay package') }}
-                            </p>
-                            <span class="text-sm text-[rgba(255,255,255,0.6)] mb-3">
-                                {{ __('2 nights + 2 admissions to Therme Laa + welcome set (vine, candles, towels). Ideal for couples\' getaway') }}
-                            </span>
-                            <a href="#" class="flex flex-col justify-center w-fit text-sm btn-teal px-8 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">
-                                {{ __('Book') }}
-                            </a>
+                <div class="grid grid-cols-1 max-w-6xl gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
+                    <div
+                        class="flex flex-col md:flex-row gap-y-4 p-6 border-[1px] border-[rgba(0,201,167,.2)] bg-[rgba(255,255,255,0.06);] rounded-2xl">
+                        <span class="text-8xl">
+                            🛁
+                        </span>
+                        <div class="flex flex-col gap-2">
+
+                            <div class="flex flex-col">
+                                <p class="text-xl text-[rgba(255,255,255,0.85)]">
+                                    {{ __('Spa & Stay package') }}
+                                </p>
+                                <span class="text-sm text-[rgba(255,255,255,0.6)] mb-3">
+                                    {{ __('2 nights + 2 admissions to Therme Laa + welcome set (vine, candles, towels). Ideal for couples\' getaway') }}
+                                </span>
+                                <a href="#" class="flex flex-col justify-center w-fit text-sm btn-teal px-8 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">
+                                    {{ __('Book') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- More Features Section -->
-    <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
-        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
-        <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your wellness escape.') }}</h6>
-        <span class="text-muted">
-            {{ __('Apartment for 2 – 4 people in Laa an der Thaya. Therme Laa is 5 minutes away,') }}
-            <br>
-            {{ __('Vienna is an hour’s drive, and vineyards are visible from the window.') }}
-        </span>
-        <div class="flex gap-4 mt-6 bg-white">
-            <div class="flex px-2 gap-2 mt-1 mb-2 text-center">
-                <span
-                    class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
-                    {{ __('Skis at the door') }}
-                </span>
-                <span
-                    class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
-                    {{ __('Trails') }}
-                </span>
-                <span
-                    class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
-                    {{ __('Bikes') }}
-                </span>
-                <span
-                    class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
-                    {{ __('Dogs welcome') }}
-                </span>
+        <!-- More Features Section -->
+        <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
+            <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your wellness escape.') }}</h6>
+            <span class="text-muted">
+                {{ __('Apartment for 2 – 4 people in Laa an der Thaya. Therme Laa is 5 minutes away,') }}
+                <br>
+                {{ __('Vienna is an hour’s drive, and vineyards are visible from the window.') }}
+            </span>
+            <div class="flex gap-4 mt-6 bg-white">
+                <div class="flex px-2 gap-2 mt-1 mb-2 text-center">
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Skis at the door') }}
+                    </span>
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Trails') }}
+                    </span>
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Bikes') }}
+                    </span>
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Dogs welcome') }}
+                    </span>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @else
+        <!-- More Features Section -->
+        <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
+            <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your base in the mountains.') }}</h6>
+            <span class="text-muted">
+                {{ __('Apartment for 2–6 people right in the Ramzová resort. The ski slope is right outside the door,') }}
+                <br>
+                {{ __('Priessnitz Spa is 13 km away; hiking trails start right at your doorstep.') }}
+            </span>
+            <div class="flex gap-4 mt-6 bg-white">
+                <div class="flex px-2 gap-2 mt-1 mb-2 text-center">
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Skis at the door') }}
+                    </span>
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Trails') }}
+                    </span>
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Bikes') }}
+                    </span>
+                    <span
+                        class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
+                        {{ __('Dogs welcome') }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mountains Section -->
+        <section class="bg-skiing w-full">
+            <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
+                <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
+                <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
+                    <span>
+                        {{ __('Direct access to ski slopes, cross-country trails, and hiking trails. Filter by difficulty.') }}
+                    </span>
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
+                    <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                        <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(0,201,167,.15)] w-fit rounded-2xl">
+                            <span class="text-xxs">
+                                🟢
+                            </span>
+                            <span class="text-teal text-xxs font-bold uppercase">
+                                {{ __('Easy') }}
+                            </span>
+                        </div>
+                        <span class="text-white text-sm font-bold mb-1">
+                            {{ __('Rejvíz Circuit') }}
+                        </span>
+                        <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                            <span>
+                                {{ __('8 km') }}
+                            </span>
+                            <span>
+                                {{ __('↑ 150 m') }}
+                            </span>
+                            <span>
+                                {{ __('For families') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                        <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(255,200,50,.12)] w-fit rounded-2xl">
+                            <span class="text-xxs">
+                                🟡
+                            </span>
+                            <span class="text-[#ffd166] text-xxs font-bold uppercase">
+                                {{ __('Medium') }}
+                            </span>
+                        </div>
+                        <span class="text-white text-sm font-bold mb-1">
+                            {{ __('The Jeseníky Ridge') }}
+                        </span>
+                        <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                            <span>
+                                {{ __('8 km') }}
+                            </span>
+                            <span>
+                                {{ __('↑ 150 m') }}
+                            </span>
+                            <span>
+                                {{ __('For families') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                        <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(229,57,53,.12)] w-fit rounded-2xl">
+                            <span class="text-xxs">
+                                🔴
+                            </span>
+                            <span class="text-[#ef9a9a] text-xxs font-bold uppercase">
+                                {{ __('Hard') }}
+                            </span>
+                        </div>
+                        <span class="text-white text-sm font-bold mb-1">
+                            {{ __('Praděd from Ramzová') }}
+                        </span>
+                        <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                            <span>
+                                {{ __('8 km') }}
+                            </span>
+                            <span>
+                                {{ __('↑ 150 m') }}
+                            </span>
+                            <span>
+                                {{ __('For families') }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 
      <!-- Map Section -->
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12">

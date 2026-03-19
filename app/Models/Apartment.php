@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ApartmentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -28,6 +29,7 @@ class Apartment extends Model
         'tags' => 'array',
         'active' => 'boolean',
         'base_price' => 'decimal:2',
+        'type' => ApartmentType::class,
     ];
 
     public function reservations()
