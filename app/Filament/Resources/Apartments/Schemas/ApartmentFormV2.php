@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources\Apartments\Schemas;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\KeyValue;
-use Filament\Forms\Components\Repeater;
+use App\Enums\ApartmentType;
+use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
-use Filament\Actions\Action;
-use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 
 class ApartmentFormV2
 {
@@ -66,6 +68,12 @@ class ApartmentFormV2
                                     ->label(__('Base price'))
                                     ->placeholder(__('Enter base price per night'))
                                     ->numeric()
+                                    ->required(),
+
+                                Select::make('type')
+                                    ->label(__('Type'))
+                                    ->options(ApartmentType::options())
+                                    ->default(ApartmentType::Mountains->value)
                                     ->required(),
 
                                 Toggle::make('active')

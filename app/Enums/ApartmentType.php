@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ApartmentType
+enum ApartmentType: string
 {
     case Mountains = 'mountains';
     case Vineyard = 'vineyards';
@@ -10,16 +10,16 @@ enum ApartmentType
     public function label(): string
     {
         return match ($this) {
-            self::Mountains => 'Mountains',
-            self::Vineyard => 'Vineyard',
+            self::Mountains => __('Mountains'),
+            self::Vineyard => __('Vineyard'),
         };
     }
 
     public static function options(): array
     {
         return [
-            self::Local->value => self::Local->label(),
-            self::External->value => self::External->label(),
+            self::Mountains->value => self::Mountains->label(),
+            self::Vineyard->value => self::Vineyard->label(),
         ];
     }
 }

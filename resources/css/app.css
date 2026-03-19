@@ -258,3 +258,11 @@ body { font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'He
 .bg-urgent {
     background: linear-gradient(90deg, rgba(0,201,167,0.08), transparent);
 }
+
+.bg-spa {
+    background: linear-gradient(135deg,#04101e 0%,#071828 100%);
+}
+
+.bg-skiing {
+    background: linear-gradient(135deg,#0a1f3d 0%,#0f2d52 100%);
+}
