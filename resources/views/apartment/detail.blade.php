@@ -1,6 +1,5 @@
 <x-app-layout>
 
-    <!-- Hero Section -->
     <section class="relative h-[94vh] min-h-[520px] overflow-hidden">
         <div x-data="{ idx: 0, slides: {{ Js::from($heroImages) }} }"
             x-init="setInterval(() => idx = (idx + 1) % slides.length, 5500)" class="h-full relative">
@@ -57,10 +56,8 @@
         </div>
     </section>
 
-    <!-- Reservation Widget -->
     <livewire:reservation-widget />
 
-    <!-- Gallery Section -->
     <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg">
         <h5 class="text-2xl font-serif text-navy">{{ __('Photo gallery - both apartments') }}</h5>
         <div x-data="{ lightbox: false, lightboxIdx: 0, images: {{ Js::from($apartmentImages) }} }" class="w-full">
@@ -137,7 +134,6 @@
     </section>
 
     @if ($apartment?->type != null && $apartment->type === \App\Enums\ApartmentType::Vineyard)
-        <!-- Thermals Section -->
         <section class="bg-spa w-full">
             <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
                 <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Therme Laa') }}</p>
@@ -177,7 +173,6 @@
             </div>
         </section>
 
-        <!-- More Features Section -->
         <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your wellness escape.') }}</h6>
@@ -208,7 +203,6 @@
             </div>
         </section>
     @else
-        <!-- More Features Section -->
         <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your base in the mountains.') }}</h6>
@@ -239,7 +233,6 @@
             </div>
         </section>
 
-        <!-- Mountains Section -->
         <section class="bg-skiing w-full">
             <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
                 <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
@@ -330,7 +323,6 @@
         </section>
     @endif
 
-     <!-- Map Section -->
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Things worth seeing.') }}</h6>
@@ -391,26 +383,11 @@
                         </span>
                     </div>
                 </div>
-
-                <div class="flex gap-2 px-6 py-3 border-[1px] border-border rounded-xl">
-                    <span class="my-auto text-2xl">
-                        🛁
-                    </span>
-                    <div class="flex flex-col">
-                        <p class="font-bold text-sm text-navy ml-1">
-                            {{ __('Therme Laa') }}
-                        </p>
-                        <span class="text-xs text-muted">
-                            {{ __('🚶 5 minutes walk') }}
-                        </span>
-                    </div>
-                </div>
             </div>
             <div class="w-full h-full bg-violet-300 rounded-2xl"></div>
         </div>
     </section>
 
-    <!-- Packages Section -->
     <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Try a different approach.') }}</h6>
@@ -522,7 +499,6 @@
         </div>
     </section>
 
-    <!-- Recomended Section -->
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Host\'s Tips') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-5">{{ __('Hidden secrets that you\'ll love.') }}</h6>
@@ -589,7 +565,6 @@
         </div>
     </section>
 
-    <!-- Review Section -->
     <section class="bg-review w-full">
         <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Guest reviews') }}</p>
@@ -616,16 +591,16 @@
                             class="w-9 h-9 my-auto rounded-full bg-teal flex items-center justify-center text-white font-bold">
                             K</div>
                         <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                            <p class="text-[rgba(255,255,255,0.85)]">{{ __('Kateřina M.') }}</p>
                             <div class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]">
                                 <span>
-                                    Brno
+                                    {{ __('Brno') }}
                                 </span>
                                 <span>
                                     ·
                                 </span>
                                 <span>
-                                    Booking.com
+                                    {{ __('Booking.com') }}
                                 </span>
                                 <span>
                                     · ⭐ 9.8
@@ -644,16 +619,16 @@
                             class="w-9 h-9 my-auto rounded-full bg-teal flex items-center justify-center text-white font-bold">
                             K</div>
                         <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                            <p class="text-[rgba(255,255,255,0.85)]">{{ __('Kateřina M.') }}</p>
                             <div class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]">
                                 <span>
-                                    Brno
+                                    {{ __('Brno') }}
                                 </span>
                                 <span>
                                     ·
                                 </span>
                                 <span>
-                                    Booking.com
+                                    {{ __('Booking.com') }}
                                 </span>
                                 <span>
                                     · ⭐ 9.8
@@ -672,16 +647,16 @@
                             class="w-9 h-9 my-auto rounded-full bg-teal flex items-center justify-center text-white font-bold">
                             K</div>
                         <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                            <p class="text-[rgba(255,255,255,0.85)]">{{ __('Kateřina M.') }}</p>
                             <div class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]">
                                 <span>
-                                    Brno
+                                    {{ __('Brno') }}
                                 </span>
                                 <span>
                                     ·
                                 </span>
                                 <span>
-                                    Booking.com
+                                    {{ __('Booking.com') }}
                                 </span>
                                 <span>
                                     · ⭐ 9.8
@@ -694,7 +669,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section class="px-8 md:px-14 py-12 md:py-16 bg-purplePale rounded-t-lg">
         <div class="flex flex-col md:flex-row gap-y-4 mx-auto md:items-center justify-between">
             <div>
