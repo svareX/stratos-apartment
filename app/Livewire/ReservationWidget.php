@@ -2,20 +2,25 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
+use Livewire\Component;
 
 class ReservationWidget extends Component
 {
     public $location = 'Ramzová';
+
     public $dateStart;
+
     public $dateEnd;
+
     public $adults = 2;
+
     public $children = 0;
+
     public $pets = true;
-    
+
     public $displayMonth;
+
     public $displayYear;
 
     public function mount()
@@ -29,7 +34,10 @@ class ReservationWidget extends Component
 
     public function getNightsProperty()
     {
-        if (!$this->dateStart || !$this->dateEnd) return 0;
+        if (! $this->dateStart || ! $this->dateEnd) {
+            return 0;
+        }
+
         return Carbon::parse($this->dateStart)->diffInDays(Carbon::parse($this->dateEnd));
     }
 
@@ -49,7 +57,7 @@ class ReservationWidget extends Component
 
     public function selectDate($date)
     {
-        if (!$this->dateStart || ($this->dateStart && $this->dateEnd)) {
+        if (! $this->dateStart || ($this->dateStart && $this->dateEnd)) {
             $this->dateStart = $date;
             $this->dateEnd = null;
         } else {
@@ -74,10 +82,11 @@ class ReservationWidget extends Component
             $calendar[] = [
                 'date' => $currentDay->format('Y-m-d'),
                 'day' => $currentDay->day,
-                'isCurrentMonth' => $currentDay->month === (int)$this->displayMonth,
+                'isCurrentMonth' => $currentDay->month === (int) $this->displayMonth,
             ];
             $currentDay->addDay();
         }
+
         return $calendar;
     }
 

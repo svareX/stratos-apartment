@@ -55,7 +55,7 @@ class Apartment extends Model
     protected static function booted()
     {
         static::creating(function ($apartment) {
-            if (empty($apartment->slug) && !empty($apartment->name)) {
+            if (empty($apartment->slug) && ! empty($apartment->name)) {
                 $apartment->slug = Str::slug($apartment->name);
             }
         });

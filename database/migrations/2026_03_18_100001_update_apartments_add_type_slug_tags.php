@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('apartments', function (Blueprint $table) {
-            if (!Schema::hasColumn('apartments', 'type')) {
+            if (! Schema::hasColumn('apartments', 'type')) {
                 $table->string('type')->nullable();
             }
 
-            if (!Schema::hasColumn('apartments', 'slug')) {
+            if (! Schema::hasColumn('apartments', 'slug')) {
                 $table->string('slug')->unique()->nullable();
             }
 
-            if (!Schema::hasColumn('apartments', 'tags')) {
+            if (! Schema::hasColumn('apartments', 'tags')) {
                 $table->json('tags')->nullable();
             }
 
@@ -36,7 +36,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('apartments', function (Blueprint $table) {
-            if (!Schema::hasColumn('apartments', 'photos')) {
+            if (! Schema::hasColumn('apartments', 'photos')) {
                 $table->json('photos')->nullable();
             }
 

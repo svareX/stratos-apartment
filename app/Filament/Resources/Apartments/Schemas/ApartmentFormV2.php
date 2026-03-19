@@ -10,7 +10,7 @@ use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -43,13 +43,13 @@ class ApartmentFormV2
                                 TextInput::make('slug')
                                     ->label(__('Slug'))
                                     ->placeholder(__('Enter slug (auto-generated from name)'))
-                                    ->disabled(fn ($get) => !$get('slug_edit'))
+                                    ->disabled(fn ($get) => ! $get('slug_edit'))
                                     ->maxLength(32)
                                     ->suffixAction(
                                         Action::make('edit_slug')
-                                        ->label(__('Edit'))
-                                        ->icon('heroicon-o-pencil')
-                                        ->action(fn ($set) => $set('slug_edit', true))
+                                            ->label(__('Edit'))
+                                            ->icon('heroicon-o-pencil')
+                                            ->action(fn ($set) => $set('slug_edit', true))
                                     ),
 
                                 TextInput::make('address')

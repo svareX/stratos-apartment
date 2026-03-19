@@ -5,8 +5,6 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
 // Password form routes (not protected by the middleware)
 Route::get('/password', function () {
     return view('website-password');
