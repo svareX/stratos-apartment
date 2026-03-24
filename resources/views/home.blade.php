@@ -93,202 +93,187 @@
         <h4 class="font-serif text-3xl text-navy">{{ __('Two destinations, one apartment for you') }}</h4>
         <p class="text-sm sm:text-smm text-muted">{{ __('Every place has its own soul - choose yours.') }}</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mt-2 md:mt-5">
+            @foreach ($apartments as $apartment)
             <div
                 class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <div x-data="{ idx: 0, slides: {{ Js::from(array_slice($apartmentImages, 3, 5)) }} }"
+                <div x-data="{ idx: 0, count: {{ $apartment->photosMain->count() }} }"
                     class="relative flex flex-col justify-end w-full h-60 rounded-t-2xl overflow-hidden">
+            
                     <div class="apt-slides flex h-full transition-transform duration-700"
                         :style="`transform:translateX(-${idx * 100}%);`">
-                        <template x-for="(s, i) in slides" :key="i">
-                            <div class="apt-slide min-w-full h-full relative">
-                                <img :src="s" alt="{{ __('Apartment view') }}" class="w-full h-full object-cover" />
-                                <div
-                                    class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                    {{ __('Apartment view') }}</div>
+                        @foreach ($apartment->photosMain as $photo)
+                        <div class="apt-slide min-w-full h-full relative">
+                            <img src="{{ Storage::url($photo->path) }}" alt="{{ __('Apartment view') }}"
+                                class="w-full h-full object-cover" />
+            
+                            @if($photo->tag)
+                            <div
+                                class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                                {{ $photo->tag }}
                             </div>
-                        </template>
+                            @endif
+                        </div>
+                        @endforeach
                     </div>
+            
                     <div class="absolute bottom-3 right-4 flex gap-1 z-20">
-                        <template x-for="i in slides.length" :key="i">
-                            <div :class="[
-                                'transition-all duration-300 cursor-pointer',
-                                idx === i-1
-                                    ? 'bg-teal w-6 h-2 rounded-full'
-                                    : 'bg-teal/60 w-2 h-2 rounded-full opacity-60'
-                            ]" @click="idx = i-1"></div>
-                        </template>
+                        @foreach ($apartment->photosMain as $index => $photo)
+                        <div :class="[
+                                                    'transition-all duration-300 cursor-pointer',
+                                                    idx === {{ $index }}
+                                                        ? 'bg-teal w-6 h-2 rounded-full'
+                                                        : 'bg-teal/60 w-2 h-2 rounded-full opacity-60'
+                                                ]" @click="idx = {{ $index }}"></div>
+                        @endforeach
                     </div>
+            
                     <div class="c-arrow prev absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base"
-                        @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
+                        @click="idx = count > 0 ? (idx - 1 + count) % count : 0">‹</div>
                     <div class="c-arrow next absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base"
-                        @click="idx = (idx + 1) % slides.length">›</div>
+                        @click="idx = count > 0 ? (idx + 1) % count : 0">›</div>
                 </div>
-
+            
                 <div class="flex flex-col py-6 px-5 gap-2">
                     <div class="flex items-center gap-3">
-                        <div
-                            class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">
+                        <div class="w-9 h-9 rounded-full bg-purple flex items-center justify-center text-white font-bold">
                             S</div>
                         <div class="flex flex-col">
                             <div class="flex gap-2">
-                                <div class="font-bold text-xs uppercase text-teal">{{ __('Ramzová') }}</div>
-                                <div class="font-bold text-xs uppercase text-teal">{{ __('Jeseníky') }}</div>
+                                <div class="font-bold text-xs uppercase text-teal">{{ __($apartment->address) }}</div>
                             </div>
-                            <div class="text-lg font-serif">{{ __('Apartment Ramzová') }}</div>
+                            <div class="text-lg text-navy font-serif">{{ __($apartment->name) }}</div>
                         </div>
                     </div>
-                    <p class="px-1 text-sm text-muted">{{ __('Your base in the heart of the Jeseníky Mountains. Ski slope at the door, trail tracks around the corner, Priessnitz spa 13 km.') }}</p>
-                    <div class="flex px-2 gap-2 mt-1 mb-2 text-center">
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Skis at the door') }}
-                        </span>
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Trails') }}
-                        </span>
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Bikes') }}
-                        </span>
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Dogs welcome') }}
-                        </span>
-                    </div>
-                    <a href="#"
-                        class="btn-teal px-4 py-1.5 ml-2 w-fit rounded-xl font-bold duration-200 transition-all hover:translate-x-1 teal-shadow text-sm">
-                        {{ __('Explore apartment') }}
-                    </a>
-                </div>
-            </div>
-            <div
-                class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
-                <div x-data="{ idx: 0, slides: {{ Js::from(array_slice($apartmentImages, 0, 3)) }} }"
-                    class="relative flex flex-col justify-end w-full h-60 rounded-t-2xl overflow-hidden">
-                    <div class="apt-slides flex h-full transition-transform duration-700"
-                        :style="`transform:translateX(-${idx * 100}%);`">
-                        <template x-for="(s, i) in slides" :key="i">
-                            <div class="apt-slide min-w-full h-full relative">
-                                <img :src="s" alt="{{ __('Apartment view') }}" class="w-full h-full object-cover" />
-                                <div
-                                    class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                    {{ __('Therme Laa - 5 minutes') }}</div>
-                            </div>
-                        </template>
-                    </div>
-                    <div class="absolute bottom-3 right-4 flex gap-1 z-20">
-                        <template x-for="i in slides.length" :key="i">
-                            <div :class="[
-                                'transition-all duration-300 cursor-pointer',
-                                idx === i-1
-                                    ? 'bg-teal w-6 h-2 rounded-full'
-                                    : 'bg-teal/60 w-2 h-2 rounded-full opacity-60'
-                            ]" @click="idx = i-1"></div>
-                        </template>
-                    </div>
-                    <div class="c-arrow prev absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base"
-                        @click="idx = (idx - 1 + slides.length) % slides.length">‹</div>
-                    <div class="c-arrow next absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 duration-300 transition-all hover:bg-white/20 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center cursor-pointer text-base"
-                        @click="idx = (idx + 1) % slides.length">›</div>
-                </div>
-
-                <div class="flex flex-col py-6 px-5 gap-2">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-9 h-9 rounded-full bg-[#4B2EA2] flex items-center justify-center text-white font-bold">
-                            S</div>
-                        <div class="flex flex-col">
-                            <div class="flex gap-2">
-                                <div class="font-bold text-xs uppercase text-teal">{{ __('Laa an der Thaya') }}</div>
-                                <div class="font-bold text-xs uppercase text-teal">{{ __('Lower Austria') }}</div>
-                            </div>
-                            <div class="text-lg font-serif">{{ __('Apartment Laa') }}</div>
-                        </div>
-                    </div>
-                    <p class="px-1 text-sm text-muted">{{ __('Wellness escape just steps from Therme Laa. Vienna an hour by car, Weinviertel vineyards outside the window.') }}</p>
+                    <p class="px-1 text-sm text-muted">{{ __($apartment->description) }}</p>
                     <div class="flex px-2 gap-2 mt-1 mb-2">
+                        @foreach ($apartment->tags as $tag)
                         <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Thermals nearby') }}
+                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border border-border">
+                            {{ __($tag['value']) }}
                         </span>
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Vineyards') }}
-                        </span>
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Romantic') }}
-                        </span>
-                        <span
-                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border-[1px] border-border">
-                            {{ __('Dogs welcome') }}
-                        </span>
+                        @endforeach
                     </div>
-                    <a href="#"
+                    <a href="{{ route('apartments.show', $apartment->slug) }}"
                         class="btn-teal px-4 py-1.5 ml-2 w-fit rounded-xl font-bold duration-200 transition-all hover:translate-x-1 teal-shadow text-sm">
                         {{ __('Explore apartment') }}
                     </a>
                 </div>
             </div>
+            @endforeach
         </div>
     </section>
 
     <!-- Gallery Section -->
     <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg">
         <h5 class="text-2xl font-serif text-navy">{{ __('Photo gallery - both apartments') }}</h5>
-        <div x-data="{ lightbox: false, lightboxIdx: 0, images: {{ Js::from($apartmentImages) }} }" class="w-full">
+        
+        <div x-data="{ 
+                lightbox: false, 
+                lightboxIdx: 0, 
+                images: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => Storage::url($p->path))->values()) : Js::from($apartmentImages) }} 
+            }" class="w-full">
+            
             <div class="block md:hidden h-64 w-full rounded-3xl cursor-pointer group overflow-hidden relative"
                 @click="lightbox = true; lightboxIdx = 0">
                 <img :src="images[0]" alt="{{ __('View gallery') }}"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                 <div
                     class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg uppercase tracking-wider">
-                    +{{ count($apartmentImages) }} {{ __('photos') }} →
+                    +{{ $galleryImages->count() > 0 ? $galleryImages->count() : count($apartmentImages) }} {{ __('photos') }} →
                 </div>
             </div>
 
             <div class="hidden md:grid grid-cols-4 grid-rows-2 gap-3 h-80 w-full">
-                <div class="flex flex-col justify-end col-span-2 row-span-2 rounded-l-3xl cursor-pointer group overflow-hidden relative"
-                    @click="lightbox = true; lightboxIdx = 0">
-                    <img :src="images[0]" alt="{{ __('Ramzová - view') }}"
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div
-                        class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                        {{ __('Ramzová - view') }}</div>
-                </div>
-                <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
-                    @click="lightbox = true; lightboxIdx = 1">
-                    <img :src="images[1]" alt="{{ __('Laa - therme') }}"
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div
-                        class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                        {{ __('Laa - therme') }}</div>
-                </div>
-                <div class="flex flex-col justify-end col-span-1 row-span-1 rounded-tr-3xl cursor-pointer group overflow-hidden relative"
-                    @click="lightbox = true; lightboxIdx = 2">
-                    <img :src="images[2]" alt="{{ __('Kitchen') }}"
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div
-                        class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                        {{ __('Kitchen') }}</div>
-                </div>
-                <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
-                    @click="lightbox = true; lightboxIdx = 3">
-                    <img :src="images[3]" alt="{{ __('Skiing') }}"
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div
-                        class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                        {{ __('Skiing') }}</div>
-                </div>
-                <div class="flex flex-col justify-center col-span-1 row-span-1 rounded-br-3xl cursor-pointer group overflow-hidden relative"
-                    @click="lightbox = true; lightboxIdx = 4">
-                    <img :src="images[4]" alt="{{ __('More photos') }}"
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
-                    <div
-                        class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
-                        +{{ count($apartmentImages) }} {{ __('photos') }} →</div>
-                </div>
+                @forelse ($galleryImages->take(5) as $index => $photo)
+                    @if ($index === 0)
+                        <div class="flex flex-col justify-end col-span-2 row-span-2 rounded-l-3xl cursor-pointer group overflow-hidden relative"
+                            @click="lightbox = true; lightboxIdx = 0">
+                            <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                            @if($photo->tag)
+                                <div
+                                    class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                                    {{ $photo->tag }}
+                                </div>
+                            @endif
+                        </div>
+                    @elseif ($index === 1 || $index === 2)
+                        <div class="flex flex-col justify-end col-span-1 row-span-1 {{ $index === 2 ? 'rounded-tr-3xl' : '' }} cursor-pointer group overflow-hidden relative"
+                            @click="lightbox = true; lightboxIdx = {{ $index }}">
+                            <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                            @if($photo->tag)
+                                <div
+                                    class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                                    {{ $photo->tag }}
+                                </div>
+                            @endif
+                        </div>
+                    @elseif ($index === 3)
+                        <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
+                            @click="lightbox = true; lightboxIdx = {{ $index }}">
+                            <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                            @if($photo->tag)
+                                <div
+                                    class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                                    {{ $photo->tag }}
+                                </div>
+                            @endif
+                        </div>
+                    @elseif ($index === 4)
+                        <div class="flex flex-col justify-center col-span-1 row-span-1 rounded-br-3xl cursor-pointer group overflow-hidden relative"
+                            @click="lightbox = true; lightboxIdx = {{ $index }}">
+                            <img src="{{ Storage::url($photo->path) }}" alt="{{ __('More photos') }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
+                            <div
+                                class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
+                                +{{ $galleryImages->count() }} {{ __('photos') }} →
+                            </div>
+                        </div>
+                    @endif
+                @empty
+                    <div class="flex flex-col justify-end col-span-2 row-span-2 rounded-l-3xl cursor-pointer group overflow-hidden relative"
+                        @click="lightbox = true; lightboxIdx = 0">
+                        <img :src="images[0]" alt="{{ __('Ramzová - view') }}"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div
+                            class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                            {{ __('Ramzová - view') }}</div>
+                    </div>
+                    <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
+                        @click="lightbox = true; lightboxIdx = 1">
+                        <img :src="images[1]" alt="{{ __('Laa - therme') }}"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div
+                            class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                            {{ __('Laa - therme') }}</div>
+                    </div>
+                    <div class="flex flex-col justify-end col-span-1 row-span-1 rounded-tr-3xl cursor-pointer group overflow-hidden relative"
+                        @click="lightbox = true; lightboxIdx = 2">
+                        <img :src="images[2]" alt="{{ __('Kitchen') }}"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div
+                            class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                            {{ __('Kitchen') }}</div>
+                    </div>
+                    <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
+                        @click="lightbox = true; lightboxIdx = 3">
+                        <img :src="images[3]" alt="{{ __('Skiing') }}"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div
+                            class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
+                            {{ __('Skiing') }}</div>
+                    </div>
+                    <div class="flex flex-col justify-center col-span-1 row-span-1 rounded-br-3xl cursor-pointer group overflow-hidden relative"
+                        @click="lightbox = true; lightboxIdx = 4">
+                        <img :src="images[4]" alt="{{ __('More photos') }}"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
+                        <div
+                            class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
+                            +{{ count($apartmentImages) }} {{ __('photos') }} →</div>
+                    </div>
+                @endforelse
             </div>
 
             <template x-if="lightbox">

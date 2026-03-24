@@ -30,10 +30,15 @@ class HomeController extends Controller
             'https://picsum.photos/1200/900?random=6',
         ];
 
+        $galleryImages = $apartments->flatMap(function ($apartment) {
+            return $apartment->photosOther;
+        });
+
         return view('home')->with([
             'apartments' => $apartments,
             'heroImages' => $heroImages,
             'apartmentImages' => $apartmentImages,
+            'galleryImages' => $galleryImages,
         ]);
     }
 }
