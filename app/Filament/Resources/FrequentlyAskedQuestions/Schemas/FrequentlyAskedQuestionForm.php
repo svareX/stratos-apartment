@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Filament\Resources\FrequentlyAskedQuestions\Schemas;
+
 use Filament\Forms\Components\MarkdownEditor;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 
 class FrequentlyAskedQuestionForm
@@ -65,7 +66,7 @@ class FrequentlyAskedQuestionForm
                                     ->numeric()
                                     ->default(0)
                                     ->helperText(__('Lower numbers appear first')),
-                                
+
                                 Toggle::make('is_active')
                                     ->label(__('Is active'))
                                     ->default(true)

@@ -14,7 +14,7 @@ class FrequentlyAskedQuestionsComponent extends Component
         return view('livewire.frequently-asked-questions-component', [
             'faqs' => FrequentlyAskedQuestion::where('is_active', true)
                 ->orderBy('position')
-                ->get()
+                ->get(),
         ]);
     }
 

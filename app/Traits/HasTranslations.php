@@ -12,7 +12,7 @@ trait hasTranslations
         $column = "{$attribute}_{$locale}";
 
         // Pokud sloupec pro dané locale neexistuje, zkusíme fallback na angličtinu
-        if (!isset($this->attributes[$column])) {
+        if (! isset($this->attributes[$column])) {
             return $this->attributes["{$attribute}_en"] ?? null;
         }
 
