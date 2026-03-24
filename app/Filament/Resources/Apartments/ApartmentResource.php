@@ -18,7 +18,7 @@ class ApartmentResource extends Resource
 {
     protected static ?string $model = Apartment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
 
     protected static ?string $recordTitleAttribute = 'name';
 

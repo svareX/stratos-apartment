@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Apartment\ApartmentDetailController;
+use App\Http\Controllers\FrequentlyAskedQuestionsController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
     Route::get('/', HomeController::class)->name('home');
 
     Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)->name('apartments.show');
+
+    Route::get('/faq', FrequentlyAskedQuestionsController::class)->name('faq');
 
     Route::get('/about', function () {
         return view('about');
