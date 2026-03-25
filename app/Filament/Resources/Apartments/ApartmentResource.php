@@ -47,18 +47,19 @@ class ApartmentResource extends Resource
         return ApartmentsTable::configure($table);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => ListApartments::route('/'),
             'create' => CreateApartment::route('/create'),
             'edit' => EditApartment::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\PackagesRelationManager::class,
         ];
     }
 }

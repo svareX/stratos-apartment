@@ -522,110 +522,32 @@
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Try a different approach.') }}</h6>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            <div class="flex flex-col p-6 rounded-2xl border-[1px] border-border bg-white">
-                <span class="text-3xl">
-                    🛁
-                </span>
-                <span class="text-navy text-smm font-bold mt-2">
-                    {{ __('Spa & Stay') }}
-                </span>
-                <div class="text-muted text-sm mt-1">
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('2x entrance to Therme Laa') }}
-                        </span>
-                    </p>
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('Welcome wine + candles') }}
-                        </span>
-                    </p>
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('Late checkout') }}
-                        </span>
-                    </p>
+            @foreach ($apartment->packages as $package)
+                <div class="flex flex-col p-6 rounded-2xl border border-border bg-white">
+                    <span class="text-3xl">
+                        {{ $package->icon }}
+                    </span>
+                    <span class="text-navy text-smm font-bold mt-2">
+                        {{ $package->name }}
+                    </span>
+                    <div class="text-muted text-sm mt-1">
+                        @foreach ($package->translated_features as $feature)
+                            <p>
+                                <span>✓</span>
+                                <span>
+                                    {{ $feature }}
+                                </span>
+                            </p>
+                        @endforeach
+                    </div>
+                    <span class="text-xs font-bold text-tealD mt-3">
+                        {{ __('from') }} {{ number_format($package->price, 0, ',', ' ') }} {{ __('CZK per night') }}
+                    </span>
+                    <a href="#" class="text-sm text-teal font-bold mt-2 hover:underline">
+                        {{ __('Book now') }}
+                    </a>
                 </div>
-                <span class="text-xs font-bold text-tealD mt-3">
-                    {{ __('from 3 900 CZK per night')}}
-                </span>
-                <span class="text-sm text-teal font-bold mt-2">
-                    {{ __('Book now') }}
-                </span>
-            </div>
-
-            <div class="flex flex-col p-6 rounded-2xl border-[1px] border-border bg-white">
-                <span class="text-3xl">
-                    🛁
-                </span>
-                <span class="text-navy text-smm font-bold mt-2">
-                    {{ __('Spa & Stay') }}
-                </span>
-                <div class="text-muted text-sm mt-1">
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('2x entrance to Therme Laa') }}
-                        </span>
-                    </p>
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('Welcome wine + candles') }}
-                        </span>
-                    </p>
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('Late checkout') }}
-                        </span>
-                    </p>
-                </div>
-                <span class="text-xs font-bold text-tealD mt-3">
-                    {{ __('from 3 900 CZK per night')}}
-                </span>
-                <span class="text-sm text-teal font-bold mt-2">
-                    {{ __('Book now') }}
-                </span>
-            </div>
-
-            <div class="flex flex-col p-6 rounded-2xl border-[1px] border-border bg-white">
-                <span class="text-3xl">
-                    🛁
-                </span>
-                <span class="text-navy text-smm font-bold mt-2">
-                    {{ __('Spa & Stay') }}
-                </span>
-                <div class="text-muted text-sm mt-1">
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('2x entrance to Therme Laa') }}
-                        </span>
-                    </p>
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('Welcome wine + candles') }}
-                        </span>
-                    </p>
-                    <p>
-                        <span>✓</span>
-                        <span>
-                            {{ __('Late checkout') }}
-                        </span>
-                    </p>
-                </div>
-                <span class="text-xs font-bold text-tealD mt-3">
-                    {{ __('from 3 900 CZK per night')}}
-                </span>
-                <span class="text-sm text-teal font-bold mt-2">
-                    {{ __('Book now') }}
-                </span>
-            </div>
+            @endforeach
         </div>
     </section>
 

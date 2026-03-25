@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ApartmentType;
+use App\Models\ApartmentPackage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -50,6 +51,11 @@ class Apartment extends Model
     public function photosOther()
     {
         return $this->hasMany(Photo::class)->where('is_main', false)->orderBy('position');
+    }
+
+    public function packages()
+    {
+        return $this->hasMany(ApartmentPackage::class);
     }
 
     protected static function booted()

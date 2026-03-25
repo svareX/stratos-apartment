@@ -12,7 +12,7 @@ class ApartmentDetailController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $apartment = Apartment::with(['photosMain', 'photosOther'])
+        $apartment = Apartment::with(['photosMain', 'photosOther', 'packages'])
             ->where('slug', $request->route('apartment'))
             ->where('active', true)
             ->firstOrFail();
