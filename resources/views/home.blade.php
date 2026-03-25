@@ -2,14 +2,14 @@
     
     <!-- Hero Section -->
     <section class="relative h-[94vh] min-h-130 overflow-hidden">
-        <div x-data="{ idx: 0, slides: {{ Js::from($heroImages) }} }"
+        <div x-data="{ idx: 0, slides: {{ Js::from($heroSlides) }} }"
             x-init="setInterval(() => idx = (idx + 1) % slides.length, 5500)" class="h-full relative">
 
             <div class="apt-slides flex h-full transition-transform duration-700"
                 :style="`transform:translateX(-${idx * 100}%);`">
-                <template x-for="(s, i) in slides" :key="i">
+                <template x-for="(slide, i) in slides" :key="i">
                     <div class="apt-slide min-w-full h-full relative">
-                        <div class="sc-r1 absolute inset-0 bg-cover bg-center" :style="`background-image: url('${s}')`">
+                        <div class="sc-r1 absolute inset-0 bg-cover bg-center" :style="`background-image: url('${slide.image_url}')`">
                         </div>
                         <div
                             class="apt-slide-overlay absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent">
@@ -18,9 +18,19 @@
                         <div
                             class="apt-slide-content absolute bottom-28 sm:bottom-20 md:bottom-16 left-0 sm:left-10 md:left-12 w-full p-8 md:p-12 z-10 text-white">
                             <div class="max-w-7xl mx-auto">
-                                <div class="slide-label">{{ __('New') }}</div>
-                                <h1 class="font-serif text-5xl md:text-6xl leading-tight mb-3">{{ __('Adventure by day,') }} <em class="text-teal">{{ __('wine by night.') }}</em></h1>
-                                <p class="max-w-xl text-white/80 mb-6">{{ __('Comfortable accommodation with a view, sauna and private parking.') }}</p>
+                                <template x-if="slide.is_new">
+                                    <div class="slide-label">{{ __('New') }}</div>
+                                </template>
+                                
+                                <h1 class="font-serif text-5xl md:text-6xl leading-tight mb-3">
+                                    <span x-text="slide.title"></span>
+                                    <template x-if="slide.highlighted_title">
+                                        <em class="text-teal" x-text="slide.highlighted_title"></em>
+                                    </template>
+                                </h1>
+                                
+                                <p class="max-w-xl text-white/80 mb-6" x-text="slide.description"></p>
+                                
                                 <div class="flex gap-3">
                                     <a href="#"
                                         class="flex flex-col justify-center md:hidden btn-teal px-4 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
@@ -49,11 +59,10 @@
                 </button>
                 <button
                     class="pointer-events-auto hover:cursor-pointer bg-white/10 hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300"
-                    @click="idx = (idx + 1) % slides.length">
+                        @click="idx = (idx + 1) % slides.length">
                     ›
                 </button>
             </div>
-
         </div>
     </section>
 

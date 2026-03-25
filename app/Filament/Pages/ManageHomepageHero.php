@@ -14,6 +14,8 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Form;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
@@ -69,19 +71,46 @@ class ManageHomepageHero extends Page
                                 ->label(__('Show "New" badge'))
                                 ->default(false)
                                 ->columnSpan('full'),
-                            
-                            TextInput::make('title')
-                                ->label(__('Main Title'))
-                                ->required(),
-                            
-                            TextInput::make('highlighted_title')
-                                ->label(__('Highlighted Title Part')),
-                            
-                            Textarea::make('description')
-                                ->label(__('Description'))
-                                ->rows(3)
-                                ->required()
-                                ->columnSpan('full'),
+
+                            Tabs::make('Translations')
+                                ->columnSpan('full')
+                                ->tabs([
+                                    Tab::make(__('English'))
+                                        ->icon('heroicon-m-language')
+                                        ->schema([
+                                            TextInput::make('title_en')
+                                                ->label(__('Main Title (EN)'))
+                                                ->required(),
+                                            TextInput::make('highlighted_title_en')
+                                                ->label(__('Highlighted Title Part (EN)')),
+                                            Textarea::make('description_en')
+                                                ->label(__('Description (EN)'))
+                                                ->rows(3)
+                                                ->required(),
+                                        ]),
+                                    Tab::make(__('Czech'))
+                                        ->icon('heroicon-m-language')
+                                        ->schema([
+                                            TextInput::make('title_cs')
+                                                ->label(__('Main Title (CS)')),
+                                            TextInput::make('highlighted_title_cs')
+                                                ->label(__('Highlighted Title Part (CS)')),
+                                            Textarea::make('description_cs')
+                                                ->label(__('Description (CS)'))
+                                                ->rows(3),
+                                        ]),
+                                    Tab::make(__('German'))
+                                        ->icon('heroicon-m-language')
+                                        ->schema([
+                                            TextInput::make('title_de')
+                                                ->label(__('Main Title (DE)')),
+                                            TextInput::make('highlighted_title_de')
+                                                ->label(__('Highlighted Title Part (DE)')),
+                                            Textarea::make('description_de')
+                                                ->label(__('Description (DE)'))
+                                                ->rows(3),
+                                        ]),
+                                ]),
                         ])
                         ->columns(2)
                         ->reorderable()
