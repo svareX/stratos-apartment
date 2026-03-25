@@ -173,14 +173,15 @@
                 images: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => Storage::url($p->path))->values()) : Js::from($apartmentImages) }} 
             }" class="w-full">
             
-            <div class="block md:hidden h-64 w-full rounded-3xl cursor-pointer group overflow-hidden relative"
-                @click="lightbox = true; lightboxIdx = 0">
-                <img :src="images[0]" alt="{{ __('View gallery') }}"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                <div
-                    class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg uppercase tracking-wider">
-                    +{{ $galleryImages->count() > 0 ? $galleryImages->count() : count($apartmentImages) }} {{ __('photos') }} →
-                </div>
+            <div class="flex md:hidden overflow-x-auto gap-4 snap-x snap-mandatory pb-2 touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <template x-for="(img, idx) in images" :key="idx">
+                    <div class="w-[85%] shrink-0 snap-center rounded-3xl overflow-hidden relative h-64 border border-border/50 shadow-sm">
+                        <img :src="img" alt="{{ __('Apartment view') }}" class="w-full h-full object-cover" />
+                        <div class="absolute bottom-4 right-4 text-xs font-bold tracking-widest text-white/90 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
+                            <span x-text="idx + 1"></span> / <span x-text="images.length"></span>
+                        </div>
+                    </div>
+                </template>
             </div>
 
             <div class="hidden md:grid grid-cols-4 grid-rows-2 gap-3 h-80 w-full">
@@ -228,7 +229,7 @@
                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
                             <div
                                 class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
-                                +{{ $galleryImages->count() }} {{ __('photos') }} →
+                                +{{ $galleryImages->count() - 5 }} {{ __('photos') }} →
                             </div>
                         </div>
                     @endif
@@ -271,27 +272,58 @@
                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
                         <div
                             class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
-                            +{{ count($apartmentImages) }} {{ __('photos') }} →</div>
+                            +{{ count($apartmentImages) - 5 }} {{ __('photos') }} →</div>
                     </div>
                 @endforelse
             </div>
 
-            <template x-if="lightbox">
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
-                    @click.self="lightbox = false" @keydown.window.escape="lightbox = false"
-                    @keydown.window.arrow-right="lightboxIdx = (lightboxIdx + 1) % images.length"
-                    @keydown.window.arrow-left="lightboxIdx = (lightboxIdx - 1 + images.length) % images.length"
-                    tabindex="0" x-init="$el.focus()">
-                    <button class="absolute top-6 right-8 text-white text-3xl font-bold"
-                        @click="lightbox = false">&times;</button>
-                    <button class="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl font-bold"
-                        @click="lightboxIdx = (lightboxIdx - 1 + images.length) % images.length">&#8592;</button>
-                    <img :src="images[lightboxIdx]"
-                        class="max-h-[80vh] max-w-[90vw] rounded-xl shadow-2xl object-contain" />
-                    <button class="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl font-bold"
-                        @click="lightboxIdx = (lightboxIdx + 1) % images.length">&#8594;</button>
+            <div x-show="lightbox" style="display: none;" 
+                class="fixed inset-0 z-[100] hidden md:flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                @keydown.window.escape="lightbox = false"
+                @keydown.window.arrow-right="if(lightbox) lightboxIdx = (lightboxIdx + 1) % images.length"
+                @keydown.window.arrow-left="if(lightbox) lightboxIdx = (lightboxIdx - 1 + images.length) % images.length"
+                x-init="$watch('lightbox', val => { if(window.innerWidth >= 768) document.body.style.overflow = val ? 'hidden' : ''; })">
+                
+                <div class="absolute top-0 left-0 right-0 flex justify-between items-center p-6 z-50">
+                    <div class="text-white/80 font-medium text-sm tracking-widest uppercase">
+                        <span x-text="lightboxIdx + 1"></span> / <span x-text="images.length"></span>
+                    </div>
+                    <button @click="lightbox = false" class="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-            </template>
+
+                <button @click="lightboxIdx = (lightboxIdx - 1 + images.length) % images.length" class="absolute left-8 top-1/2 -translate-y-1/2 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal z-50">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                
+                <button @click="lightboxIdx = (lightboxIdx + 1) % images.length" class="absolute right-8 top-1/2 -translate-y-1/2 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal z-50">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+
+                <div class="relative w-full flex-1 flex items-center justify-center p-16 mb-24 mt-16" @click.self="lightbox = false">
+                    <img :src="images[lightboxIdx]" 
+                        class="max-h-[80vh] max-w-full rounded-lg shadow-2xl object-contain ring-1 ring-white/10" />
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full bg-linear-to-t from-black/90 via-black/60 to-transparent pt-12 pb-6 px-4 z-40">
+                    <div class="flex items-center justify-center gap-3 overflow-x-auto w-full max-w-6xl mx-auto pt-1 pb-2 touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                        <template x-for="(img, idx) in images" :key="idx">
+                            <button @click="lightboxIdx = idx; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })" 
+                                    class="relative shrink-0 h-20 w-32 rounded-lg overflow-hidden transition-all duration-300 focus:outline-none"
+                                    :class="lightboxIdx === idx ? 'ring-2 ring-teal scale-105 z-10 opacity-100' : 'ring-1 ring-white/20 opacity-40 hover:opacity-100 hover:scale-105'">
+                                <img :src="img" class="w-full h-full object-cover" />
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
