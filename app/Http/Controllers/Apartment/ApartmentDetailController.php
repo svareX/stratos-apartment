@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Apartment;
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 
 class ApartmentDetailController extends Controller
@@ -16,13 +17,34 @@ class ApartmentDetailController extends Controller
             ->where('active', true)
             ->firstOrFail();
 
-        $heroImages = $apartment->photosMain->map(fn($photo) => Storage::url($photo->path))->toArray();
+        $locale = App::getLocale();
 
-        if (empty($heroImages)) {
-            $heroImages = [
-                'https://picsum.photos/1920/1280?random=7',
-                'https://picsum.photos/1920/1280?random=8',
-                'https://picsum.photos/1920/1280?random=9',
+        $slides = $apartment->photosMain->map(function ($photo) use ($locale) {
+            return [
+                'image_url' => Storage::url($photo->path),
+                'is_new' => $photo->is_new,
+                'title' => $photo->{"title_{$locale}"} ?? $photo->title_en ?? '',
+                'highlighted_title' => $photo->{"highlighted_title_{$locale}"} ?? $photo->highlighted_title_en ?? '',
+                'description' => $photo->{"description_{$locale}"} ?? $photo->description_en ?? '',
+            ];
+        })->toArray();
+
+        if (empty($slides)) {
+            $slides = [
+                [
+                    'image_url' => 'https://picsum.photos/1920/1280?random=7',
+                    'is_new' => true,
+                    'title' => __('Adventure by day,'),
+                    'highlighted_title' => __('wine by night.'),
+                    'description' => __('Comfortable accommodation with a view, sauna and private parking.'),
+                ],
+                [
+                    'image_url' => 'https://picsum.photos/1920/1280?random=8',
+                    'is_new' => false,
+                    'title' => __('Relax and unwind,'),
+                    'highlighted_title' => __('in nature.'),
+                    'description' => __('Discover the beauty of the mountains right from your window.'),
+                ]
             ];
         }
 
@@ -42,7 +64,7 @@ class ApartmentDetailController extends Controller
 
         return view('apartment.detail')->with([
             'apartment' => $apartment,
-            'heroImages' => $heroImages,
+            'slides' => $slides,
             'apartmentImages' => $apartmentImages,
             'galleryPhotos' => $galleryPhotos,
         ]);
