@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartment;
+use App\Models\HomepageSettings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -14,12 +16,15 @@ class HomeController extends Controller
     {
         $apartments = Apartment::where('active', true)->get();
 
-        // fake data for now
-        $heroImages = [
-            'https://picsum.photos/1920/1280?random=7',
-            'https://picsum.photos/1920/1280?random=8',
-            'https://picsum.photos/1920/1280?random=9',
-        ];
+        $settings = HomepageSettings::first();
+
+        $heroImages = !empty($settings?->hero_images) 
+            ? collect($settings->hero_images)->map(fn($path) => Storage::url($path))->toArray()
+            : [
+                'https://picsum.photos/1200/900?random=7',
+                'https://picsum.photos/1200/900?random=8',
+                'https://picsum.photos/1200/900?random=9',
+            ];
 
         $apartmentImages = [
             'https://picsum.photos/1200/900?random=1',

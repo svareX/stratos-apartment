@@ -32,6 +32,11 @@ class ApartmentResource extends Resource
         return __('Apartments');
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Main');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ApartmentFormV2::configure($schema);

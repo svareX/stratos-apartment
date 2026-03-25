@@ -12,7 +12,7 @@
                         <div class="sc-r1 absolute inset-0 bg-cover bg-center" :style="`background-image: url('${s}')`">
                         </div>
                         <div
-                            class="apt-slide-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                            class="apt-slide-overlay absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent">
                         </div>
 
                         <div
@@ -43,12 +43,12 @@
 
             <div class="pointer-events-none absolute inset-0 z-30 flex items-center justify-between px-4 md:px-6">
                 <button
-                    class="pointer-events-auto bg-white/10 hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300"
+                    class="pointer-events-auto hover:cursor-pointer bg-white/10 hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300"
                     @click="idx = (idx - 1 + slides.length) % slides.length">
                     ‹
                 </button>
                 <button
-                    class="pointer-events-auto bg-white/10 hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300"
+                    class="pointer-events-auto hover:cursor-pointer bg-white/10 hover:bg-white/20 text-white w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300"
                     @click="idx = (idx + 1) % slides.length">
                     ›
                 </button>
