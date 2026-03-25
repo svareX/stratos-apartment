@@ -1,7 +1,7 @@
 <x-app-layout>
     
     <!-- Hero Section -->
-    <section class="relative h-[94vh] min-h-[520px] overflow-hidden">
+    <section class="relative h-[94vh] min-h-130 overflow-hidden">
         <div x-data="{ idx: 0, slides: {{ Js::from($heroImages) }} }"
             x-init="setInterval(() => idx = (idx + 1) % slides.length, 5500)" class="h-full relative">
 
@@ -58,10 +58,10 @@
     </section>
 
     <!-- Reservation Widget -->
-    <livewire:reservation-widget />
+    <livewire:reservation-widget id="reservation" />
 
     <!-- Marquee -->
-    <section class="bg-purplePale border-t border-b border-border overflow-hidden py-3 mb-10 rounded-md">
+    <section class="bg-purplePale border-t border-b border-border overflow-hidden py-3 mb-10 rounded-md" id="marquee">
         <style>
             @keyframes marquee {
                 from {
@@ -88,7 +88,7 @@
     </section>
 
     <!-- Apartment Selection Section -->
-    <section class="flex flex-col gap-2 px-8 md:px-14">
+    <section class="flex flex-col gap-2 px-8 md:px-14" id="apartments">
         <h5 class="text-teal font-bold text-xs tracking-[8%] uppercase">{{ __('Select your stay') }}</h5>
         <h4 class="font-serif text-3xl text-navy">{{ __('Two destinations, one apartment for you') }}</h4>
         <p class="text-sm sm:text-smm text-muted">{{ __('Every place has its own soul - choose yours.') }}</p>
@@ -164,14 +164,15 @@
     </section>
 
     <!-- Gallery Section -->
-    <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg">
+    <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg" id="gallery">
         <h5 class="text-2xl font-serif text-navy">{{ __('Photo gallery - both apartments') }}</h5>
         
         <div x-data="{ 
-                lightbox: false, 
-                lightboxIdx: 0, 
-                images: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => Storage::url($p->path))->values()) : Js::from($apartmentImages) }} 
-            }" class="w-full">
+            lightbox: false, 
+            lightboxIdx: 0, 
+            images: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => Storage::url($p->path))->values()) : Js::from($apartmentImages) }},
+            tags: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => $p->tag ? __($p->tag) : '')->values()) : Js::from(array_fill(0, count($apartmentImages), '')) }}
+        }" class="w-full">
             
             <div class="flex md:hidden overflow-x-auto gap-4 snap-x snap-mandatory pb-2 touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <template x-for="(img, idx) in images" :key="idx">
@@ -294,6 +295,9 @@
                     <div class="text-white/80 font-medium text-sm tracking-widest uppercase">
                         <span x-text="lightboxIdx + 1"></span> / <span x-text="images.length"></span>
                     </div>
+                    
+                    <span class="text-xl text-white font-bold tracking-wide" x-show="tags[lightboxIdx]" x-text="tags[lightboxIdx]"></span>
+                    
                     <button @click="lightbox = false" class="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
@@ -328,7 +332,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="flex flex-col gap-5 pt-8 md:pt-10 pb-8 md:pb-14 bg-gray w-full border-y-[1px] border-border">
+    <section class="flex flex-col gap-5 pt-8 md:pt-10 pb-8 md:pb-14 bg-gray w-full border-y border-border" id="features">
         <p class="mx-auto text-xs text-teal uppercase font-bold tracking-[8%] mb-0 md:mb-4 align-bottom">{{ __('Ideal
             for') }}</p>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 px-8 md:px-14">
@@ -385,7 +389,7 @@
     </section>
 
     <!-- More Features Section -->
-    <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+    <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="features2">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Why Stratos?') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif">{{ __('Yes, we have a bed too. But that is the least interesting part.') }}</h6>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 sm:mt-9 md:mt-12 bg-white">
@@ -436,7 +440,7 @@
     </section>
 
     <!-- Review Section -->
-    <section class="bg-review w-full">
+    <section class="bg-review w-full" id="reviews">
         <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Guest reviews') }}</p>
             <h6 class="text-4xl md:text-5xl text-white font-serif mb-2">{{ __('What guests say.') }}</h6>
@@ -541,7 +545,7 @@
     </section>
 
     <!-- Instagram Section -->
-    <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost">
+    <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost" id="instagram">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-2">{{ __('Follow us') }}</p>
         <div class="flex flex-col md:flex-row gap-y-2 justify-between w-full">
             <h6 class="text-3xl md:text-4xl text-navy font-serif hover:text-purple transition-colors duration-300">
@@ -565,7 +569,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="px-8 md:px-14 py-12 md:py-16 bg-purplePale rounded-t-lg">
+    <section class="px-8 md:px-14 py-12 md:py-16 bg-purplePale rounded-t-lg" id="cta">
         <div class="flex flex-col md:flex-row gap-y-4 mx-auto md:items-center justify-between">
             <div>
                 <h2 class="font-serif text-3xl md:text-4xl text-navy font-bold">{{ __('Book before') }}<br>{{ __('your neighbor does.') }}</h2>

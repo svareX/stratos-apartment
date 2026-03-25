@@ -8,11 +8,11 @@
         <div class="col-span-5 lg:col-span-2">
             <div class="border-[1.5px] border-border rounded-xl overflow-hidden bg-white shadow-sm">
                 <div class="bg-red text-white p-3 flex items-center justify-between">
-                    <button type="button" wire:click="prevMonth" class="hover:opacity-80 transition-all px-2 duration-200 hover:scale-150">‹</button>
+                    <button type="button" wire:click="prevMonth" class="hover:opacity-80 hover:cursor-pointer transition-all pl-2 pr-10">‹</button>
                     <span class="font-bold text-sm uppercase tracking-wide">
                         {{ $monthName }} {{ $displayYear }}
                     </span>
-                    <button type="button" wire:click="nextMonth" class="hover:opacity-80 transition-all px-2 duration-200 hover:scale-150">›</button>
+                    <button type="button" wire:click="nextMonth" class="hover:opacity-80 hover:cursor-pointer transition-all pr-2 pl-10">›</button>
                 </div>
                 <div class="grid grid-cols-7 bg-[#B71C1C] text-[10px] font-bold text-white/70 py-1 text-center">
                     <span>{{ __('Mo') }}</span><span>{{ __('Tu') }}</span><span>{{ __('We') }}</span><span>{{ __('Th') }}</span><span>{{ __('Fr') }}</span><span>{{ __('Sa') }}</span><span>{{ __('Su') }}</span>
@@ -27,9 +27,9 @@
                         @endphp
                         <div 
                             wire:click="selectDate('{{ $day['date'] }}')"
-                            class="h-10 flex items-center justify-center text-xs font-semibold transition-all duration-200 relative cursor-pointer
+                            class="h-10 flex items-center justify-center text-xs font-semibold text-navy transition-all duration-200 relative cursor-pointer
                             {{ !$day['isCurrentMonth'] ? 'opacity-20' : '' }}
-                            {{ $isSelected ? 'bg-purple text-white z-10 shadow-md scale-105' : '' }}
+                            {{ $isSelected ? 'bg-purple text-white! z-10 shadow-md scale-105' : '' }}
                             {{ $isInRange ? 'bg-purplePale text-purple' : '' }}
                             {{ !$isSelected && !$isInRange ? 'bg-white hover:bg-purpleGhost' : '' }}
                             {{ $isStart ? 'rounded-l-lg' : '' }}

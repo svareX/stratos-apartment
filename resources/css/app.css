@@ -13,12 +13,12 @@
     --font-mono: "IBM Plex Mono", ui-monospace;
 
     --color-purple: #4B2EA2;
-    --color-purple-mid: #6B47C8;
-    --color-purple-pale: #F0ECFF;
-    --color-purple-ghost: #F8F6FF;
+    --color-purpleMid: #6B47C8;
+    --color-purplePale: #F0ECFF;
+    --color-purpleGhost: #F8F6FF;
     --color-teal: #00C9A7;
-    --color-teal-d: #00A88C;
-    --color-teal-l: #E0FAF5;
+    --color-tealD: #00A88C;
+    --color-tealL: #E0FAF5;
     --color-red: #E53935;
     --color-navy: #1A0A3B;
     --color-text: #1C1530;
