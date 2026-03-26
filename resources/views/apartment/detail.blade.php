@@ -70,7 +70,7 @@
     <livewire:reservation-widget />
 
     @if ($galleryPhotos->count() > 0)
-        <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg">
+        <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg" id ="gallery">
             <h5 class="text-2xl font-serif text-navy">{{ __('Photo gallery') }}</h5>
             
             <div x-data="{ 
@@ -286,7 +286,7 @@
     @endif
 
     @if ($apartment?->type != null && $apartment->type === \App\Enums\ApartmentType::Vineyard)
-        <section class="bg-spa w-full">
+        <section class="bg-spa w-full" id="spa">
             <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
                 <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Therme Laa') }}</p>
                 <h6 class="text-4xl text-white font-serif">{{ __('No excuses.') }}</h6>
@@ -325,7 +325,7 @@
             </div>
         </section>
 
-        <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+        <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="about">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your wellness escape.') }}</h6>
             <span class="text-muted">
@@ -345,7 +345,7 @@
             </div>
         </section>
     @else
-        <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+        <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="skiing">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('About the apartment') }}</p>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Your base in the mountains.') }}</h6>
             <span class="text-muted">
@@ -365,7 +365,7 @@
             </div>
         </section>
 
-        <section class="bg-skiing w-full">
+        <section class="bg-skiing w-full" id="about">
             <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
                 <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
                 <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
@@ -455,7 +455,7 @@
         </section>
     @endif
 
-    <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+    <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="nearby">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Things worth seeing.') }}</h6>
         
@@ -733,7 +733,7 @@
     </section>
 
     @if ($apartment->packages->isNotEmpty())
-        <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost">
+        <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost" id="packages">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Try a different approach.') }}</h6>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
@@ -768,36 +768,38 @@
     @endif
 
     @if ($apartment->places->isNotEmpty())
-        <section class="flex flex-col px-8 md:px-14 py-10 pb-12">
+        <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="places">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Host\'s Tips') }}</p>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-5">{{ __('Hidden secrets that you\'ll love.') }}</h6>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                 @foreach ($apartment->places->take(3) as $place)
-                    <div
-                    class="w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow transition-all duration-200 hover:shadow-lg hover:-translate-y-1 hover:cursor-pointer">
-                    <div class="relative flex flex-col justify-end w-full h-32 rounded-t-2xl overflow-hidden">
-                        <div class="apt-slides flex h-full transition-transform duration-700">
-                            <div class="apt-slide min-w-full h-full relative">
-                                <img src="{{ Storage::url($place->image) }}" alt="{{ __($place->name) }}" class="w-full h-full object-cover" />
+                    <{{ $place->url ? 'a' : 'div' }} 
+                        {!! $place->url ? 'href="' . $place->url . '" target="_blank" rel="noopener noreferrer"' : '' !!}
+                        class="block w-full h-full rounded-2xl bg-white border-[1.5px] border-border shadow-md card-shadow transition-all duration-200 hover:shadow-lg hover:-translate-y-1 hover:cursor-pointer">
+                        
+                        <div class="relative flex flex-col justify-end w-full h-32 rounded-t-2xl overflow-hidden">
+                            <div class="apt-slides flex h-full transition-transform duration-700">
+                                <div class="apt-slide min-w-full h-full relative">
+                                    <img src="{{ Storage::url($place->image) }}" alt="{{ __($place->name) }}" class="w-full h-full object-cover" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="flex flex-col pt-2 pb-5 px-5 gap-2">
-                        <p class="text-sm text-navy font-bold">
-                            {{ __($place->name) }}
-                        </p>
-                        <span class="text-xs text-muted">
-                            {{ __($place->description) }}
-                        </span>
-                    </div>
-                </div>                
+                        <div class="flex flex-col pt-2 pb-5 px-5 gap-2">
+                            <p class="text-sm text-navy font-bold">
+                                {{ __($place->name) }}
+                            </p>
+                            <span class="text-xs text-muted">
+                                {{ __($place->description) }}
+                            </span>
+                        </div>
+                    </{{ $place->url ? 'a' : 'div' }}>                
                 @endforeach
             </div>
         </section>
     @endif
 
-    <section class="bg-review w-full">
+    <section class="bg-review w-full" id="reviews">
         <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Guest reviews') }}</p>
             <h6 class="text-4xl md:text-5xl text-white font-serif mb-2">{{ __('What guests say.') }}</h6>
@@ -901,7 +903,7 @@
         </div>
     </section>
 
-    <section class="px-8 md:px-14 py-12 md:py-16 bg-purplePale rounded-t-lg">
+    <section class="px-8 md:px-14 py-12 md:py-16 bg-purplePale rounded-t-lg" id="cta">
         <div class="flex flex-col md:flex-row gap-y-4 mx-auto md:items-center justify-between">
             <div>
                 <h2 class="font-serif text-3xl md:text-4xl text-navy font-bold">{{ __('Book before') }}<br>{{ __('your neighbor does.') }}</h2>

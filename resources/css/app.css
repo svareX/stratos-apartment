@@ -102,6 +102,10 @@ button[data-flux-accordion-heading] {
     --border: #E2DCF5; --white: #FFFFFF; --cream: #FDFCFF; --gray: #F5F3FA;
 }
 
+* {
+    scroll-behavior: smooth;
+}
+
 [x-cloak] { display: none; }
 
 .bg-cream { background: var(--cream) !important; }
