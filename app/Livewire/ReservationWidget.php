@@ -2,12 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Models\Apartment;
 use Carbon\Carbon;
 use Livewire\Component;
 
 class ReservationWidget extends Component
 {
-    public $location = 'Ramzová';
+    public $apartment_id;
+
+    public $apartments;
 
     public $dateStart;
 
@@ -25,6 +28,9 @@ class ReservationWidget extends Component
 
     public function mount()
     {
+        $this->apartments = Apartment::where('active', true)->get();
+        $this->apartment_id = $this->apartments->first()->id ?? null;
+
         $now = Carbon::now();
         $this->displayMonth = $now->month;
         $this->displayYear = $now->year;
@@ -53,6 +59,24 @@ class ReservationWidget extends Component
         $date = Carbon::create($this->displayYear, $this->displayMonth, 1)->addMonth();
         $this->displayMonth = $date->month;
         $this->displayYear = $date->year;
+    }
+
+    public function goToReservation()
+    {
+        $params = [
+            'apartment_id' => $this->apartment_id,
+            'start_date' => $this->dateStart,
+            'end_date' => $this->dateEnd,
+            'adults' => $this->adults,
+            'children' => $this->children,
+            'pets' => $this->pets ? 1 : 0,
+        ];
+
+        $query = http_build_query(array_filter($params, function ($v) {
+            return $v !== null && $v !== '';
+        }));
+
+        $this->redirect(route('reservation').($query ? '?'.$query : ''));
     }
 
     public function selectDate($date)
