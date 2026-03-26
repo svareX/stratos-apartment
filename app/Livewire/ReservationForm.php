@@ -49,20 +49,15 @@ class ReservationForm extends Component
 
     public $cleaningFee = 600;
 
+    public $daysForCleaningFee = 3;
+
     public $first_name;
-
     public $last_name;
-
     public $email;
-
     public $phone;
-
     public $address;
-
     public $city;
-
     public $postal_code;
-
     public $country;
 
     protected $rules = [
@@ -119,6 +114,8 @@ class ReservationForm extends Component
         $apt = $this->apartments->firstWhere('id', $this->apartment_id);
         if ($apt) {
             $this->pricePerNight = $apt->base_price ?? 0;
+            $this->cleaningFee = $apt->cleaning_fee ?? 600;
+            $this->daysForCleaningFee = $apt->days_for_cleaning_fee ?? 3;
         }
     }
 
@@ -236,7 +233,7 @@ class ReservationForm extends Component
     {
         $n = $this->nights();
 
-        return $n > 0 && $n <= 3;
+        return $n > 0 && $n <= $this->daysForCleaningFee;
     }
 
     public function total()

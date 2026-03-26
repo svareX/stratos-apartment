@@ -352,5 +352,10 @@
     "Enter latitude": "Breitengrad eingeben",
     "Enter longitude": "Längengrad eingeben",
     "Enter URL link": "URL-Link eingeben",
-    "e.g., 🚶 5 minutes walk": "z.B. 🚶 5 Minuten Fußweg"
+    "e.g., 🚶 5 minutes walk": "z.B. 🚶 5 Minuten Fußweg",
+    "Cleaning fee": "Reinigungsgebühr",
+    "Enter cleaning fee (one-time charge)": "Geben Sie die Reinigungsgebühr ein (einmalige Gebühr)",
+    "Days for cleaning fee": "Tage für Reinigungsgebühr",
+    "Enter number of days for cleaning fee to apply (e.g. 3 means cleaning fee applies for stays of 3 nights or less)": "Geben Sie die Anzahl der Tage ein, für die die Reinigungsgebühr gilt (z.B. 3 bedeutet, dass die Reinigungsgebühr für Aufenthalte von 3 Nächten oder weniger gilt)",
+    "Type": "Typ"
 }
