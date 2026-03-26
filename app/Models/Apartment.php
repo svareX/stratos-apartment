@@ -62,6 +62,11 @@ class Apartment extends Model
         return $this->hasMany(Place::class);
     }
 
+    public function hikes()
+    {
+        return $this->hasMany(Hike::class);
+    }
+
     protected static function booted()
     {
         static::creating(function ($apartment) {

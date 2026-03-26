@@ -2,83 +2,76 @@
 
 namespace App\Filament\Resources\Apartments\RelationManagers;
 
+use App\Enums\HikeDifficulty;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-class PlacesRelationManager extends RelationManager
+
+class HikesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'places';
+    protected static string $relationship = 'hikes';
 
     protected static ?string $recordTitleAttribute = 'name_en';
 
     public static function getModelLabel(): string
     {
-        return __('Place');
+        return __('Hike');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('Places');
+        return __('Hikes');
     }
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return __('Places');
+        return __('Hikes');
     }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Fieldset::make(__('Media & Location'))
-                    ->columns(2)
-                    ->columnSpan(3)
+                Fieldset::make(__('Hike Details'))
+                    ->columns(3)
+                    ->columnSpan('full')
                     ->schema([
-                        TextInput::make('icon')
-                            ->label(__('Icon (Emoji / Text)'))
-                            ->placeholder(__('Enter icon or emoji'))
-                            ->maxLength(255)
+                        Select::make('difficulty')
+                            ->label(__('Difficulty'))
+                            ->options(HikeDifficulty::options())
+                            ->placeholder(__('Select difficulty'))
+                            ->required()
                             ->columnSpan(1),
 
-                        FileUpload::make('image')
-                            ->label(__('Image'))
-                            ->directory('places')
-                            ->image()
-                            ->columnSpan(1),
-
-                        TextInput::make('latitude')
-                            ->label(__('Latitude'))
-                            ->placeholder(__('Enter latitude'))
+                        TextInput::make('length')
+                            ->label(__('Length (km)'))
                             ->numeric()
+                            ->placeholder(__('Enter length in km'))
+                            ->required()
+                            ->suffix('KM')
                             ->columnSpan(1),
 
-                        TextInput::make('longitude')
-                            ->label(__('Longitude'))
-                            ->placeholder(__('Enter longitude'))
-                            ->numeric()
+                        Toggle::make('is_for_families')
+                            ->label(__('For Families'))
+                            ->default(false)
+                            ->inline(false)
                             ->columnSpan(1),
-
-                        TextInput::make('url')
-                            ->label(__('URL Link'))
-                            ->placeholder(__('Enter URL link'))
-                            ->url()
-                            ->maxLength(255)
-                            ->columnSpan('full'),
                     ]),
 
                 Tabs::make('Translations')
@@ -93,9 +86,9 @@ class PlacesRelationManager extends RelationManager
                                     ->required()
                                     ->maxLength(255),
 
-                                TextInput::make('distance_text_en')
+                                TextInput::make('distance_tx_en')
                                     ->label(__('Distance Text (EN)'))
-                                    ->placeholder(__('e.g., 🚶 5 minutes walk'))
+                                    ->placeholder(__('e.g., ↑ 150 m'))
                                     ->maxLength(255),
 
                                 Textarea::make('description_en')
@@ -112,9 +105,9 @@ class PlacesRelationManager extends RelationManager
                                     ->placeholder(__('Enter name (CS)'))
                                     ->maxLength(255),
 
-                                TextInput::make('distance_text_cs')
+                                TextInput::make('distance_tx_cs')
                                     ->label(__('Distance Text (CS)'))
-                                    ->placeholder(__('e.g., 🚶 5 minutes walk'))
+                                    ->placeholder(__('e.g., ↑ 150 m'))
                                     ->maxLength(255),
 
                                 Textarea::make('description_cs')
@@ -131,9 +124,9 @@ class PlacesRelationManager extends RelationManager
                                     ->placeholder(__('Enter name (DE)'))
                                     ->maxLength(255),
 
-                                TextInput::make('distance_text_de')
+                                TextInput::make('distance_tx_de')
                                     ->label(__('Distance Text (DE)'))
-                                    ->placeholder(__('e.g., 🚶 5 minutes walk'))
+                                    ->placeholder(__('e.g., ↑ 150 m'))
                                     ->maxLength(255),
 
                                 Textarea::make('description_de')
@@ -149,20 +142,33 @@ class PlacesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('icon')
-                    ->label(__('Icon')),
-
-                ImageColumn::make('image')
-                    ->label(__('Image'))
-                    ->circular(),
-
                 TextColumn::make('name_en')
                     ->label(__('Name (EN)'))
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('distance_text_en')
-                    ->label(__('Distance (EN)')),
+                TextColumn::make('difficulty')
+                    ->label(__('Difficulty'))
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state->label())
+                    ->color(fn ($state) => match ($state) {
+                        HikeDifficulty::Easy => 'success',
+                        HikeDifficulty::Medium => 'warning',
+                        HikeDifficulty::Hard => 'danger',
+                        HikeDifficulty::Extreme => 'danger',
+                    })
+                    ->sortable(),
+
+                TextColumn::make('length')
+                    ->label(__('Length (km)'))
+                    ->numeric(2)
+                    ->suffix(' km')
+                    ->sortable(),
+
+                IconColumn::make('is_for_families')
+                    ->label(__('For Families'))
+                    ->boolean()
+                    ->sortable(),
             ])
             ->filters([
             ])

@@ -61,6 +61,7 @@ class ApartmentResource extends Resource
         return [
             RelationManagers\PackagesRelationManager::class,
             RelationManagers\PlacesRelationManager::class,
+            RelationManagers\HikesRelationManager::class,
         ];
     }
 }
