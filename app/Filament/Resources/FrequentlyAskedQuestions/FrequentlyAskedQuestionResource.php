@@ -9,7 +9,6 @@ use App\Filament\Resources\FrequentlyAskedQuestions\Schemas\FrequentlyAskedQuest
 use App\Filament\Resources\FrequentlyAskedQuestions\Tables\FrequentlyAskedQuestionsTable;
 use App\Models\FrequentlyAskedQuestion;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;

@@ -34,7 +34,7 @@ class ReservationResource extends Resource
     {
         return __('Main');
     }
-    
+
     public static function form(Schema $schema): Schema
     {
         return ReservationForm::configure($schema);

@@ -31,7 +31,7 @@ class UserResource extends Resource
     {
         return __('Users');
     }
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('Main');

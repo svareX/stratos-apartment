@@ -25,14 +25,14 @@ class ApartmentSeeder extends Seeder
                     'Mountains',
                     'Skiing',
                     'Trails',
-                    'Families with children'
+                    'Families with children',
                 ],
                 'amenities' => [
                     'Private kitchen' => 'Yes',
                     'Fast WiFi + Netflix' => 'Yes',
                     'Free parking' => 'Yes',
                     'Skis at the door' => 'Yes',
-                    'Dog friendly' => 'Yes'
+                    'Dog friendly' => 'Yes',
                 ],
             ],
             [
@@ -47,14 +47,14 @@ class ApartmentSeeder extends Seeder
                     'Wellness',
                     'Romantic',
                     'Vineyards',
-                    'Couples'
+                    'Couples',
                 ],
                 'amenities' => [
                     'Private kitchen' => 'Yes',
                     'Fast WiFi + Netflix' => 'Yes',
                     'Free parking' => 'Yes',
                     'Thermals nearby' => 'Yes',
-                    'Dog friendly' => 'Yes'
+                    'Dog friendly' => 'Yes',
                 ],
             ],
         ];

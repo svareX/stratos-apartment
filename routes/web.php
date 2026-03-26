@@ -3,6 +3,8 @@
 use App\Http\Controllers\Apartment\ApartmentDetailController;
 use App\Http\Controllers\FrequentlyAskedQuestionsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReservationResultController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,17 +42,9 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
         return view('pricing');
     })->name('pricing');
 
-    Route::get('/reservation', function () {
-        return view('reservation');
-    })->name('reservation');
+    Route::get('/reservation', ReservationController::class)->name('reservation');
 
-    Route::get('/reservation/success', function () {
-        if (! session('reservation_completed')) {
-            return redirect()->route('reservation');
-        }
-
-        return view('reservation-success');
-    })->name('reservation.success');
+    Route::get('/reservation/result', ReservationResultController::class)->name('reservation.result');
 
     Route::middleware([
         'auth:sanctum',

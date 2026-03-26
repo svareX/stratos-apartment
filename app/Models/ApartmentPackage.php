@@ -40,7 +40,7 @@ class ApartmentPackage extends Model
     {
         $locale = App::getLocale();
         $features = $this->features ?? [];
-        
+
         return array_map(function ($feature) use ($locale) {
             return $feature[$locale] ?? $feature['en'] ?? '';
         }, $features);

@@ -44,12 +44,12 @@ class ApartmentDetailController extends Controller
                     'title' => __('Relax and unwind,'),
                     'highlighted_title' => __('in nature.'),
                     'description' => __('Discover the beauty of the mountains right from your window.'),
-                ]
+                ],
             ];
         }
 
         $galleryPhotos = $apartment->photosOther;
-        $apartmentImages = $galleryPhotos->map(fn($photo) => Storage::url($photo->path))->toArray();
+        $apartmentImages = $galleryPhotos->map(fn ($photo) => Storage::url($photo->path))->toArray();
 
         if (empty($apartmentImages)) {
             $apartmentImages = [

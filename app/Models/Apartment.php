@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\ApartmentType;
-use App\Models\ApartmentPackage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;

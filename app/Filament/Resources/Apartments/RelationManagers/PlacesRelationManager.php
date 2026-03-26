@@ -2,13 +2,10 @@
 
 namespace App\Filament\Resources\Apartments\RelationManagers;
 
-use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DissociateAction;
-use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -84,7 +81,7 @@ class PlacesRelationManager extends RelationManager
                                     ->label(__('Name (EN)'))
                                     ->required()
                                     ->maxLength(255),
-                                
+
                                 TextInput::make('distance_text_en')
                                     ->label(__('Distance Text (EN)'))
                                     ->placeholder('e.g., 🚶 5 minutes walk')

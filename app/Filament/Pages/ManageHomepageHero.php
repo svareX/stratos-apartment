@@ -22,7 +22,7 @@ use Filament\Support\Icons\Heroicon;
 class ManageHomepageHero extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Photo;
-    
+
     protected string $view = 'filament.pages.manage-homepage-hero';
 
     public ?array $data = [];
@@ -66,7 +66,7 @@ class ManageHomepageHero extends Page
                                 ->directory('hero-images')
                                 ->required()
                                 ->columnSpan('full'),
-                            
+
                             Toggle::make('is_new')
                                 ->label(__('Show "New" badge'))
                                 ->default(false)
@@ -139,7 +139,7 @@ class ManageHomepageHero extends Page
         $record = $this->getRecord();
 
         if (! $record) {
-            $record = new HomepageSettings();
+            $record = new HomepageSettings;
         }
 
         $record->fill($data);

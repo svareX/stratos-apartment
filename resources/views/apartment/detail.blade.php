@@ -32,10 +32,10 @@
                                 <p class="max-w-xl text-white/80 mb-6" x-text="slide.description"></p>
                                 
                                 <div class="flex gap-3">
-                                    <a href="#"
+                                    <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
                                         class="flex flex-col justify-center md:hidden btn-teal px-4 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                                         __('Book') }}</a>
-                                    <a href="#"
+                                    <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
                                         class="hidden md:flex flex-col justify-center btn-teal px-6 py-3 rounded-xl font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                                         __('Book') }} →</a>
                                     <a href="#"
@@ -315,7 +315,7 @@
                                 <span class="text-sm text-[rgba(255,255,255,0.6)] mb-3">
                                     {{ __('2 nights + 2 admissions to Therme Laa + welcome set (vine, candles, towels). Ideal for couples\' getaway') }}
                                 </span>
-                                <a href="#" class="flex flex-col justify-center w-fit text-sm btn-teal px-8 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">
+                                <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}" class="flex flex-col justify-center w-fit text-sm btn-teal px-8 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">
                                     {{ __('Book') }}
                                 </a>
                             </div>
@@ -910,7 +910,7 @@
                 <p class="text-muted mt-2">{{ __('Directly with us – no commission,') }}<br> {{ __('with a personal touch.') }}</p>
             </div>
             <div class="cta-btns flex gap-4">
-                <a href="#"
+                <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
                     class="btn-teal px-5 sm:px-7 lg:px-10 pt-2 pb-1 sm:py-2 md:py-3 rounded-xl text-sm sm:text-base font-normal sm:font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                     __('Book') }}</a>
                 <a href="#"
