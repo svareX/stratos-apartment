@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('apartment_packages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('apartment_id')->constrained('apartments')->onDelete('cascade');
-            
+
             $table->string('name_en')->nullable();
             $table->string('name_cs')->nullable();
             $table->string('name_de')->nullable();
-            
+
             $table->json('features')->nullable();
-            
+
             $table->double('price', 8, 2)->default(0);
             $table->string('icon')->nullable();
-            
+
             $table->timestamps();
         });
     }

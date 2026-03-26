@@ -22,7 +22,7 @@ class HomeController extends Controller
         $locale = App::getLocale();
 
         $heroSlides = array_map(function ($slide) use ($locale) {
-            if (!empty($slide['image'])) {
+            if (! empty($slide['image'])) {
                 $slide['image_url'] = Storage::url($slide['image']);
             }
 
@@ -48,7 +48,7 @@ class HomeController extends Controller
                     'title' => __('Relax and unwind,'),
                     'highlighted_title' => __('in nature.'),
                     'description' => __('Discover the beauty of the mountains right from your window.'),
-                ]
+                ],
             ];
         }
 

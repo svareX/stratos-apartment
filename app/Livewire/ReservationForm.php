@@ -79,9 +79,9 @@ class ReservationForm extends Component
         $this->displayYear = $now->year;
 
         $rq = request();
-        
+
         $this->apartment_id = $rq->query('apartment_id');
-        
+
         if ($this->apartment_id) {
             $this->updateApartmentDetails();
             $this->loadBookedDates();
@@ -90,7 +90,7 @@ class ReservationForm extends Component
         if ($rq->filled('start_date')) {
             $this->start_date = $rq->query('start_date');
         }
-        
+
         if ($rq->filled('end_date')) {
             $this->end_date = $rq->query('end_date');
         }
@@ -120,6 +120,7 @@ class ReservationForm extends Component
     {
         if (! $this->apartment_id) {
             $this->bookedDates = [];
+
             return;
         }
 
@@ -184,7 +185,7 @@ class ReservationForm extends Component
 
     public function selectDate($date)
     {
-        if (!$this->apartment_id) {
+        if (! $this->apartment_id) {
             return;
         }
 
@@ -207,6 +208,7 @@ class ReservationForm extends Component
                     if (in_array($tempDate->toDateString(), $this->bookedDates)) {
                         $this->start_date = $date;
                         $this->end_date = null;
+
                         return;
                     }
                     $tempDate->addDay();
@@ -228,6 +230,7 @@ class ReservationForm extends Component
     public function cleaningApplies()
     {
         $n = $this->nights();
+
         return $n > 0 && $n <= 3;
     }
 
@@ -253,10 +256,12 @@ class ReservationForm extends Component
         if ($this->step === 1) {
             if (! $this->apartment_id) {
                 $this->addError('apartment_id', __('Please select an apartment.'));
+
                 return;
             }
             if (! $this->start_date || ! $this->end_date) {
                 $this->addError('dates', __('Please select a date from and to.'));
+
                 return;
             }
         }

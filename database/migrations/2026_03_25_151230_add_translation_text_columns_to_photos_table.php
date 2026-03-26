@@ -35,7 +35,7 @@ return new class extends Migration
                 'is_new',
                 'title_en', 'title_cs', 'title_de',
                 'highlighted_title_en', 'highlighted_title_cs', 'highlighted_title_de',
-                'description_en', 'description_cs', 'description_de'
+                'description_en', 'description_cs', 'description_de',
             ]);
         });
     }

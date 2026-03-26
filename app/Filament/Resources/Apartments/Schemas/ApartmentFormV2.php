@@ -117,7 +117,7 @@ class ApartmentFormV2
                                             ->image()
                                             ->required()
                                             ->columnSpan('full'),
-                                        
+
                                         Toggle::make('is_new')
                                             ->label(__('Show "New" badge'))
                                             ->default(false)

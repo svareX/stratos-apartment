@@ -33,7 +33,7 @@ class ReservationCalendarWidget extends Widget
         $colors = ['#ef4444', '#8bc34a', '#9c27b0', '#00bcd4', '#ff9800', '#2196f3', '#e91e63', '#3f51b5', '#009688'];
         $apartments = Apartment::all();
 
-        foreach($apartments as $index => $apt) {
+        foreach ($apartments as $index => $apt) {
             $this->apartmentColors[$apt->id] = $colors[$index % count($colors)];
         }
 

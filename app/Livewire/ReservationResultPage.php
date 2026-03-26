@@ -14,7 +14,7 @@ class ReservationResultPage extends Component
     {
         if (session()->has('reservation_completed')) {
             $this->success = true;
-            session()->forget('reservation_completed'); 
+            session()->forget('reservation_completed');
         } else {
             $this->success = false;
         }

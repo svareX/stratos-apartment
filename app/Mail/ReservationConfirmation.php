@@ -24,7 +24,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('Reservation Confirmation') . ' - ' . config('app.name', 'Apartmán Stratos'),
+            subject: __('Reservation Confirmation').' - '.config('app.name', 'Apartmán Stratos'),
         );
     }
 

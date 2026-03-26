@@ -2,20 +2,15 @@
 
 namespace App\Filament\Resources\Apartments\RelationManagers;
 
-use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DissociateAction;
-use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -46,7 +41,7 @@ class PackagesRelationManager extends RelationManager
                     ->suffix(__('CZK'))
                     ->required()
                     ->columnSpan(1),
-                
+
                 TextInput::make('icon')
                     ->label(__('Icon (Emoji / Text)'))
                     ->required()
@@ -61,11 +56,11 @@ class PackagesRelationManager extends RelationManager
                             ->label(__('Name (EN)'))
                             ->required()
                             ->maxLength(255),
-                        
+
                         TextInput::make('name_cs')
                             ->label(__('Name (CS)'))
                             ->maxLength(255),
-                            
+
                         TextInput::make('name_de')
                             ->label(__('Name (DE)'))
                             ->maxLength(255),
@@ -79,10 +74,10 @@ class PackagesRelationManager extends RelationManager
                         TextInput::make('en')
                             ->label(__('Feature (EN)'))
                             ->required(),
-                            
+
                         TextInput::make('cs')
                             ->label(__('Feature (CS)')),
-                            
+
                         TextInput::make('de')
                             ->label(__('Feature (DE)')),
                     ])
@@ -97,12 +92,12 @@ class PackagesRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('icon')
                     ->label(__('Icon')),
-                
+
                 TextColumn::make('name_en')
                     ->label(__('Name (EN)'))
                     ->searchable()
                     ->sortable(),
-                
+
                 TextColumn::make('price')
                     ->label(__('Price'))
                     ->numeric()

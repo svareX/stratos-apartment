@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('places', function (Blueprint $table) {
             $table->id();
             $table->foreignId('apartment_id')->constrained('apartments')->onDelete('cascade');
-            
+
             $table->string('name_en')->nullable();
             $table->string('name_cs')->nullable();
             $table->string('name_de')->nullable();
-            
+
             $table->text('description_en')->nullable();
             $table->text('description_cs')->nullable();
             $table->text('description_de')->nullable();
@@ -26,15 +26,15 @@ return new class extends Migration
             $table->string('distance_text_en')->nullable();
             $table->string('distance_text_cs')->nullable();
             $table->string('distance_text_de')->nullable();
-            
+
             $table->string('icon')->nullable();
             $table->string('image')->nullable();
-            
+
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            
+
             $table->string('url')->nullable();
-            
+
             $table->timestamps();
         });
     }
