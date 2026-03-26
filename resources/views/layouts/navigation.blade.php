@@ -61,10 +61,10 @@
                     </div>
                 </div>
 
-                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</span>
-                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</span>
-                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</span>
-                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Contact') }}</span>
+                <a href="#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</a>
+                <a href="#nearby" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</a>
+                <a href="#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</a>
+                <a href="#cta" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Contact') }}</a>
             </div>
         @endif
     </div>

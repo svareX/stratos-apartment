@@ -13,12 +13,12 @@
     --font-mono: "IBM Plex Mono", ui-monospace;
 
     --color-purple: #4B2EA2;
-    --color-purple-mid: #6B47C8;
-    --color-purple-pale: #F0ECFF;
-    --color-purple-ghost: #F8F6FF;
+    --color-purpleMid: #6B47C8;
+    --color-purplePale: #F0ECFF;
+    --color-purpleGhost: #F8F6FF;
     --color-teal: #00C9A7;
-    --color-teal-d: #00A88C;
-    --color-teal-l: #E0FAF5;
+    --color-tealD: #00A88C;
+    --color-tealL: #E0FAF5;
     --color-red: #E53935;
     --color-navy: #1A0A3B;
     --color-text: #1C1530;
@@ -102,6 +102,10 @@ button[data-flux-accordion-heading] {
     --border: #E2DCF5; --white: #FFFFFF; --cream: #FDFCFF; --gray: #F5F3FA;
 }
 
+* {
+    scroll-behavior: smooth;
+}
+
 [x-cloak] { display: none; }
 
 .bg-cream { background: var(--cream) !important; }
@@ -137,3 +141,162 @@ button[data-flux-accordion-heading] {
 .text-smm { font-size: 16px; line-height: 1.6; }
 .text-25xl { font-size: 26px; }
 .bg-review { background: linear-gradient(135deg,var(--navy) 0%,#2D1B6B 100%); }
+
+.calendar {
+    --cell-border: rgba(0,0,0,0.08);
+    --cell-hover: rgba(0,0,0,0.03);
+}
+.calendar-header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 0.75rem;
+}
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #f7f7fb;
+    border: 1px solid var(--cell-border);
+    border-bottom: none;
+}
+.calendar-weekdays .weekday {
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 12px;
+    color: #4b5563;
+    border-right: 1px solid var(--cell-border);
+}
+.calendar-weekdays .weekday:last-child { border-right: none; }
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border: 1px solid var(--cell-border);
+}
+.calendar-cell {
+    min-height: 84px;
+    padding: 8px;
+    border-right: 1px solid var(--cell-border);
+    border-bottom: 1px solid var(--cell-border);
+    background: #ffffff;
+    transition: background 120ms ease, transform 100ms ease;
+}
+.calendar-cell:hover {
+    background: var(--cell-hover);
+    transform: translateY(-3px);
+}
+.calendar-cell .date {
+    font-weight: 600;
+    font-size: 14px;
+}
+.calendar-cell.booked {
+    position: relative;
+    background: linear-gradient(90deg, rgba(65,76,232,0.18), rgba(65,76,232,0.10));
+    border-left: 3px solid rgba(65,76,232,0.4);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+    cursor: not-allowed;
+}
+
+.calendar-cell.booked::after {
+    content: "Booked";
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--color-primary);
+    color: #2600be;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    opacity: 0.95;
+}
+
+.calendar-cell.booked:hover {
+    background: linear-gradient(90deg, rgba(65,76,232,0.22), rgba(65,76,232,0.12));
+    transform: none;
+}
+
+.calendar-cell:not(.booked) { cursor: pointer; }
+.calendar-legend { margin-top: 0.75rem; display:flex; gap:1rem; align-items:center; }
+.calendar-legend .dot { width:12px; height:12px; display:inline-block; border-radius:2px; }
+
+.home-bg {
+    background: linear-gradient(180deg, var(--purpleMid) 0%, #2d1b6b 60%, #0f1724 100%);
+    min-height: 100vh;
+    color: var(--white);
+}
+
+.page-switcher { position: sticky; top: 0; z-index: 60; background: white; border-bottom: 1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 56px; height:60px; }
+.stab { padding:8px 16px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; border:1.5px solid var(--border); background:transparent; color:var(--muted); }
+.stab.active { background:var(--purple); color:var(--white); border-color:var(--purple); }
+
+.apt-slides { display:flex; height:100%; transition:transform .6s cubic-bezier(.4,0,.2,1); }
+.apt-slide { min-width:100%; height:100%; position:relative; }
+.apt-slide .sc-r1 { position:absolute; inset:0; background-size:cover; background-position:center; filter:contrast(.95) saturate(1.05); }
+.apt-slide-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,5,30,.85) 0%, rgba(10,5,30,.15) 55%, transparent 100%); }
+.apt-slide-content { padding-right:72px; z-index:20; max-width:720px; }
+.apt-slide-content h1 { font-family:'Playfair Display',serif; font-size:clamp(36px,6vw,64px); color:var(--white); line-height:1.05; margin-bottom:12px; }
+.apt-slide-content h1 em { font-style:italic; color:var(--teal); }
+.apt-slide-content p { font-size:16px; color:rgba(255,255,255,.75); max-width:520px; margin-bottom:18px; }
+
+.c-arrow { position:absolute; top:50%; transform:translateY(-50%); z-index:30; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(6px); cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; }
+
+/* Gallery overlap */
+.gallery { padding:0 72px 0; margin-top:-1px; }
+.gallery-inner { display:grid; grid-template-columns:2fr 1fr 1fr; grid-template-rows:200px 200px; gap:8px; border-radius:0 0 20px 20px; overflow:hidden; margin-top:-120px; }
+.gi { position:relative; overflow:hidden; cursor:pointer; }
+.gi img { width:100%; height:100%; object-fit:cover; display:block; }
+.gi-more { position:absolute; inset:0; background:rgba(75,46,162,.9); display:flex; align-items:center; justify-content:center; color:white; font-size:15px; font-weight:700; }
+
+.widget-card .cal-wrapper { width:260px; }
+
+/* CTA bottom */
+.apt-cta { padding:64px 72px; background:var(--purplePale); display:flex; align-items:center; justify-content:space-between; gap:40px; margin-top:40px; border-radius:10px; }
+
+/* Fonts */
+body { font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+
+/* Primary / Secondary helpers used across components */
+.bg-primary { background: var(--purple) !important; }
+.text-primary { color: var(--purple) !important; }
+.bg-secondary { background: var(--tealL) !important; }
+.text-secondary { color: var(--tealD) !important; }
+.border-primary { border-color: var(--purple) !important; }
+.text-white-strong { color: var(--white) !important; }
+
+/* Lightbox / modal tweaks for image carousel */
+.lightbox-backdrop { background: linear-gradient(180deg, rgba(10,5,30,0.85), rgba(10,5,30,0.9)); }
+.lightbox-img { max-height: 86vh; max-width: 86vw; object-fit:contain; border-radius:12px; }
+
+/* Improve skeleton look on large gallery */
+.flux-skeleton.h-lg { height: 100%; min-height: 200px; }
+
+/* Buttons */
+.btn-pri { background: var(--teal); color: var(--white); font-weight:700; padding:12px 20px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; }
+.btn-gho { background: rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); padding:10px 18px; border-radius:10px; }
+
+/* Section titles */
+.sec-title { font-family:'Playfair Display',serif; font-size:24px; color:var(--navy); margin-bottom:8px; }
+.sec-sub { font-size:15px; color:var(--muted); margin-bottom:20px; }
+
+.card-shadow {
+    box-shadow: 0 4px 24px rgba(75,46,162,0.1);
+}
+
+.bg-review {
+    background: linear-gradient(135deg,var(--navy) 0%,#2D1B6B 100%);
+}
+
+.teal-shadow {
+    box-shadow: 0 6px 24px rgba(0,201,167,0.35);
+}
+
+.bg-urgent {
+    background: linear-gradient(90deg, rgba(0,201,167,0.08), transparent);
+}
+
+.bg-spa {
+    background: linear-gradient(135deg,#04101e 0%,#071828 100%);
+}
+
+.bg-skiing {
+    background: linear-gradient(135deg,#0a1f3d 0%,#0f2d52 100%);
+}

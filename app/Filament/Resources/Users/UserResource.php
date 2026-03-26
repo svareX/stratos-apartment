@@ -31,6 +31,11 @@ class UserResource extends Resource
     {
         return __('Users');
     }
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Main');
+    }
 
     public static function form(Schema $schema): Schema
     {
