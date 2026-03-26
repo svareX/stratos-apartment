@@ -365,94 +365,141 @@
             </div>
         </section>
 
-        <section class="bg-skiing w-full" id="about">
-            <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
-                <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
-                <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
-                <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
-                    <span>
-                        {{ __('Direct access to ski slopes, cross-country trails, and hiking trails. Filter by difficulty.') }}
-                    </span>
-                </p>
+            @if ($apartment->hikes && $apartment->hikes->isNotEmpty())
+                <section class="bg-skiing w-full" id="hikes">
+                    <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
+                        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                        <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
+                        <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
+                            <span>
+                                {{ __('Direct access to ski slopes, cross-country trails, and hiking trails. Filter by difficulty.') }}
+                            </span>
+                        </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
-                    <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
-                        <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(0,201,167,.15)] w-fit rounded-2xl">
-                            <span class="text-xxs">
-                                🟢
-                            </span>
-                            <span class="text-teal text-xxs font-bold uppercase">
-                                {{ __('Easy') }}
-                            </span>
-                        </div>
-                        <span class="text-white text-sm font-bold mb-1">
-                            {{ __('Rejvíz Circuit') }}
-                        </span>
-                        <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
-                            <span>
-                                {{ __('8 km') }}
-                            </span>
-                            <span>
-                                {{ __('↑ 150 m') }}
-                            </span>
-                            <span>
-                                {{ __('For families') }}
-                            </span>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
+                            @foreach ($apartment->hikes as $hike)
+                                <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                                    <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 w-fit rounded-2xl {{ $hike->difficulty->bgColor() }}">
+                                        <span class="text-xxs">
+                                            {{ $hike->difficulty->icon() }}
+                                        </span>
+                                        <span class="text-xxs font-bold uppercase {{ $hike->difficulty->textColor() }}">
+                                            {{ $hike->difficulty->label() }}
+                                        </span>
+                                    </div>
+                                    <span class="text-white text-sm font-bold mb-1">
+                                        {{ $hike->name }}
+                                    </span>
+                                    <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                                        <span>
+                                            {{ $hike->length }} {{ __('km') }}
+                                        </span>
+                                        @if ($hike->distance_tx)
+                                            <span>
+                                                {{ $hike->distance_tx }}
+                                            </span>
+                                        @endif
+                                        @if ($hike->is_for_families)
+                                            <span>
+                                                {{ __('For families') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
+                </section>
+            @else
+                <section class="bg-skiing w-full" id="about">
+                    <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
+                        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                        <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
+                        <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
+                            <span>
+                                {{ __('Direct access to ski slopes, cross-country trails, and hiking trails. Filter by difficulty.') }}
+                            </span>
+                        </p>
 
-                    <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
-                        <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(255,200,50,.12)] w-fit rounded-2xl">
-                            <span class="text-xxs">
-                                🟡
-                            </span>
-                            <span class="text-[#ffd166] text-xxs font-bold uppercase">
-                                {{ __('Medium') }}
-                            </span>
-                        </div>
-                        <span class="text-white text-sm font-bold mb-1">
-                            {{ __('The Jeseníky Ridge') }}
-                        </span>
-                        <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
-                            <span>
-                                {{ __('8 km') }}
-                            </span>
-                            <span>
-                                {{ __('↑ 150 m') }}
-                            </span>
-                            <span>
-                                {{ __('For families') }}
-                            </span>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
+                            <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                                <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(0,201,167,.15)] w-fit rounded-2xl">
+                                    <span class="text-xxs">
+                                        🟢
+                                    </span>
+                                    <span class="text-teal text-xxs font-bold uppercase">
+                                        {{ __('Easy') }}
+                                    </span>
+                                </div>
+                                <span class="text-white text-sm font-bold mb-1">
+                                    {{ __('Rejvíz Circuit') }}
+                                </span>
+                                <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                                    <span>
+                                        {{ __('8 km') }}
+                                    </span>
+                                    <span>
+                                        {{ __('↑ 150 m') }}
+                                    </span>
+                                    <span>
+                                        {{ __('For families') }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                                <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(255,200,50,.12)] w-fit rounded-2xl">
+                                    <span class="text-xxs">
+                                        🟡
+                                    </span>
+                                    <span class="text-[#ffd166] text-xxs font-bold uppercase">
+                                        {{ __('Medium') }}
+                                    </span>
+                                </div>
+                                <span class="text-white text-sm font-bold mb-1">
+                                    {{ __('The Jeseníky Ridge') }}
+                                </span>
+                                <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                                    <span>
+                                        {{ __('8 km') }}
+                                    </span>
+                                    <span>
+                                        {{ __('↑ 150 m') }}
+                                    </span>
+                                    <span>
+                                        {{ __('For families') }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
+                                <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(229,57,53,.12)] w-fit rounded-2xl">
+                                    <span class="text-xxs">
+                                        🔴
+                                    </span>
+                                    <span class="text-[#ef9a9a] text-xxs font-bold uppercase">
+                                        {{ __('Hard') }}
+                                    </span>
+                                </div>
+                                <span class="text-white text-sm font-bold mb-1">
+                                    {{ __('Praděd from Ramzová') }}
+                                </span>
+                                <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
+                                    <span>
+                                        {{ __('8 km') }}
+                                    </span>
+                                    <span>
+                                        {{ __('↑ 150 m') }}
+                                    </span>
+                                    <span>
+                                        {{ __('For families') }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="flex flex-col p-5 rounded-xl bg-[rgba(255,255,255,.06)] border-[1px] border-[rgba(255,255,255,.1)]">
-                        <div class="flex gap-x-1 py-[2.5px] mb-3 px-3 bg-[rgba(229,57,53,.12)] w-fit rounded-2xl">
-                            <span class="text-xxs">
-                                🔴
-                            </span>
-                            <span class="text-[#ef9a9a] text-xxs font-bold uppercase">
-                                {{ __('Hard') }}
-                            </span>
-                        </div>
-                        <span class="text-white text-sm font-bold mb-1">
-                            {{ __('Praděd from Ramzová') }}
-                        </span>
-                        <div class="flex gap-x-3 text-xxs text-[rgba(255,255,255,.45)] font-semibold">
-                            <span>
-                                {{ __('8 km') }}
-                            </span>
-                            <span>
-                                {{ __('↑ 150 m') }}
-                            </span>
-                            <span>
-                                {{ __('For families') }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </section>
+            @endif
     @endif
 
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="nearby">

@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class PackagesRelationManager extends RelationManager
 {
@@ -31,12 +32,18 @@ class PackagesRelationManager extends RelationManager
         return __('Packages');
     }
 
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Packages');
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
                 TextInput::make('price')
                     ->label(__('Price'))
+                    ->placeholder(__('Enter price'))
                     ->numeric()
                     ->suffix(__('CZK'))
                     ->required()
@@ -44,6 +51,7 @@ class PackagesRelationManager extends RelationManager
 
                 TextInput::make('icon')
                     ->label(__('Icon (Emoji / Text)'))
+                    ->placeholder(__('Enter icon or emoji'))
                     ->required()
                     ->maxLength(255)
                     ->columnSpan(1),
@@ -54,15 +62,18 @@ class PackagesRelationManager extends RelationManager
                     ->schema([
                         TextInput::make('name_en')
                             ->label(__('Name (EN)'))
+                            ->placeholder(__('Enter name (EN)'))
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('name_cs')
                             ->label(__('Name (CS)'))
+                            ->placeholder(__('Enter name (CS)'))
                             ->maxLength(255),
 
                         TextInput::make('name_de')
                             ->label(__('Name (DE)'))
+                            ->placeholder(__('Enter name (DE)'))
                             ->maxLength(255),
                     ]),
 
@@ -73,13 +84,16 @@ class PackagesRelationManager extends RelationManager
                     ->schema([
                         TextInput::make('en')
                             ->label(__('Feature (EN)'))
+                            ->placeholder(__('Enter feature (EN)'))
                             ->required(),
 
                         TextInput::make('cs')
-                            ->label(__('Feature (CS)')),
+                            ->label(__('Feature (CS)'))
+                            ->placeholder(__('Enter feature (CS)')),
 
                         TextInput::make('de')
-                            ->label(__('Feature (DE)')),
+                            ->label(__('Feature (DE)'))
+                            ->placeholder(__('Enter feature (DE)')),
                     ])
                     ->reorderable()
                     ->addActionLabel(__('Add Feature')),
