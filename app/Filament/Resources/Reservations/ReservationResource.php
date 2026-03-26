@@ -18,7 +18,7 @@ class ReservationResource extends Resource
 {
     protected static ?string $model = Reservation::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::Banknotes;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function getModelLabel(): string
     {
@@ -28,11 +28,6 @@ class ReservationResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('Reservations');
-    }
-
-    public static function getNavigationGroup(): ?string
-    {
-        return __('Main');
     }
 
     public static function form(Schema $schema): Schema

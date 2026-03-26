@@ -112,59 +112,11 @@ class ApartmentFormV2
                                     ->relationship('photosMain')
                                     ->reorderable('position')
                                     ->schema([
-                                        FileUpload::make('path')
-                                            ->label(__('Photo'))
-                                            ->image()
-                                            ->required()
-                                            ->columnSpan('full'),
-
-                                        Toggle::make('is_new')
-                                            ->label(__('Show "New" badge'))
-                                            ->default(false)
-                                            ->columnSpan('full'),
-
-                                        Tabs::make('Translations')
-                                            ->columnSpan('full')
-                                            ->tabs([
-                                                Tab::make(__('English'))
-                                                    ->icon('heroicon-m-language')
-                                                    ->schema([
-                                                        TextInput::make('title_en')
-                                                            ->label(__('Main Title (EN)')),
-                                                        TextInput::make('highlighted_title_en')
-                                                            ->label(__('Highlighted Title Part (EN)')),
-                                                        Textarea::make('description_en')
-                                                            ->label(__('Description (EN)'))
-                                                            ->rows(3),
-                                                    ]),
-                                                Tab::make(__('Czech'))
-                                                    ->icon('heroicon-m-language')
-                                                    ->schema([
-                                                        TextInput::make('title_cs')
-                                                            ->label(__('Main Title (CS)')),
-                                                        TextInput::make('highlighted_title_cs')
-                                                            ->label(__('Highlighted Title Part (CS)')),
-                                                        Textarea::make('description_cs')
-                                                            ->label(__('Description (CS)'))
-                                                            ->rows(3),
-                                                    ]),
-                                                Tab::make(__('German'))
-                                                    ->icon('heroicon-m-language')
-                                                    ->schema([
-                                                        TextInput::make('title_de')
-                                                            ->label(__('Main Title (DE)')),
-                                                        TextInput::make('highlighted_title_de')
-                                                            ->label(__('Highlighted Title Part (DE)')),
-                                                        Textarea::make('description_de')
-                                                            ->label(__('Description (DE)'))
-                                                            ->rows(3),
-                                                    ]),
-                                            ]),
-
+                                        FileUpload::make('path')->label(__('Photo'))->image()->required(),
+                                        TextInput::make('tag')->label(__('Tag'))->maxLength(50)->placeholder(__('Enter a tag')),
                                         Hidden::make('is_main')->default(true),
                                         Hidden::make('position'),
                                     ])
-                                    ->columns(2)
                                     ->addActionLabel(__('Add main photo')),
                             ]),
 
