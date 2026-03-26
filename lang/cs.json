@@ -295,5 +295,10 @@
     "Session expired": "Platnost relace vypršela",
     "We could not verify your reservation. Please try again or contact us.": "Nepodařilo se nám ověřit vaši rezervaci. Zkuste to prosím znovu nebo nás kontaktujte.",
     "New reservation": "Nová rezervace",
-    "All apartments": "Všechny apartmány"
+    "All apartments": "Všechny apartmány",
+    "Reservation Update": "Aktualizace rezervace",
+    "The status of your reservation has been updated.": "Stav vaší rezervace byl aktualizován.",
+    "New Status": "Nový stav",
+    "Navigate to Apartment": "Navigovat k apartmánu",
+    "If you have any questions, feel free to reply directly to this email.": "Pokud máte jakékoliv dotazy, neváhejte odpovědět přímo na tento e-mail."
 }

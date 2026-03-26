@@ -295,5 +295,10 @@
     "Session expired": "Sitzung abgelaufen",
     "We could not verify your reservation. Please try again or contact us.": "Wir konnten Ihre Reservierung nicht überprüfen. Bitte versuchen Sie es erneut oder kontaktieren Sie uns.",
     "New reservation": "Neue Reservierung",
-    "All apartments": "Alle Apartments"
+    "All apartments": "Alle Apartments",
+    "Reservation Update": "Reservierungs-Update",
+    "The status of your reservation has been updated.": "Der Status Ihrer Reservierung wurde aktualisiert.",
+    "New Status": "Neuer Status",
+    "Navigate to Apartment": "Zum Apartment navigieren",
+    "If you have any questions, feel free to reply directly to this email.": "Wenn Sie Fragen haben, können Sie gerne direkt auf diese E-Mail antworten."
 }

@@ -4,11 +4,13 @@ namespace App\Livewire;
 
 use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
+use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -294,6 +296,8 @@ class ReservationForm extends Component
             'status' => ReservationStatus::Pending,
             'booking_source' => BookingSource::Local,
         ]);
+
+        Mail::to($user->email)->queue(new ReservationConfirmation($reservation));
 
         session()->put('reservation_completed', true);
         $this->redirectRoute('reservation.result', navigate: true);
