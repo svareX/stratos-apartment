@@ -16,10 +16,10 @@
                 
                 <div class="col-span-2 bg-white p-6 rounded-lg border border-border">
                     
-                    <div class="mb-8 p-5 bg-purpleGhost rounded-xl border border-purplePale">
+                    <div class="mb-8 p-5 bg-purpleGhost rounded-xl border {{ $errors->has('apartment_id') ? 'border-red' : 'border-purplePale' }}">
                         <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-tight">{{ __('Select Apartment') }}</label>
                         <div class="relative">
-                            <select wire:model.live="apartment_id" class="w-full rounded-lg border border-border px-4 py-3 bg-white text-navy focus:border-primary focus:ring-primary appearance-none cursor-pointer">
+                            <select wire:model.live="apartment_id" class="w-full rounded-lg border px-4 py-3 bg-white text-navy appearance-none cursor-pointer transition-colors {{ $errors->has('apartment_id') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}">
                                 <option value="">{{ __('Select an apartment...') }}</option>
                                 @foreach($apartments as $apt)
                                     <option value="{{ $apt->id }}">{{ $apt->name }}</option>
@@ -27,7 +27,12 @@
                             </select>
                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-purple pointer-events-none">▼</span>
                         </div>
-                        @error('apartment_id') <span class="text-red-500 text-sm mt-2 block">{{ $message }}</span> @enderror
+                        @error('apartment_id')
+                            <p class="text-red text-xs mt-2 flex items-center gap-1 font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     
                     <div class="transition-all duration-500 ease-in-out {{ $apartment_id ? 'opacity-100 translate-y-0' : 'opacity-30 pointer-events-none -translate-y-2' }}">
@@ -40,7 +45,7 @@
                             <div class="text-sm text-muted">{{ __('Tip: pick start and end dates') }}</div>
                         </div>
 
-                        <div class="calendar w-full bg-white">
+                        <div class="calendar w-full bg-white rounded-lg {{ $errors->has('dates') ? 'ring-2 ring-red ring-offset-2' : '' }}">
                             <div class="calendar-weekdays grid grid-cols-7 mb-2">
                                 @foreach([__('Mo'), __('Tu'), __('We'), __('Th'), __('Fr'), __('Sa'), __('Su')] as $dayName)
                                     <div class="text-center text-xs font-bold text-muted uppercase py-2">{{ $dayName }}</div>
@@ -76,7 +81,12 @@
                                 @endforeach
                             </div>
                         </div>
-                        @error('dates') <span class="text-red-500 text-sm mt-2 block">{{ $message }}</span> @enderror
+                        @error('dates')
+                            <p class="text-red text-xs mt-3 flex items-center justify-center gap-1 font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                 </div>
 
@@ -144,43 +154,83 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('First name') }}</label>
-                        <input type="text" wire:model.defer="first_name" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('first_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="first_name" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('first_name') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('first_name')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('Last name') }}</label>
-                        <input type="text" wire:model.defer="last_name" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('last_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="last_name" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('last_name') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('last_name')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('Email') }}</label>
-                        <input type="email" wire:model.defer="email" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="email" wire:model.defer="email" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('email') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('email')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('Phone') }}</label>
-                        <input type="text" wire:model.defer="phone" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="phone" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('phone') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('phone')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('Address') }}</label>
-                        <input type="text" wire:model.defer="address" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('address') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="address" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('address') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('address')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('City') }}</label>
-                        <input type="text" wire:model.defer="city" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('city') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="city" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('city') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('city')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('ZIP code') }}</label>
-                        <input type="text" wire:model.defer="postal_code" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('postal_code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="postal_code" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('postal_code') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('postal_code')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-bold text-primary mb-1 uppercase tracking-tight">{{ __('Country') }}</label>
-                        <input type="text" wire:model.defer="country" class="w-full rounded-lg border border-border px-3 py-2 bg-white text-navy focus:border-primary focus:ring-primary" />
-                        @error('country') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <input type="text" wire:model.defer="country" class="w-full rounded-lg border px-3 py-2 bg-white text-navy transition-colors {{ $errors->has('country') ? 'border-red focus:border-red focus:ring-red' : 'border-border focus:border-primary focus:ring-primary' }}" />
+                        @error('country')
+                            <p class="text-red text-xs mt-1.5 flex items-center gap-1 font-medium">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                 </div>
 

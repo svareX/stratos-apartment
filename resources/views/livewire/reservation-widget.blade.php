@@ -100,7 +100,7 @@
                 </div>
 
                 <div class="col-span-2">
-                    <button type="button" wire:click="goToReservation" class="w-full inline-flex justify-center px-4 py-3 rounded-xl bg-teal teal-shadow text-white font-bold duration-300 transition-all hover:bg-tealD">
+                    <button type="button" wire:click="goToReservation" class="w-full inline-flex justify-center px-4 py-3 rounded-xl bg-teal teal-shadow text-white font-bold duration-300 transition-all hover:bg-tealD hover:cursor-pointer">
                         {{ __('Check availability') }}
                     </button>
                 </div>
@@ -112,12 +112,12 @@
         </div>
     </div>
 
-    <div x-show="open" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center px-4">
+    <div x-show="open" x-cloak class="fixed inset-0 z-100 flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" @click="open = false"></div>
         <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-border" @click.stop>
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-serif text-xl text-navy">{{ __('Guests') }}</h3>
-                <button @click="open = false" class="text-muted hover:text-navy text-2xl">&times;</button>
+                <button @click="open = false" class="text-muted hover:text-navy text-2xl hover:cursor-pointer">&times;</button>
             </div>
             <div class="space-y-6">
                 <div class="flex items-center justify-between">
@@ -125,10 +125,10 @@
                         <p class="font-bold text-sm text-navy">{{ __('Adults') }}</p>
                         <p class="text-xs text-muted">{{ __('Age 13+') }}</p>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <button type="button" wire:click="$set('adults', {{ max(1, $adults - 1) }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center">-</button>
+                    <div class="flex items-center gap-4 text-navy">
+                        <button type="button" wire:click="$set('adults', {{ max(1, $adults - 1) }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-gray duration-300 hover:cursor-pointer">-</button>
                         <span class="font-bold w-4 text-center">{{ $adults }}</span>
-                        <button type="button" wire:click="$set('adults', {{ $adults + 1 }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center">+</button>
+                        <button type="button" wire:click="$set('adults', {{ $adults + 1 }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-gray duration-300 hover:cursor-pointer">+</button>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -136,21 +136,21 @@
                         <p class="font-bold text-sm text-navy">{{ __('Children') }}</p>
                         <p class="text-xs text-muted">{{ __('Age 0-12') }}</p>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <button type="button" wire:click="$set('children', {{ max(0, $children - 1) }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center">-</button>
+                    <div class="flex items-center gap-4 text-navy">
+                        <button type="button" wire:click="$set('children', {{ max(0, $children - 1) }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-gray duration-300 hover:cursor-pointer">-</button>
                         <span class="font-bold w-4 text-center">{{ $children }}</span>
-                        <button type="button" wire:click="$set('children', {{ $children + 1 }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center">+</button>
+                        <button type="button" wire:click="$set('children', {{ $children + 1 }})" class="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:bg-gray duration-300 hover:cursor-pointer">+</button>
                     </div>
                 </div>
                 <label class="flex items-center gap-4 p-4 bg-purpleGhost rounded-xl cursor-pointer border border-purplePale mt-4">
-                    <input type="checkbox" wire:model.live="pets" class="rounded text-teal focus:ring-teal w-6 h-6" />
+                    <flux:checkbox wire:model.live="pets" class="bg-white! border-border!" />
                     <div class="flex flex-col">
                         <span class="font-bold text-sm text-navy">{{ __("I'm bringing a dog") }} 🐶</span>
                         <span class="text-[10px] text-purple font-medium uppercase tracking-wider">{{ __('No extra charge!') }}</span>
                     </div>
                 </label>
             </div>
-            <button @click="open = false" class="w-full mt-8 py-4 bg-purple text-white rounded-xl font-bold hover:bg-purpleMid shadow-lg">
+            <button @click="open = false" class="w-full mt-8 py-4 bg-purple text-white rounded-xl font-bold hover:bg-purpleMid shadow-lg hover:cursor-pointer">
                 {{ __('Confirm selection') }}
             </button>
         </div>

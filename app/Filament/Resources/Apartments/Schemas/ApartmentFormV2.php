@@ -67,6 +67,20 @@ class ApartmentFormV2
                                 TextInput::make('base_price')
                                     ->label(__('Base price'))
                                     ->placeholder(__('Enter base price per night'))
+                                    ->suffix(__('CZK'))
+                                    ->numeric()
+                                    ->required(),
+
+                                TextInput::make('cleaning_fee')
+                                    ->label(__('Cleaning fee'))
+                                    ->placeholder(__('Enter cleaning fee (one-time charge)'))
+                                    ->suffix(__('CZK'))
+                                    ->numeric()
+                                    ->required(),
+
+                                TextInput::make('days_for_cleaning_fee')
+                                    ->label(__('Days for cleaning fee'))
+                                    ->placeholder(__('Enter number of days for cleaning fee to apply (e.g. 3 means cleaning fee applies for stays of 3 nights or less)'))
                                     ->numeric()
                                     ->required(),
 
