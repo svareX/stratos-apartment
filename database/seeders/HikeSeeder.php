@@ -60,7 +60,7 @@ class HikeSeeder extends Seeder
                 'is_for_families' => true,
             ],
         ];
-    
+
         foreach ($hikes as $hike) {
             Hike::create($hike);
         }
