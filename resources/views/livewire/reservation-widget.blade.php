@@ -8,11 +8,11 @@
         <div class="col-span-5 lg:col-span-2">
             <div class="border-[1.5px] border-border rounded-xl overflow-hidden bg-white shadow-sm">
                 <div class="bg-red text-white p-3 flex items-center justify-between">
-                    <button type="button" wire:click="prevMonth" class="hover:opacity-80 transition-all px-2 duration-200 hover:scale-150">‹</button>
+                    <button type="button" wire:click="prevMonth" class="hover:opacity-80 hover:cursor-pointer transition-all pl-2 pr-10">‹</button>
                     <span class="font-bold text-sm uppercase tracking-wide">
                         {{ $monthName }} {{ $displayYear }}
                     </span>
-                    <button type="button" wire:click="nextMonth" class="hover:opacity-80 transition-all px-2 duration-200 hover:scale-150">›</button>
+                    <button type="button" wire:click="nextMonth" class="hover:opacity-80 hover:cursor-pointer transition-all pr-2 pl-10">›</button>
                 </div>
                 <div class="grid grid-cols-7 bg-[#B71C1C] text-[10px] font-bold text-white/70 py-1 text-center">
                     <span>{{ __('Mo') }}</span><span>{{ __('Tu') }}</span><span>{{ __('We') }}</span><span>{{ __('Th') }}</span><span>{{ __('Fr') }}</span><span>{{ __('Sa') }}</span><span>{{ __('Su') }}</span>
@@ -27,9 +27,9 @@
                         @endphp
                         <div 
                             wire:click="selectDate('{{ $day['date'] }}')"
-                            class="h-10 flex items-center justify-center text-xs font-semibold transition-all duration-200 relative cursor-pointer
+                            class="h-10 flex items-center justify-center text-xs font-semibold text-navy transition-all duration-200 relative cursor-pointer
                             {{ !$day['isCurrentMonth'] ? 'opacity-20' : '' }}
-                            {{ $isSelected ? 'bg-purple text-white z-10 shadow-md scale-105' : '' }}
+                            {{ $isSelected ? 'bg-purple text-white! z-10 shadow-md scale-105' : '' }}
                             {{ $isInRange ? 'bg-purplePale text-purple' : '' }}
                             {{ !$isSelected && !$isInRange ? 'bg-white hover:bg-purpleGhost' : '' }}
                             {{ $isStart ? 'rounded-l-lg' : '' }}
@@ -46,15 +46,18 @@
         <div class="col-span-5 lg:col-span-3 mt-3 lg:mt-0">
             <div class="grid grid-cols-2 gap-4 text-black">
                 <div class="col-span-2 flex flex-col p-3 px-5 bg-gray border-[1.5px] border-border rounded-xl duration-300 transition-all hover:border-purple cursor-pointer relative"
-                     @click="$refs.locSelect.focus()">
-                    <span class="text-xxs text-muted font-bold uppercase mb-1">{{ __('Location') }}</span>
+                    @click="$refs.locSelect.focus()">
+                    <span class="text-xxs text-muted font-bold uppercase mb-1">{{ __('Apartment') }}</span>
                     <div class="flex justify-between items-center">
-                        <select x-ref="locSelect" wire:model.live="location" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
-                            <option value="Ramzová">Ramzová</option>
-                            <option value="Laa an der Thaya">Laa an der Thaya</option>
+                        <select x-ref="locSelect" wire:model.live="apartment_id" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
+                            @foreach($apartments as $apt)
+                                <option value="{{ $apt->id }}">{{ $apt->name }}</option>
+                            @endforeach
                         </select>
-                        <span class="text-[14px] text-navy font-bold">{{ $location }}</span>
-                        <span class="text-muted text-xs">▼</span>
+                        <span class="text-[14px] text-navy font-bold truncate pr-4">
+                            {{ $apartments->firstWhere('id', $apartment_id)?->name ?? __('Select') }}
+                        </span>
+                        <span class="text-purple text-xs">▼</span>
                     </div>
                 </div>
 
@@ -97,7 +100,7 @@
                 </div>
 
                 <div class="col-span-2">
-                    <button type="button" class="w-full inline-flex justify-center px-4 py-3 rounded-xl bg-teal teal-shadow text-white font-bold duration-300 transition-all hover:bg-tealD">
+                    <button type="button" wire:click="goToReservation" class="w-full inline-flex justify-center px-4 py-3 rounded-xl bg-teal teal-shadow text-white font-bold duration-300 transition-all hover:bg-tealD">
                         {{ __('Check availability') }}
                     </button>
                 </div>

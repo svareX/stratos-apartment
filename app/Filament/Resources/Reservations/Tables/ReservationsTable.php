@@ -4,17 +4,20 @@ namespace App\Filament\Resources\Reservations\Tables;
 
 use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
+use App\Mail\ReservationStatusChanged;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationsTable
 {
@@ -47,12 +50,12 @@ class ReservationsTable
 
                 TextColumn::make('check_in')
                     ->label(__('Check in'))
-                    ->date($format = 'd.m.Y')
+                    ->date('d.m.Y')
                     ->sortable(),
 
                 TextColumn::make('check_out')
                     ->label(__('Check out'))
-                    ->date($format = 'd.m.Y')
+                    ->date('d.m.Y')
                     ->sortable(),
 
                 TextColumn::make('price')
@@ -64,50 +67,6 @@ class ReservationsTable
                     ->label(__('Booking Source'))
                     ->formatStateUsing(fn ($state) => BookingSource::from($state)->label() ?? '')
                     ->sortable(),
-            ])
-            ->filters([
-            ])
-            ->recordActions([
-                EditAction::make(),
-                Action::make('updateStatus')
-                    ->label(__('Update Status'))
-                    ->icon('heroicon-o-arrow-path')
-                    ->schema([
-                        \Filament\Forms\Components\Select::make('status')
-                            ->label(__('Status'))
-                            ->options(ReservationStatus::options())
-                            ->required(),
-                    ])
-                    ->action(function ($record, array $data) {
-                        $record->status = $data['status'];
-                        $record->save();
-                    })
-                    ->modalHeading(__('Update Reservation Status'))
-                    ->successNotificationTitle(__('Status Updated Successfully'))
-                    ->failureNotificationTitle(__('Failed to Update Status')),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    BulkAction::make('updateStatus')
-                        ->label(__('Update Status'))
-                        ->icon('heroicon-o-arrow-path')
-                        ->schema([
-                            \Filament\Forms\Components\Select::make('status')
-                                ->label(__('Status'))
-                                ->options(ReservationStatus::options())
-                                ->required(),
-                        ])
-                        ->action(function ($records, array $data) {
-                            foreach ($records as $record) {
-                                $record->status = $data['status'];
-                                $record->save();
-                            }
-                        })
-                        ->modalHeading(__('Update Reservation Status for Selected'))
-                        ->successNotificationTitle(__('Status Updated Successfully'))
-                        ->failureNotificationTitle(__('Failed to Update Status')),
-                ]),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -141,6 +100,59 @@ class ReservationsTable
                             ->when($data['from'], fn (Builder $query, $date): Builder => $query->whereDate('check_out', '>=', $date))
                             ->when($data['to'], fn (Builder $query, $date): Builder => $query->whereDate('check_out', '<=', $date));
                     }),
+            ])
+            ->recordActions([
+                EditAction::make(),
+                Action::make('updateStatus')
+                    ->label(__('Update Status'))
+                    ->icon('heroicon-o-arrow-path')
+                    ->schema([
+                        Select::make('status')
+                            ->label(__('Status'))
+                            ->options(ReservationStatus::options())
+                            ->required(),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->status = $data['status'];
+                        $record->save();
+
+                        if ($record->wasChanged('status') && $record->user && $record->user->email) {
+                            Mail::to($record->user->email)->queue(new ReservationStatusChanged($record));
+                        }
+                    })
+                    ->modalHeading(__('Update Reservation Status'))
+                    ->successNotificationTitle(__('Status Updated Successfully'))
+                    ->failureNotificationTitle(__('Failed to Update Status')),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    BulkAction::make('updateStatus')
+                        ->label(__('Update Status'))
+                        ->icon('heroicon-o-arrow-path')
+                        ->schema([
+                            Select::make('status')
+                                ->label(__('Status'))
+                                ->options(ReservationStatus::options())
+                                ->required(),
+                        ])
+                        ->action(function ($records, array $data) {
+                            $delaySeconds = 0;
+
+                            foreach ($records as $record) {
+                                $record->status = $data['status'];
+                                $record->save();
+
+                                if ($record->wasChanged('status') && $record->user && $record->user->email) {
+                                    Mail::to($record->user->email)->later(now()->addSeconds($delaySeconds), new ReservationStatusChanged($record));
+                                    $delaySeconds += 10;
+                                }
+                            }
+                        })
+                        ->modalHeading(__('Update Reservation Status for Selected'))
+                        ->successNotificationTitle(__('Status Updated Successfully'))
+                        ->failureNotificationTitle(__('Failed to Update Status')),
+                ]),
             ]);
     }
 }
