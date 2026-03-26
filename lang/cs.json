@@ -247,7 +247,7 @@
     "Last update": "Poslední aktualizace",
     "Only active": "Pouze aktivní",
     "FAQ": "FAQ",
-    "Frequently asked questions": "Často kladené dotazy",
+    "Frequently asked questions.": "Často kladené dotazy.",
     "Did not find what you were looking for?": "Nenašli jste, co jste hledali?",
     "Write to us": "Napište nám",
     "General": "Obecné",
@@ -379,5 +379,8 @@
     "Address must contain a street name, not just numbers.": "Adresa musí obsahovat název ulice, nejen čísla.",
     "City cannot contain numbers or special characters.": "Město nesmí obsahovat čísla ani speciální znaky.",
     "Please enter a valid ZIP code containing at least one number.": "Zadejte prosím platné PSČ obsahující alespoň jedno číslo.",
-    "Country cannot contain numbers or special characters.": "Země nesmí obsahovat čísla ani speciální znaky."
+    "Country cannot contain numbers or special characters.": "Země nesmí obsahovat čísla ani speciální znaky.",
+    "Get in touch.": "Kontaktujte nás.",
+    "Contact details": "Kontaktní údaje",
+    "Social Media": "Sociální média"
 }

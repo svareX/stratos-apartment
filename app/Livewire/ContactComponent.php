@@ -7,11 +7,11 @@ use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class FrequentlyAskedQuestionsComponent extends Component
+class ContactComponent extends Component
 {
     public function render()
     {
-        return view('livewire.frequently-asked-questions-component', [
+        return view('livewire.contact-component', [
             'faqs' => FrequentlyAskedQuestion::where('is_active', true)
                 ->orderBy('position')
                 ->get(),
@@ -20,6 +20,6 @@ class FrequentlyAskedQuestionsComponent extends Component
 
     public function placeholder()
     {
-        return view('livewire.placeholders.frequently-asked-questions-component');
+        return view('livewire.placeholders.contact-component');
     }
 }

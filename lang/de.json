@@ -247,7 +247,7 @@
     "Last update": "Letzte Aktualisierung",
     "Only active": "Nur aktive",
     "FAQ": "FAQ",
-    "Frequently asked questions": "Häufig gestellte Fragen",
+    "Frequently asked questions.": "Häufig gestellte Fragen.",
     "Did not find what you were looking for?": "Haben Sie nicht gefunden, wonach Sie gesucht haben?",
     "Write to us": "Schreiben Sie uns",
     "General": "Allgemein",
@@ -378,5 +378,8 @@
     "Address must contain a street name, not just numbers.": "Die Adresse muss einen Straßennamen enthalten, nicht nur Zahlen.",
     "City cannot contain numbers or special characters.": "Die Stadt darf keine Zahlen oder Sonderzeichen enthalten.",
     "Please enter a valid ZIP code containing at least one number.": "Bitte geben Sie eine gültige Postleitzahl mit mindestens einer Zahl ein.",
-    "Country cannot contain numbers or special characters.": "Das Land darf keine Zahlen oder Sonderzeichen enthalten."
+    "Country cannot contain numbers or special characters.": "Das Land darf keine Zahlen oder Sonderzeichen enthalten.",
+    "Get in touch.": "Kontaktieren Sie uns.",
+    "Contact details": "Kontaktdaten",
+    "Social Media": "Soziale Medien"
 }

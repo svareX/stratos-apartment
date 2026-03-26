@@ -64,7 +64,7 @@
                 <a href="#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</a>
                 <a href="#nearby" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</a>
                 <a href="#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</a>
-                <a href="#cta" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Contact') }}</a>
+                <a href="{{ route('contact') }}" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Contact') }}</a>
             </div>
         @endif
     </div>

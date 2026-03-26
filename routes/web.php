@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Apartment\ApartmentDetailController;
-use App\Http\Controllers\FrequentlyAskedQuestionsController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationResultController;
@@ -32,7 +32,7 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
 
     Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)->name('apartments.show');
 
-    Route::get('/faq', FrequentlyAskedQuestionsController::class)->name('faq');
+    Route::get('/contact', ContactController::class)->name('contact');
 
     Route::get('/about', function () {
         return view('about');
