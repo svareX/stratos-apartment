@@ -179,7 +179,7 @@
         <div x-data="{ 
                 lightbox: false, 
                 lightboxIdx: 0, 
-                images: {{ Js::from($apartmentImages) }},
+                images: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => Storage::url($p->path))->values()) : Js::from($apartmentImages) }},
                 tags: {{ $galleryImages->count() > 0 ? Js::from($galleryImages->map(fn($p) => $p->tag ? __($p->tag) : '')->values()) : Js::from(array_fill(0, count($apartmentImages), '')) }}
             }" class="w-full">
             
