@@ -19,6 +19,36 @@ enum HikeDifficulty: string
         };
     }
 
+    public function icon(): string
+    {
+        return match ($this) {
+            self::Easy => '🟢',
+            self::Medium => '🟡',
+            self::Hard => '🔴',
+            self::Extreme => '⚫',
+        };
+    }
+
+    public function textColor(): string
+    {
+        return match ($this) {
+            self::Easy => 'text-teal',
+            self::Medium => 'text-[#ffd166]',
+            self::Hard => 'text-[#ef9a9a]',
+            self::Extreme => 'text-gray-300',
+        };
+    }
+
+    public function bgColor(): string
+    {
+        return match ($this) {
+            self::Easy => 'bg-[rgba(0,201,167,.15)]',
+            self::Medium => 'bg-[rgba(255,200,50,.12)]',
+            self::Hard => 'bg-[rgba(229,57,53,.12)]',
+            self::Extreme => 'bg-[rgba(255,255,255,.1)]',
+        };
+    }
+
     public static function options(): array
     {
         return [

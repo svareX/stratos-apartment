@@ -41,7 +41,7 @@
                                     <a href="#"
                                         class="flex flex-col justify-center md:hidden btn-gho inline-flex items-center px-3 sm:px-4 py-2 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
                                         __('Find stay') }}</a>
-                                    <a href="#"
+                                    <a href="#apartments"
                                         class="hidden md:flex flex-col justify-center btn-gho inline-flex items-center px-5 py-3 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
                                         __('Find ideal stay') }}</a>
                                 </div>
@@ -635,7 +635,7 @@
                 <a href="{{ route('reservation') }}"
                     class="btn-teal px-5 sm:px-7 lg:px-10 pt-2 pb-1 sm:py-2 md:py-3 rounded-xl text-sm sm:text-base font-normal sm:font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                     __('Book') }}</a>
-                <a href="#"
+                <a href="#apartments"
                     class="btn-outline-purple px-3 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 rounded-xl font-normal sm:font-semibold duration-200 transition-all hover:-translate-y-1">{{
                     __('Find stay') }}</a>
             </div>
