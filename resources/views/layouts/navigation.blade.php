@@ -61,10 +61,10 @@
                     </div>
                 </div>
 
-                <a href="#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</a>
-                <a href="#nearby" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</a>
-                <a href="#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</a>
-                <a href="#cta" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Contact') }}</a>
+                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</span>
+                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</span>
+                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</span>
+                <span class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Contact') }}</span>
             </div>
         @endif
     </div>
@@ -82,7 +82,7 @@
             class="p-1 px-3 rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-purple {{ $current === 'en' ? 'bg-purplePale border-[1px] border-border' : 'hover:bg-purplePale' }}">
             <span class="inline-block mr-2" aria-hidden>🇬🇧</span>{{ __('EN') }}
         </a>
-        <a href="{{ route('reservation') }}"
+        <a href="#"
             class="bg-teal text-white teal-shadow px-5 py-2 rounded-lg font-bold text-sm duration-200 transition-all hover:bg-tealD">
             {{ __('Book') }}
         </a>

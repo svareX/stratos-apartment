@@ -12,7 +12,6 @@
 
         <!-- Styles -->
         @livewireStyles
-        @fluxAppearance
     </head>
     <body class="font-sans antialiased">
 
@@ -32,6 +31,5 @@
         @stack('modals')
 
         @livewireScripts
-        @fluxScripts
     </body>
 </html>
