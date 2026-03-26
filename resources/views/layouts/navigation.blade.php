@@ -82,7 +82,7 @@
             class="p-1 px-3 rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-purple {{ $current === 'en' ? 'bg-purplePale border-[1px] border-border' : 'hover:bg-purplePale' }}">
             <span class="inline-block mr-2" aria-hidden>🇬🇧</span>{{ __('EN') }}
         </a>
-        <a href="#"
+        <a href="{{ route('reservation') }}"
             class="bg-teal text-white teal-shadow px-5 py-2 rounded-lg font-bold text-sm duration-200 transition-all hover:bg-tealD">
             {{ __('Book') }}
         </a>

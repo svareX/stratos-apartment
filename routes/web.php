@@ -3,8 +3,10 @@
 use App\Http\Controllers\Apartment\ApartmentDetailController;
 use App\Http\Controllers\FrequentlyAskedQuestionsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 // Password form routes (not protected by the middleware)
 Route::get('/password', function () {
@@ -40,9 +42,7 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
         return view('pricing');
     })->name('pricing');
 
-    Route::get('/reservation', function () {
-        return view('reservation');
-    })->name('reservation');
+    Route::get('/reservation', ReservationController::class)->name('reservation');
 
     Route::get('/reservation/success', function () {
         if (! session('reservation_completed')) {
