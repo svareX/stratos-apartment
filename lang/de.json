@@ -288,5 +288,11 @@
     "Edit details": "Details bearbeiten",
     "Confirm and pay": "Bestätigen und bezahlen",
     "Please select an apartment.": "Bitte wählen Sie ein Apartment aus.",
-    "Please select a date from and to.": "Bitte wählen Sie ein An- und Abreisedatum aus."
+    "Please select a date from and to.": "Bitte wählen Sie ein An- und Abreisedatum aus.",
+    "Reservation was successful": "Reservierung war erfolgreich",
+    "Thank you for your reservation. We look forward to your visit, we will contact you soon.": "Vielen Dank für Ihre Reservierung. Wir freuen uns auf Ihren Besuch und werden uns in Kürze bei Ihnen melden.",
+    "Back to homepage": "Zurück zur Startseite",
+    "Session expired": "Sitzung abgelaufen",
+    "We could not verify your reservation. Please try again or contact us.": "Wir konnten Ihre Reservierung nicht überprüfen. Bitte versuchen Sie es erneut oder kontaktieren Sie uns.",
+    "New reservation": "Neue Reservierung"
 }

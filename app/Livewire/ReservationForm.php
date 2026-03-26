@@ -295,7 +295,7 @@ class ReservationForm extends Component
             'booking_source' => BookingSource::Local,
         ]);
 
-        session()->flash('reservation_completed', true);
-        $this->redirectRoute('reservation.success', navigate: true);
+        session()->put('reservation_completed', true);
+        $this->redirectRoute('reservation.result', navigate: true);
     }
 }
