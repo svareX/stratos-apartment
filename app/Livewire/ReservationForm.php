@@ -12,12 +12,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class ReservationForm extends Component
 {
     public $step = 1;
 
+    #[Url]
     public $apartment_id;
 
     public $apartments;
@@ -28,14 +30,19 @@ class ReservationForm extends Component
 
     public $bookedDates = [];
 
+    #[Url]
     public $start_date;
 
+    #[Url]
     public $end_date;
 
+    #[Url]
     public $adults = 1;
 
+    #[Url]
     public $children = 0;
 
+    #[Url]
     public $pets = false;
 
     public $pricePerNight = 0;
@@ -73,31 +80,30 @@ class ReservationForm extends Component
     public function mount()
     {
         $this->apartments = Apartment::where('active', true)->get();
-
         $now = Carbon::now();
-        $this->displayMonth = $now->month;
-        $this->displayYear = $now->year;
 
-        $rq = request();
-
-        $this->apartment_id = $rq->query('apartment_id');
+        if ($this->start_date) {
+            try {
+                $start = Carbon::parse($this->start_date);
+                $this->displayMonth = $start->month;
+                $this->displayYear = $start->year;
+            } catch (\Exception $e) {
+                $this->displayMonth = $now->month;
+                $this->displayYear = $now->year;
+            }
+        } else {
+            $this->displayMonth = $now->month;
+            $this->displayYear = $now->year;
+        }
 
         if ($this->apartment_id) {
             $this->updateApartmentDetails();
             $this->loadBookedDates();
         }
 
-        if ($rq->filled('start_date')) {
-            $this->start_date = $rq->query('start_date');
-        }
-
-        if ($rq->filled('end_date')) {
-            $this->end_date = $rq->query('end_date');
-        }
-
-        $this->adults = $rq->filled('adults') ? (int) $rq->query('adults') : 1;
-        $this->children = $rq->filled('children') ? (int) $rq->query('children') : 0;
-        $this->pets = $rq->filled('pets') ? (bool) $rq->query('pets') : false;
+        $this->adults = $this->adults ? (int) $this->adults : 1;
+        $this->children = $this->children ? (int) $this->children : 0;
+        $this->pets = filter_var($this->pets, FILTER_VALIDATE_BOOLEAN);
     }
 
     public function updatedApartmentId()
@@ -120,7 +126,6 @@ class ReservationForm extends Component
     {
         if (! $this->apartment_id) {
             $this->bookedDates = [];
-
             return;
         }
 
