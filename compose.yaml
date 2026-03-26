@@ -23,27 +23,6 @@ services:
             - sail
         depends_on:
             - mysql
-            
-    queue:
-        build:
-            context: ./vendor/laravel/sail/runtimes/8.5
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.5/app
-        environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-        command: "php artisan queue:listen"
-        volumes:
-            - '.:/var/www/html'
-        networks:
-            - sail
-        depends_on:
-            - mysql
-
     mysql:
         image: 'mysql:8.4'
         ports:
@@ -69,11 +48,9 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
-
 networks:
     sail:
         driver: bridge
-
 volumes:
     sail-mysql:
         driver: local

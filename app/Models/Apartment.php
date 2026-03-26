@@ -52,16 +52,6 @@ class Apartment extends Model
         return $this->hasMany(Photo::class)->where('is_main', false)->orderBy('position');
     }
 
-    public function packages()
-    {
-        return $this->hasMany(ApartmentPackage::class);
-    }
-
-    public function places()
-    {
-        return $this->hasMany(Place::class);
-    }
-
     protected static function booted()
     {
         static::creating(function ($apartment) {
