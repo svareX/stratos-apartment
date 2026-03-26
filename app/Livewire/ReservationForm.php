@@ -60,17 +60,47 @@ class ReservationForm extends Component
     public $postal_code;
     public $country;
 
-    protected $rules = [
-        'apartment_id' => 'required|exists:apartments,id',
-        'first_name' => 'required|string|max:100',
-        'last_name' => 'required|string|max:100',
-        'email' => 'required|email',
-        'phone' => 'required|string',
-        'address' => 'required',
-        'city' => 'required',
-        'postal_code' => 'required',
-        'country' => 'required',
-    ];
+    protected function rules()
+    {
+        return [
+            'apartment_id' => 'required|exists:apartments,id',
+            'first_name' => ['required', 'string', 'max:100', 'regex:/^[\pL\s\-]+$/u'],
+            'last_name' => ['required', 'string', 'max:100', 'regex:/^[\pL\s\-]+$/u'],
+            'email' => 'required|email:rfc,dns',
+            'phone' => ['required', 'string', 'min:9', 'max:20', 'regex:/^\+?[0-9\s\-\(\)]+$/'],
+            'address' => ['required', 'string', 'max:255', 'regex:/[\pL]/u'],
+            'city' => ['required', 'string', 'max:100', 'regex:/^[\pL\s\-\.]+$/u'],
+            'postal_code' => ['required', 'string', 'min:4', 'max:10', 'regex:/^(?=.*[0-9])[a-zA-Z0-9\s\-]+$/'],
+            'country' => ['required', 'string', 'max:100', 'regex:/^[\pL\s\-\.]+$/u'],
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'apartment_id.required' => __('Please select an apartment.'),
+            'first_name.required' => __('First name is required.'),
+            'first_name.max' => __('First name is too long.'),
+            'first_name.regex' => __('First name cannot contain numbers or special characters.'),
+            'last_name.required' => __('Last name is required.'),
+            'last_name.max' => __('Last name is too long.'),
+            'last_name.regex' => __('Last name cannot contain numbers or special characters.'),
+            'email.required' => __('Email address is required.'),
+            'email.email' => __('Please enter a valid email address.'),
+            'phone.required' => __('Phone number is required.'),
+            'phone.regex' => __('Please enter a valid phone number (e.g. +420 123 456 789).'),
+            'phone.min' => __('Phone number is too short.'),
+            'phone.max' => __('Phone number is too long.'),
+            'address.required' => __('Address is required.'),
+            'address.regex' => __('Address must contain a street name, not just numbers.'),
+            'city.required' => __('City is required.'),
+            'city.regex' => __('City cannot contain numbers or special characters.'),
+            'postal_code.required' => __('ZIP code is required.'),
+            'postal_code.regex' => __('Please enter a valid ZIP code containing at least one number.'),
+            'country.required' => __('Country is required.'),
+            'country.regex' => __('Country cannot contain numbers or special characters.'),
+        ];
+    }
 
     public function mount()
     {
@@ -99,6 +129,13 @@ class ReservationForm extends Component
         $this->adults = $this->adults ? (int) $this->adults : 1;
         $this->children = $this->children ? (int) $this->children : 0;
         $this->pets = filter_var($this->pets, FILTER_VALIDATE_BOOLEAN);
+    }
+    
+    public function render()
+    {
+        return view('livewire.reservation-form', [
+            'calendarCells' => $this->generateCalendar(),
+        ]);
     }
 
     public function updatedApartmentId()
@@ -144,13 +181,6 @@ class ReservationForm extends Component
             ->unique()
             ->values()
             ->toArray();
-    }
-
-    public function render()
-    {
-        return view('livewire.reservation-form', [
-            'calendarCells' => $this->generateCalendar(),
-        ]);
     }
 
     public function generateCalendar()
