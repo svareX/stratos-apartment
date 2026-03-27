@@ -1,4 +1,14 @@
-<div class="w-full min-h-[80vh] flex flex-col pt-2 sm:pt-6">
+<div class="w-full min-h-[80vh] flex flex-col pt-2 sm:pt-6"
+    x-data
+    x-init="$nextTick(() => { 
+        if (window.location.hash) {
+            const el = document.querySelector(window.location.hash);
+            if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+        }
+    })">
     
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="contact-info">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Contact') }}</p>
