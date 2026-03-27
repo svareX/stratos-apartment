@@ -38,11 +38,11 @@
                                     <a href="{{ route('reservation') }}"
                                         class="hidden md:flex flex-col justify-center btn-teal px-6 py-3 rounded-xl font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                                         __('Book') }} →</a>
-                                    <a href="#"
-                                        class="flex flex-col justify-center md:hidden btn-gho inline-flex items-center px-3 sm:px-4 py-2 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
-                                        __('Find stay') }}</a>
                                     <a href="#apartments"
-                                        class="hidden md:flex flex-col justify-center btn-gho inline-flex items-center px-5 py-3 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
+                                        class="flex flex-col justify-center md:hidden btn-gho items-center px-3 sm:px-4 py-2 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
+                                        __('Find ideal stay') }}</a>
+                                    <a href="#apartments"
+                                        class="hidden md:flex flex-col justify-center btn-gho items-center px-5 py-3 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
                                         __('Find ideal stay') }}</a>
                                 </div>
                             </div>

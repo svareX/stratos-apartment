@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\ContactSettings;
 use App\Models\FrequentlyAskedQuestion;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
@@ -15,6 +16,7 @@ class ContactComponent extends Component
             'faqs' => FrequentlyAskedQuestion::where('is_active', true)
                 ->orderBy('position')
                 ->get(),
+            'settings' => ContactSettings::current(),
         ]);
     }
 

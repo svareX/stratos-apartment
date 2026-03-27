@@ -38,11 +38,11 @@
                                     <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
                                         class="hidden md:flex flex-col justify-center btn-teal px-6 py-3 rounded-xl font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                                         __('Book') }} →</a>
-                                    <a href="#"
-                                        class="flex flex-col justify-center md:hidden btn-gho inline-flex items-center px-3 sm:px-4 py-2 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
-                                        __('Find stay') }}</a>
-                                    <a href="#"
-                                        class="hidden md:flex flex-col justify-center btn-gho inline-flex items-center px-5 py-3 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
+                                    <a href="#apartments"
+                                        class="flex flex-col justify-center md:hidden btn-gho items-center px-3 sm:px-4 py-2 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
+                                        __('Find ideal stay') }}</a>
+                                    <a href="#apartments"
+                                        class="hidden md:flex flex-col justify-center btn-gho items-center px-5 py-3 rounded-xl border border-white/30 text-white duration-200 transition-all hover:-translate-y-1">{{
                                         __('Find ideal stay') }}</a>
                                 </div>
                             </div>
@@ -502,7 +502,7 @@
             @endif
     @endif
 
-    <section class="flex flex-col px-8 md:px-14 py-10 pb-12" id="nearby">
+    <section class="flex flex-col px-8 md:px-14 py-10 pb-12 scroll-mt-20" id="nearby">
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Things worth seeing.') }}</h6>
         
