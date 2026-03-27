@@ -47,7 +47,7 @@ class ManageContactSettings extends Page
         return __('Contact Settings');
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return __('Manage Contact Settings');
     }

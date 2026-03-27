@@ -48,7 +48,7 @@ class ManageHomepageHero extends Page
         return __('Homepage Hero Images');
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return __('Manage Homepage Hero Images');
     }

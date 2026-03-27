@@ -18,7 +18,7 @@ class ContactSettings extends Model
         'address_en',
         'address_cs',
         'address_de',
-        'socials'
+        'socials',
     ];
 
     protected $casts = [

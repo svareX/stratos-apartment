@@ -52,12 +52,19 @@ class ReservationForm extends Component
     public $daysForCleaningFee = 3;
 
     public $first_name;
+
     public $last_name;
+
     public $email;
+
     public $phone;
+
     public $address;
+
     public $city;
+
     public $postal_code;
+
     public $country;
 
     protected function rules()
@@ -130,7 +137,7 @@ class ReservationForm extends Component
         $this->children = $this->children ? (int) $this->children : 0;
         $this->pets = filter_var($this->pets, FILTER_VALIDATE_BOOLEAN);
     }
-    
+
     public function render()
     {
         return view('livewire.reservation-form', [
@@ -160,6 +167,7 @@ class ReservationForm extends Component
     {
         if (! $this->apartment_id) {
             $this->bookedDates = [];
+
             return;
         }
 
