@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'google_maps' => [
+        'key' => env('MAPS_API_KEY'),
+    ],
+
 ];
