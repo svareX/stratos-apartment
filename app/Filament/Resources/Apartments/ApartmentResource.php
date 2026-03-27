@@ -18,7 +18,7 @@ class ApartmentResource extends Resource
 {
     protected static ?string $model = Apartment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -32,6 +32,11 @@ class ApartmentResource extends Resource
         return __('Apartments');
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Main');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ApartmentFormV2::configure($schema);
@@ -42,18 +47,21 @@ class ApartmentResource extends Resource
         return ApartmentsTable::configure($table);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => ListApartments::route('/'),
             'create' => CreateApartment::route('/create'),
             'edit' => EditApartment::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\PackagesRelationManager::class,
+            RelationManagers\PlacesRelationManager::class,
+            RelationManagers\HikesRelationManager::class,
         ];
     }
 }

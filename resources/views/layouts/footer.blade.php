@@ -14,9 +14,13 @@
             <div class="text-xxs">
                 <h4 class="font-bold uppercase text-[rgba(255,255,255,0.3)] tracking-[8%] mb-2 md:mb-4">{{ __('Apartments') }}</h4>
                 <ul class="space-y-1">
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Ramzová / Jeseníky') }}</a></li>
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Laa an der Thaya') }}</a></li>
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Gallery') }}</a></li>
+                    @php
+                        $apartments = \App\Models\Apartment::where('active', true)->get();
+                    @endphp
+                    @foreach ($apartments as $apartment)
+                        <li><a href="{{ route('apartments.show', $apartment->slug) }}" class="text-white/70 hover:text-white">{{ $apartment->name }}</a></li>
+                    @endforeach
+                    <li><a href="#gallery" class="text-white/70 hover:text-white">{{ __('Gallery') }}</a></li>
                 </ul>
             </div>
 
@@ -33,7 +37,7 @@
                 <h4 class="font-bold uppercase text-[rgba(255,255,255,0.3)] tracking-[8%] mb-2 md:mb-4">{{ __('Information') }}</h4>
                 <ul class="space-y-1">
                     <li><a href="#" class="text-white/70 hover:text-white">{{ __('Contact') }}</a></li>
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('FAQs') }}</a></li>
+                    <li><a href="{{ route('faq') }}" class="text-white/70 hover:text-white">{{ __('FAQs') }}</a></li>
                     <li><a href="#" class="text-white/70 hover:text-white">{{ __('Terms and Conditions') }}</a></li>
                 </ul>
             </div>
