@@ -18,6 +18,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ManageHomepageHero extends Page
 {
@@ -45,6 +46,11 @@ class ManageHomepageHero extends Page
     public static function getPluralModelLabel(): string
     {
         return __('Homepage Hero Images');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return __('Manage Homepage Hero Images');
     }
 
     public function mount(): void

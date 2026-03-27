@@ -18,15 +18,18 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Stepan Svarc',
+            'email' => 'svarc@crowdigital.cz',
+            'password' => bcrypt('123'),
         ]);
 
         $this->call([
-            FAQSeeder::class,
             ApartmentSeeder::class,
+            FAQSeeder::class,
             PlaceSeeder::class,
             HikeSeeder::class,
+            ApartmentPackageSeeder::class,
+            ContactSettingsSeeder::class,
         ]);
     }
 }

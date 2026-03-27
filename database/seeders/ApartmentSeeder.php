@@ -7,60 +7,71 @@ use Illuminate\Database\Seeder;
 
 class ApartmentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $apartments = [
             [
-                'name' => 'Apartment Stratos Ramzová',
-                'slug' => 'apartment-stratos-ramzova',
+                'id' => 1,
+                'name' => 'Ramzová / Jeseníky',
                 'description' => 'Your base in the heart of the Jeseníky Mountains. Apartment for 2–6 people right in the Ramzová resort. The ski slope is right outside the door, Priessnitz Spa is 13 km away; hiking trails start right at your doorstep.',
                 'address' => 'Ramzová, 788 11 Ostružná, Czechia',
                 'capacity' => 6,
-                'base_price' => 1500.00,
-                'active' => true,
-                'tags' => [
-                    'Mountains',
-                    'Skiing',
-                    'Trails',
-                    'Families with children',
-                ],
                 'amenities' => [
-                    'Private kitchen' => 'Yes',
-                    'Fast WiFi + Netflix' => 'Yes',
-                    'Free parking' => 'Yes',
-                    'Skis at the door' => 'Yes',
-                    'Dog friendly' => 'Yes',
+                    'Free WiFi' => 'Yes',
+                    'Free private parking' => 'Yes',
+                    'Pet friendly' => 'Yes',
+                    'Fully equipped kitchen' => 'Yes',
+                    'Ski-to-door access' => 'Yes',
+                    'Mountain view' => 'Yes',
+                    'Flat-screen TV' => 'Yes',
+                ],
+                'base_price' => 1500.00,
+                'cleaning_fee' => 480.00,
+                'days_for_cleaning_fee' => 4,
+                'active' => true,
+                'type' => 'mountains',
+                'slug' => 'apartment-stratos-ramzova',
+                'tags' => [
+                    ['value' => 'Mountains'],
+                    ['value' => 'Skiing'],
+                    ['value' => 'Trails'],
+                    ['value' => 'Families with children'],
                 ],
             ],
             [
+                'id' => 2,
                 'name' => 'Apartment Stratos Laa',
-                'slug' => 'apartment-stratos-laa',
                 'description' => 'Wellness escape steps from Therme Laa. Apartment for 2 – 4 people in Laa an der Thaya. Therme Laa is 5 minutes away, Vienna is an hour’s drive, and vineyards are visible from the window.',
                 'address' => 'Feldstraße 4, 2136 Laa an der Thaya, Rakousko',
                 'capacity' => 4,
-                'base_price' => 1800.00,
-                'active' => true,
-                'tags' => [
-                    'Wellness',
-                    'Romantic',
-                    'Vineyards',
-                    'Couples',
-                ],
                 'amenities' => [
-                    'Private kitchen' => 'Yes',
-                    'Fast WiFi + Netflix' => 'Yes',
-                    'Free parking' => 'Yes',
-                    'Thermals nearby' => 'Yes',
-                    'Dog friendly' => 'Yes',
+                    'Free WiFi' => 'Yes',
+                    'Free private parking' => 'Yes',
+                    'Pet friendly' => 'Yes',
+                    'Fully equipped kitchen' => 'Yes',
+                    'Air conditioning' => 'Yes',
+                    'Flat-screen TV' => 'Yes',
+                ],
+                'base_price' => 1800.00,
+                'cleaning_fee' => 600.00,
+                'days_for_cleaning_fee' => 3,
+                'active' => true,
+                'type' => 'vineyards',
+                'slug' => 'apartment-stratos-laa',
+                'tags' => [
+                    ['value' => 'Wellness'],
+                    ['value' => 'Romantic'],
+                    ['value' => 'Vineyards'],
+                    ['value' => 'Couples'],
                 ],
             ],
         ];
 
         foreach ($apartments as $apartment) {
-            Apartment::create($apartment);
+            Apartment::updateOrCreate(
+                ['id' => $apartment['id']],
+                $apartment
+            );
         }
     }
 }

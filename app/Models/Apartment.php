@@ -21,6 +21,8 @@ class Apartment extends Model
         'type',
         'tags',
         'base_price',
+        'cleaning_fee',
+        'days_for_cleaning_fee',
         'active',
     ];
 
@@ -29,6 +31,8 @@ class Apartment extends Model
         'tags' => 'array',
         'active' => 'boolean',
         'base_price' => 'decimal:2',
+        'cleaning_fee' => 'decimal:2',
+        'days_for_cleaning_fee' => 'integer',
         'type' => ApartmentType::class,
     ];
 
