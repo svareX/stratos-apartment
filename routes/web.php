@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\Apartment\ApartmentDetailController;
-use App\Http\Controllers\FrequentlyAskedQuestionsController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationResultController;
+use App\Http\Controllers\TermsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 // Password form routes (not protected by the middleware)
 Route::get('/password', function () {
@@ -32,7 +36,7 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
 
     Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)->name('apartments.show');
 
-    Route::get('/faq', FrequentlyAskedQuestionsController::class)->name('faq');
+    Route::get('/contact', ContactController::class)->name('contact');
 
     Route::get('/about', function () {
         return view('about');
@@ -43,18 +47,10 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
     })->name('pricing');
 
     Route::get('/reservation', ReservationController::class)->name('reservation');
-
     Route::get('/reservation/result', ReservationResultController::class)->name('reservation.result');
 
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
-    ])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
-    });
+    Route::get('/terms-and-conditions', TermsController::class)->name('terms');
+    Route::get('/cookies', CookiesController::class)->name('cookies');
 
     Route::get('/locale/{locale}', function ($locale) {
         $available = ['en', 'cs', 'de'];

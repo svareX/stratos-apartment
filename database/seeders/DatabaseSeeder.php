@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Database\Seeders\ApartmentPackageSeeder;
+use Database\Seeders\ContactSettingsSeeder;
 use Database\Seeders\PlaceSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             PlaceSeeder::class,
             HikeSeeder::class,
             ApartmentPackageSeeder::class,
+            ContactSettingsSeeder::class,
         ]);
     }
 }

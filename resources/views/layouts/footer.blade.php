@@ -36,9 +36,9 @@
             <div class="text-xxs">
                 <h4 class="font-bold uppercase text-[rgba(255,255,255,0.3)] tracking-[8%] mb-2 md:mb-4">{{ __('Information') }}</h4>
                 <ul class="space-y-1">
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Contact') }}</a></li>
-                    <li><a href="{{ route('faq') }}" class="text-white/70 hover:text-white">{{ __('FAQs') }}</a></li>
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Terms and Conditions') }}</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-white/70 hover:text-white">{{ __('Contact') }}</a></li>
+                    <li><a href="{{ route('contact').'#faq' }}" class="text-white/70 hover:text-white">{{ __('FAQs') }}</a></li>
+                    <li><a href="{{ route('terms') }}" class="text-white/70 hover:text-white">{{ __('Terms and Conditions') }}</a></li>
                 </ul>
             </div>
         </div>
@@ -46,8 +46,8 @@
         <div class="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 text-sm text-[rgba(255,255,255,0.3)] text-xxs ">
             <div>© {{ date('Y') }} {{ __('Apartment Stratos') }} — apartmanstratos.cz</div>
             <div class="flex gap-6">
-                <a href="#" class="hover:text-white">{{ __('Privacy Policy') }}</a>
-                <a href="#" class="hover:text-white">{{ __('Cookies') }}</a>
+                <a href="{{ route('terms'). '#privacy' }}" class="hover:text-white">{{ __('Privacy Policy') }}</a>
+                <a href="{{ route('cookies') }}" class="hover:text-white">{{ __('Cookies') }}</a>
                 <div class="flex items-center gap-1">
                     @php $current = app()->getLocale(); @endphp
                     <a href="{{ route('locale.switch', 'cs') }}" class="{{ $current === 'cs' ? 'opacity-100' : 'opacity-40 hover:opacity-100' }}">
