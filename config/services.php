@@ -39,4 +39,9 @@ return [
         'key' => env('MAPS_API_KEY'),
     ],
 
+    'instagram' => [
+        'user_id' => env('STRATOS_INSTAGRAM_ID'),
+        'rapidapi_key' => env('RAPIDAPI_KEY'),
+    ],
+
 ];
