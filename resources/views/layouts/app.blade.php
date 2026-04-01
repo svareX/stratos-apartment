@@ -12,7 +12,7 @@
         @livewireStyles
         @fluxAppearance
     </head>
-    <body class="font-sans antialiased" 
+    <body class="font-sans antialiased"
         x-data
         x-init="
             if (window.location.hash) {
@@ -23,7 +23,7 @@
                         clearInterval(interval);
                         setTimeout(() => {
                             let y = el.getBoundingClientRect().top + window.scrollY - 80;
-                            
+
                             // Only trigger smooth scroll if the browser didn't already natively jump there
                             if (Math.abs(window.scrollY - y) > 5) {
                                 window.scrollTo({top: y, behavior: 'smooth'});
@@ -44,6 +44,8 @@
 
             @include('layouts.footer')
         </div>
+
+        <livewire:chatbot />
 
         @stack('modals')
 
