@@ -1,6 +1,43 @@
 <div
-    x-data="{ show: false, open: @entangle('isOpen') }"
-    x-init="setTimeout(() => show = true, 30)"
+    x-data="{
+        show: false,
+        open: @entangle('isOpen'),
+        showBubble: true,
+        animateBubble: true,
+        userInput: @entangle('userInput'),
+        scrollToBottom() {
+            $nextTick(() => {
+                let container = document.getElementById('chat-container');
+                if (container) container.scrollTop = container.scrollHeight;
+            });
+        },
+        closeBubbleInstantly() {
+            this.animateBubble = false;
+            this.$nextTick(() => { this.showBubble = false; });
+        }
+    }"
+    x-init="
+        setTimeout(() => show = true, 1);
+
+        {{-- Automatické skrytí po 5s s animací --}}
+        setTimeout(() => {
+            if (!open) {
+                animateBubble = true;
+                showBubble = false;
+            }
+        }, 5000);
+
+        if (open) showBubble = false;
+
+        {{-- Sledování otevření pro okamžité zmizení --}}
+        $watch('open', value => {
+            if (value) {
+                closeBubbleInstantly();
+                scrollToBottom();
+            }
+        })
+    "
+    x-on:scroll-to-bottom.window="scrollToBottom()"
     class="fixed bottom-6 right-6 z-50 flex flex-col items-end"
 >
     <style>
@@ -19,31 +56,54 @@
             0%, 60%, 100% { transform: translateY(0); }
             30% { transform: translateY(-4px); }
         }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .ai-avatar-gradient {
+            background: linear-gradient(135deg, #4B2EA2, #00C9A7);
+        }
     </style>
 
+    {{-- 1. Hlavní chatovací okno --}}
     <div
         x-show="open"
-        x-transition
-        class="bg-white shadow-xl border border-gray-200 rounded-lg w-80 sm:w-96 flex flex-col mb-4 overflow-hidden"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-10"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-10"
+        class="bg-white shadow-2xl rounded-2xl w-80 sm:w-96 flex flex-col mb-4 overflow-hidden border border-[#E2DCF5]"
         style="height: 500px; display: none;"
     >
-        <div class="bg-navy text-white px-4 py-3 flex justify-between items-center">
-            <span class="font-bold">Support Bot</span>
-            <button @click="open = false" class="text-white hover:text-gray-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        {{-- Header --}}
+        <div
+            @click="open = false"
+            class="bg-[#1A0A3B] text-white px-4 py-4 flex justify-between items-center cursor-pointer hover:bg-opacity-95 transition-all"
+        >
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span class="font-bold tracking-wide">{{ __('Support bot') }}</span>
+            </div>
+            <button class="text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
             </button>
         </div>
 
-        <div id="chat-container"
-            x-on:scroll-to-bottom.window="$nextTick(() => { $el.scrollTop = $el.scrollHeight })"
-            x-effect="$nextTick(() => { $el.scrollTop = $el.scrollHeight })"
-            class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-3">
+        {{-- Chat Container --}}
+        <div
+            id="chat-container"
+            x-effect="scrollToBottom()"
+            class="flex-1 p-4 overflow-y-auto bg-[#F5F3FA] flex flex-col gap-3"
+        >
             @foreach($messages as $index => $msg)
                 <div class="flex {{ $msg['role'] === 'user' ? 'justify-end' : 'justify-start' }}"
-                    wire:key="msg-wrapper-{{ $index }}-{{ strlen($msg['content']) }}"> {{-- Dynamický klíč vynutí refresh při změně délky --}}
+                     wire:key="msg-wrapper-{{ $index }}-{{ strlen($msg['content']) }}">
 
                     <div
-                        class="px-4 py-2 rounded-lg max-w-[85%] {{ $msg['role'] === 'user' ? 'bg-purple text-white rounded-br-none' : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none' }}"
+                        class="px-4 py-2 rounded-2xl max-w-[85%] text-sm shadow-sm {{ $msg['role'] === 'user' ? 'bg-[#4B2EA2] text-white rounded-br-none' : 'bg-white border border-[#E2DCF5] text-[#1C1530] rounded-bl-none' }}"
                         @if($msg['role'] === 'assistant' && ($msg['should_type'] ?? false))
                             x-data="{
                                 fullText: @js($msg['content']),
@@ -51,39 +111,28 @@
                                 index: 0,
                                 isTyping: true,
                                 init() {
-                                    this.checkStatus();
-                                },
-                                checkStatus() {
-                                    if (this.fullText.length > 0) {
-                                        // Máme text, přestaneme ukazovat tečky a píšeme
-                                        setTimeout(() => {
-                                            this.isTyping = false;
-                                            this.type();
-                                        }, 400);
-                                    } else {
-                                        // Text je prázdný, stále čekáme (ukazujeme tečky)
-                                        this.isTyping = true;
-                                    }
+                                    setTimeout(() => {
+                                        this.isTyping = false;
+                                        this.type();
+                                    }, Math.floor(Math.random() * 300) + 300);
                                 },
                                 type() {
                                     if (this.index < this.fullText.length) {
-                                        let batchSize = Math.floor(Math.random() * 5) + 2;
+                                        let batchSize = Math.floor(Math.random() * 7) + 2;
                                         let nextChunk = this.fullText.slice(this.index, this.index + batchSize);
                                         this.displayText += nextChunk;
                                         this.index += nextChunk.length;
-
-                                        let delay = Math.floor(Math.random() * 20) + 10;
+                                        let delay = Math.floor(Math.random() * 20) + 5;
+                                        if (nextChunk.includes('.') || nextChunk.includes('?') || nextChunk.includes('!')) delay = 250;
                                         setTimeout(() => this.type(), delay);
-
                                         $nextTick(() => {
                                             let container = document.getElementById('chat-container');
-                                            container.scrollTop = container.scrollHeight;
+                                            if(container) container.scrollTop = container.scrollHeight;
                                         });
                                     }
                                 }
                             }"
-                            {{-- Sledujeme změnu fullText z Livewire --}}
-                            x-effect="fullText = @js($msg['content']); if(fullText.length > 0 && isTyping) { checkStatus(); }"
+                            x-effect="fullText = @js($msg['content']); if(fullText.length > 0 && isTyping) { isTyping = false; type(); }"
                         @endif
                     >
                         @if($msg['role'] === 'assistant' && ($msg['should_type'] ?? false))
@@ -94,43 +143,73 @@
                                     <span class="typing-dot"></span>
                                 </div>
                             </template>
-                            <span x-show="!isTyping" x-text="displayText"></span>
+                            <span x-show="!isTyping" x-text="displayText" class="whitespace-pre-wrap"></span>
                         @else
-                            <span>{{ $msg['content'] }}</span>
+                            <span class="whitespace-pre-wrap">{{ $msg['content'] }}</span>
                         @endif
                     </div>
                 </div>
             @endforeach
         </div>
 
-        <div class="p-3 bg-white border-t border-gray-200">
-            <form wire:submit="sendMessage" class="flex gap-2">
-                <input
-                    type="text"
+        {{-- Footer --}}
+        <div class="p-4 bg-white border-t border-[#E2DCF5]">
+            <form wire:submit="sendMessage" class="flex items-end gap-2 bg-[#F5F3FA] rounded-xl p-2 border border-[#E2DCF5] focus-within:border-[#4B2EA2] transition-colors">
+                <textarea
                     wire:model="userInput"
-                    class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-purple focus:border-purple text-sm text-gray-800"
-                    placeholder="Type a message..."
-                >
+                    rows="2"
+                    x-on:keydown.enter.prevent="$wire.sendMessage()"
+                    class="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none text-sm text-[#1C1530] resize-none hide-scrollbar py-1 px-2"
+                    placeholder="{{ __('Type your message...') }}"
+                ></textarea>
+
                 <button
                     type="submit"
-                    class="bg-purple text-white px-4 py-2 rounded-md hover:bg-purpleMid transition-colors flex items-center justify-center"
+                    class="my-auto bg-[#4B2EA2] text-white p-2 rounded-lg hover:bg-opacity-90 transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     wire:loading.attr="disabled"
                 >
-                    <svg wire:loading.remove wire:target="sendMessage" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                    <svg wire:loading wire:target="sendMessage" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg wire:loading.remove wire:target="sendMessage" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                    </svg>
+
+                    <svg wire:loading wire:target="sendMessage" class="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
                 </button>
             </form>
+            <div class="text-[10px] text-[#7A7090] mt-2 text-center">{{ __('Press Enter to send') }}</div>
         </div>
     </div>
 
+    {{-- 2. Úvodní bublina (S podmíněnou animací) --}}
+    <div
+        x-show="showBubble && !open"
+        {{-- Animace vstupu je vždy zapnutá --}}
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-2"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        {{-- Animace odchodu se použije pouze pokud animateBubble je true --}}
+        x-transition:leave.duration.300ms="animateBubble ? 'transition ease-in duration-300' : ''"
+        x-transition:leave-start="animateBubble ? 'opacity-100 translate-y-0' : ''"
+        x-transition:leave-end="animateBubble ? 'opacity-0 translate-y-2' : ''"
+        class="bg-white border border-[#E2DCF5] rounded-[18px] rounded-br-[4px] p-4 shadow-xl max-w-[180px] text-[13px] leading-relaxed text-[#1C1530] mb-3 mr-1"
+    >
+        <strong class="text-[#4B2EA2] text-[12px] block mb-1">✨ {{ __('Travel Guide') }}</strong>
+        {{ __('Need help with anything? Ask me!') }}
+    </div>
+
+    {{-- 3. Toggle Button (Avatar) --}}
     <button
         x-show="show"
         x-transition
         @click="open = !open"
-        class="w-14 h-14 bg-purple text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+        class="w-[44px] h-[44px] ai-avatar-gradient text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all group cursor-pointer"
         style="display: none;"
     >
-        <svg x-show="!open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-        <svg x-show="open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <span x-show="!open" class="text-[20px] transition-transform group-hover:rotate-12">🤖</span>
+        <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
     </button>
 </div>

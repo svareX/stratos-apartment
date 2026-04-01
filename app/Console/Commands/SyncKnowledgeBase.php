@@ -47,14 +47,19 @@ class SyncKnowledgeBase extends Command
         // 2. APARTMÁNY, CENY A BALÍČKY
         $apartments = Apartment::where('active', true)->with(['packages'])->get();
         foreach ($apartments as $apt) {
-            $aptText = "APARTMÁN: {$apt->name}\nTyp: {$apt->type->value}\n";
-            $aptText .= "Adresa: {$apt->address}\nKapacita: {$apt->capacity} osoby\n";
-            $aptText .= "Základní cena: {$apt->base_price} Kč/noc\nPoplatek za úklid: {$apt->cleaning_fee} Kč\n";
-            $aptText .= "Vybavení: " . implode(', ', $apt->amenities ?? []) . "\n";
+            $aptText = "=== INFORMACE O KONKRÉTNÍM UBYTOVÁNÍ ===\n";
+            $aptText .= "NÁZEV APARTMÁNU: {$apt->name}\n";
+            $aptText .= "PŘESNÁ ADRESA PRO NAVIGACI: {$apt->address}\n"; // Zde je tvůj sloupec address
+            $aptText .= "Kapacita: {$apt->capacity} osoby\n";
+            $aptText .= "Cena: {$apt->base_price} Kč/noc\n";
             $aptText .= "Popis: {$apt->description}\n";
+            $aptText .= "Poplatek za úklid: {$apt->cleaning_fee} Kč (účtován pokud je délka pobytu kratší než {$apt->days_for_cleaning_fee} dní)\n";
+            $aptText .= "Vybavení: " . (is_array($apt->amenities) ? implode(', ', $apt->amenities) : '') . "\n";
+            $tags = is_array($apt->tags) ? array_filter($apt->tags, 'is_scalar') : [];
+            $aptText .= "Tagy: " . implode(', ', $tags) . "\n";
 
             foreach ($apt->packages as $pkg) {
-                $aptText .= "BALÍČEK: {$pkg->name_cs} za {$pkg->price} Kč. Obsahuje: " . implode(', ', $pkg->translated_features) . "\n";
+                $aptText .= "BALÍČEK PRO {$apt->name}: {$pkg->name_cs} za {$pkg->price} Kč. Obsahuje: " . implode(', ', $pkg->translated_features ?? []) . "\n";
             }
             $this->storeInKb($aptText, 'apartment', $apt->id);
 
