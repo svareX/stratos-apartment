@@ -21,6 +21,32 @@ class InstagramPostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'caption';
 
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Instagram Posts');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('General');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Instagram Post');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Instagram Posts');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return __('Manage Instagram Posts');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return InstagramPostForm::configure($schema);

@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\InstagramPosts\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
 class InstagramPostsTable
@@ -18,7 +20,7 @@ class InstagramPostsTable
                 TextColumn::make('image_url')
                     ->label(__('Image'))
                     ->html()
-                    ->formatStateUsing(fn ($state) => $state ? new HtmlString('<img src="' . $state . '" referrerpolicy="no-referrer" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />') : ''),
+                    ->formatStateUsing(fn ($state) => $state ? new HtmlString('<img src="' . Storage::url($state) . '" referrerpolicy="no-referrer" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />') : ''),
 
                 TextColumn::make('instagram_id')
                     ->label(__('Instagram ID'))
@@ -45,6 +47,7 @@ class InstagramPostsTable
             ->filters([])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
