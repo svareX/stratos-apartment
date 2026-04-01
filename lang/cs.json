@@ -441,5 +441,13 @@
     "Highlighted Title Part (CS)": "Zvýrazněná část názvu (CS)",
     "Highlighted Title Part (EN)": "Zvýrazněná část názvu (EN)",
     "Highlighted Title Part (DE)": "Zvýrazněná část názvu (DE)",
-    "Language": "Jazyk"
+    "Language": "Jazyk",
+    "Instagram Posts": "Příspěvky na Instagramu",
+    "Instagram Post": "Příspěvek na Instagramu",
+    "Manage Instagram Posts": "Spravovat příspěvky na Instagramu",
+    "Refresh": "Aktualizovat",
+    "Instagram User ID": "ID uživatele Instagramu",
+    "For Instagram page: @apartmanstratos": "Pro Instagramovou stránku: @apartmanstratos",
+    "Number of posts to fetch": "Počet příspěvků k načtení",
+    "Posts refreshed successfully": "Příspěvky úspěšně aktualizovány"
 }

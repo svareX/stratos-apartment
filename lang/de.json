@@ -440,5 +440,13 @@
     "Highlighted Title Part (CS)": "Hervorgehobener Titelteil (CS)",
     "Highlighted Title Part (EN)": "Hervorgehobener Titelteil (EN)",
     "Highlighted Title Part (DE)": "Hervorgehobener Titelteil (DE)",
-    "Language": "Sprachcode"
+    "Language": "Sprachcode",
+    "Instagram Posts": "Instagram-Beiträge",
+    "Instagram Post": "Instagram-Beitrag",
+    "Manage Instagram Posts": "Instagram-Beiträge verwalten",
+    "Refresh": "Aktualisieren",
+    "Instagram User ID": "Instagram-Benutzer-ID",
+    "For Instagram page: @apartmanstratos": "Für die Instagram-Seite: @apartmanstratos",
+    "Number of posts to fetch": "Anzahl der abzurufenden Beiträge",
+    "Posts refreshed successfully": "Beiträge erfolgreich aktualisiert"
 }

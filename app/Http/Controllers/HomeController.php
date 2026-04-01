@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apartment;
 use App\Models\HomepageSettings;
+use App\Models\InstagramPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
@@ -65,11 +66,14 @@ class HomeController extends Controller
             return $apartment->photosOther;
         });
 
+        $instagramPosts = InstagramPost::orderBy('posted_at', 'desc')->take(6)->get();
+
         return view('home')->with([
             'apartments' => $apartments,
             'heroSlides' => $heroSlides,
             'apartmentImages' => $apartmentImages,
             'galleryImages' => $galleryImages,
+            'instagramPosts' => $instagramPosts,
         ]);
     }
 }
