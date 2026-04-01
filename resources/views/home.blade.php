@@ -605,11 +605,11 @@
         <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-2">{{ __('Follow us') }}</p>
         <div class="flex flex-col md:flex-row gap-y-2 justify-between w-full">
             <h6 class="text-3xl md:text-4xl text-navy font-serif hover:text-purple transition-colors duration-300">
-                <a href="https://instagram.com/stratosapartments" target="_blank" rel="noopener noreferrer">
-                    @stratosapartments
+                <a href="https://instagram.com/apartmanstratos" target="_blank" rel="noopener noreferrer">
+                    @apartmanstratos
                 </a>
             </h6>
-            <a href="https://instagram.com/stratosapartments" target="_blank" rel="noopener noreferrer"
+            <a href="https://instagram.com/apartmanstratos" target="_blank" rel="noopener noreferrer"
                 class="text-sm text-purple font-semibold hover:text-purpleMid transition-colors duration-300 mt-auto">
                 {{ __('Open Instagram') }} →
             </a>
