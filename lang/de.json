@@ -453,5 +453,6 @@
     "Need help with anything? Ask me!": "Brauchen Sie Hilfe? Fragen Sie mich!",
     "Support bot": "Support-Bot",
     "Type your message...": "Geben Sie Ihre Nachricht ein...",
-    "Press Enter to send": "Drücken Sie die Eingabetaste, um zu senden"
+    "Press Enter to send": "Drücken Sie die Eingabetaste, um zu senden",
+    "I'm sorry, but I'm currently unable to connect to the server. Please try again in a few minutes.": "Es tut mir leid, aber ich kann derzeit keine Verbindung zum Server herstellen. Bitte versuchen Sie es in ein paar Minuten erneut."
 }

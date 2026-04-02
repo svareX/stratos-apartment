@@ -48,7 +48,7 @@ class Chatbot extends Component
 
             $contextData = KnowledgeBase::query()
                 ->whereVectorSimilarTo('embedding', $embeddingResponse->embeddings[0])
-                ->limit(3)
+                ->limit(10)
                 ->get()
                 ->pluck('content')
                 ->implode("\n---\n");
@@ -58,7 +58,8 @@ class Chatbot extends Component
             $response = $agent->prompt(
                 "Kontext z databáze:\n{$contextData}\n\nOtázka uživatele: {$input}",
                 provider: Lab::Groq,
-                model: 'llama-3.3-70b-versatile'
+                model: 'llama-3.3-70b-versatile',
+                timeout: 60,
             );
 
             $lastIndex = count($this->messages) - 1;
@@ -68,7 +69,7 @@ class Chatbot extends Component
             Log::error('AI Support Bot Error: ' . $e->getMessage());
 
             $lastIndex = count($this->messages) - 1;
-            $this->messages[$lastIndex]['content'] = 'Omlouvám se, ale momentálně se mi nepodařilo spojit se serverem. Zkuste to prosím za chvíli.';
+            $this->messages[$lastIndex]['content'] = __('I\'m sorry, but I\'m currently unable to connect to the server. Please try again in a few minutes.');
             $this->messages[$lastIndex]['is_typing'] = false;
         }
     }

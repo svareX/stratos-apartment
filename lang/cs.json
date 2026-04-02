@@ -454,5 +454,6 @@
     "Need help with anything? Ask me!": "Potřebujete s něčím pomoci? Zeptejte se mě!",
     "Support bot": "Nápomocný robot",
     "Type your message...": "Napište zprávu...",
-    "Press Enter to send": "Stiskněte Enter pro odeslání"
+    "Press Enter to send": "Stiskněte Enter pro odeslání",
+    "I'm sorry, but I'm currently unable to connect to the server. Please try again in a few minutes.": "Omlouvám se, ale momentálně se nemohu připojit k serveru. Zkuste to prosím znovu za pár minut."
 }
