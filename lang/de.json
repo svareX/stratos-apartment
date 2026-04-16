@@ -451,5 +451,9 @@
     "Posts refreshed successfully": "Beiträge erfolgreich aktualisiert",
     "Pick a stay with extras included.": "Wählen Sie einen Aufenthalt mit Extras inklusive.",
     "All offers are loaded directly from apartment packages.": "Alle Angebote werden direkt aus den Apartment-Paketen geladen.",
-    "Special offers available for this apartment.": "Sonderangebote für dieses Apartment verfügbar."
+    "Special offers available for this apartment.": "Sonderangebote für dieses Apartment verfügbar.",
+    "Nearby places": "Nahegelegene Orte",
+    "No hikes are available for this apartment yet.": "Für dieses Apartment sind noch keine Wanderungen verfügbar.",
+    "No places are available for this apartment yet.": "Für dieses Apartment sind noch keine Orte verfügbar.",
+    "No packages are available for this apartment yet.": "Für dieses Apartment sind noch keine Pakete verfügbar."
 }

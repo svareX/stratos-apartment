@@ -44,6 +44,7 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
     })->name('about');
 
     Route::get('/packages', PackagesController::class)->name('packages');
+    Route::get('/activities', ActivitiesController::class)->name('activities');
 
     Route::get('/reservation', ReservationController::class)->name('reservation');
     Route::get('/reservation/result', ReservationResultController::class)->name('reservation.result');

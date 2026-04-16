@@ -452,5 +452,11 @@
     "Posts refreshed successfully": "Příspěvky úspěšně aktualizovány",
     "Pick a stay with extras included.": "Vyberte pobyt s včetně extra služeb.",
     "All offers are loaded directly from apartment packages.": "Všechny nabídky jsou načítány přímo z balíčků apartmánů.",
-    "Special offers available for this apartment.": "Speciální nabídky dostupné pro tento apartmán."
+    "Special offers available for this apartment.": "Speciální nabídky dostupné pro tento apartmán.",
+    "Hikes and places worth your time.": "Trasy a místa, která stojí za to navštívit.",
+    "For each apartment, hikes and nearby places are shown in separate blocks below each other.": "Pro každý apartmán jsou trasy a blízká místa zobrazena v samostatných blocích pod sebou.",
+    "Nearby places": "Blízká místa",
+    "No hikes are available for this apartment yet.": "Pro tento apartmán zatím nejsou k dispozici žádné trasy.",
+    "No places are available for this apartment yet.": "Pro tento apartmán zatím nejsou k dispozici žádná místa.",
+    "No packages are available for this apartment yet.": "Pro tento apartmán zatím nejsou k dispozici žádné balíčky."
 }
