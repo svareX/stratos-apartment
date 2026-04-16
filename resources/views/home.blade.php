@@ -173,7 +173,7 @@
     </section>
 
     <!-- Gallery Section -->
-    <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg">
+    <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg" id="gallery">
         <h5 class="text-2xl font-serif text-navy">{{ __('Photo gallery') }}</h5>
 
         <div x-data="{

@@ -469,5 +469,6 @@
     ":days nights total :total CZK incl. cleaning": ":days nocí celkem :total Kč včetně úklidu",
     ":days nights total :total CZK (no cleaning fee)": ":days nocí celkem :total Kč (bez poplatku za úklid)",
     "Up to :days nights includes cleaning fee.": "Pobyt až :days nocí zahrnuje poplatek za úklid.",
-    "From :days nights, cleaning fee is not charged.": "Od :days nocí se poplatek za úklid neúčtuje."
+    "From :days nights, cleaning fee is not charged.": "Od :days nocí se poplatek za úklid neúčtuje.",
+    "Learn more": "Zjistit více"
 }

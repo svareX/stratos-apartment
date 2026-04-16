@@ -466,5 +466,6 @@
     ":days nights total :total CZK incl. cleaning": ":days Nächte insgesamt :total CZK inkl. Reinigung",
     ":days nights total :total CZK (no cleaning fee)": ":days Nächte insgesamt :total CZK (ohne Reinigungsgebühr)",
     "Up to :days nights includes cleaning fee.": "Bis zu :days Nächten inklusive Reinigungsgebühr.",
-    "From :days nights, cleaning fee is not charged.": "Ab :days Nächten wird keine Reinigungsgebühr berechnet."
+    "From :days nights, cleaning fee is not charged.": "Ab :days Nächten wird keine Reinigungsgebühr berechnet.",
+    "Learn more": "Erfahren Sie mehr"
 }

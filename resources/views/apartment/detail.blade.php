@@ -368,7 +368,11 @@
             @if ($apartment->hikes && $apartment->hikes->isNotEmpty())
                 <section class="bg-skiing w-full" id="hikes">
                     <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
-                        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                        <div class="flex flex-row justify-between">
+                            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                            <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline"
+                                href={{ route('activities') }}>{{ __('Learn more') }}</a>
+                        </div>
                         <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
                         <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
                             <span>
@@ -413,7 +417,11 @@
             @else
                 <section class="bg-skiing w-full" id="about">
                     <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
-                        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                        <div class="flex flex-row justify-between">
+                            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                            <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline"
+                                href={{ route('activities') }}>{{ __('Learn more') }}</a>
+                        </div>
                         <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
                         <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
                             <span>
@@ -503,7 +511,11 @@
     @endif
 
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12 scroll-mt-20" id="nearby">
-        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
+        <div class="flex flex-row justify-between">
+            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
+            <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline" href={{
+                route('activities') }}>{{ __('Learn more') }}</a>
+        </div>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Things worth seeing.') }}</h6>
         
         @if($apartment->places && $apartment->places->count() > 0)
@@ -781,7 +793,11 @@
 
     @if ($apartment->packages->isNotEmpty())
         <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost" id="packages">
-            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
+            <div class="flex flex-row justify-between">
+                <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
+                <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline" href={{
+                    route('packages') }}>{{ __('Learn more') }}</a>
+            </div>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Try a different approach.') }}</h6>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                 @foreach ($apartment->packages as $package)
