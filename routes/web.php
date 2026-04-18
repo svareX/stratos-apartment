@@ -11,6 +11,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationResultController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\RobotsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,9 +34,7 @@ Route::post('/password', function (Request $request) {
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
-Route::get('/robots.txt', function () {
-    return response()->view('robots')->header('Content-Type', 'text/plain');
-})->name('robots');
+Route::get('/robots.txt', RobotsController::class)->name('robots');
 
 // The rest of the site's web routes are protected by the website password middleware
 Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(function () {
