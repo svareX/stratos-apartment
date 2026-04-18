@@ -33,6 +33,10 @@ Route::post('/password', function (Request $request) {
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
+Route::get('/robots.txt', function () {
+    return response()->view('robots')->header('Content-Type', 'text/plain');
+})->name('robots');
+
 // The rest of the site's web routes are protected by the website password middleware
 Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(function () {
 
