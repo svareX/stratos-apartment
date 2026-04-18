@@ -43,5 +43,10 @@ return [
         'user_id' => env('STRATOS_INSTAGRAM_ID'),
         'rapidapi_key' => env('RAPIDAPI_KEY'),
     ],
+    
+    'sitemap' => [
+        'use_crawler' => env('SITEMAP_USE_CRAWLER', false),
+        'base_url' => env('SITEMAP_BASE_URL', env('APP_URL')),
+    ],
 
 ];

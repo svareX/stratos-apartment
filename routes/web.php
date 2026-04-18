@@ -10,6 +10,7 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationResultController;
 use App\Http\Controllers\TermsController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,8 @@ Route::post('/password', function (Request $request) {
 
     return back()->withErrors(['website_password' => 'Invalid password']);
 })->name('password.submit');
+
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 // The rest of the site's web routes are protected by the website password middleware
 Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(function () {
