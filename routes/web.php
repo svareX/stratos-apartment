@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\ActivitiesController;
 use App\Http\Controllers\Apartment\ApartmentDetailController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PackagesController;
+use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationResultController;
 use App\Http\Controllers\TermsController;
@@ -40,9 +43,9 @@ Route::middleware([\App\Http\Middleware\RequireWebsitePassword::class])->group(f
         return view('about');
     })->name('about');
 
-    Route::get('/pricing', function () {
-        return view('pricing');
-    })->name('pricing');
+    Route::get('/packages', PackagesController::class)->name('packages');
+    Route::get('/activities', ActivitiesController::class)->name('activities');
+    Route::get('/pricing', PricingController::class)->name('pricing');
 
     Route::get('/reservation', ReservationController::class)->name('reservation');
     Route::get('/reservation/result', ReservationResultController::class)->name('reservation.result');

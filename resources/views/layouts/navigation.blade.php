@@ -73,9 +73,9 @@
                     </div>
                 </div>
 
-                <a href="{{ $hashPrefix }}#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</a>
-                <a href="{{ $hashPrefix }}#nearby" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</a>
-                <a href="{{ $hashPrefix }}#reservation" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</a>
+                <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#packages' : route('packages') }}" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</a>
+                <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#nearby' : route('activities') }}" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</a>
+                <a href="{{ route('pricing') }}" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</a>
                 <a href="{{ route('contact') }}" class="transition-colors duration-300 hover:cursor-pointer {{ $currentRoute === 'contact' ? 'font-bold text-purple' : 'hover:text-purple' }}">{{ __('Contact') }}</a>
             </div>
         @endif
@@ -157,8 +157,8 @@
                         </div>
                     </div>
                     
-                    <a href="{{ $hashPrefix }}#packages" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Packages') }}</a>
-                    <a href="{{ $hashPrefix }}#nearby" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Activities') }}</a>
+                    <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#packages' : route('packages') }}" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Packages') }}</a>
+                    <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#nearby' : route('activities') }}" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Activities') }}</a>
                     <a href="{{ $hashPrefix }}#reservation" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Pricing') }}</a>
                     <a href="{{ route('contact') }}" class="transition-colors {{ $currentRoute === 'contact' ? 'text-purple' : 'hover:text-purple' }}">{{ __('Contact') }}</a>
                 </div>

@@ -1,95 +1,78 @@
 <x-app-layout>
-    <div class="flex flex-col justify-start gap-lg">
-        <div x-data="{ shown: false }" x-intersect.once="shown = true" class="flex flex-col gap-lg">
-            <h2 x-cloak x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" class="font-bold text-custom-xl">{{ __('Pricing') }}</h2>
-            
-            <div x-cloak x-show="shown" x-transition:enter="transition ease-out duration-700 delay-200" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" class="flex justify-between px-4">
-                <h4 class="font-light text-custom-md tracking-low w-[860px]">
-                    <span class="font-medium italic">{{ __('Shorter stays') }}</span> {{ __('are those lasting a total of') }} <span class="font-medium italic">{{ __('3 nights or less, from 4 nights or more') }}</span> {{ __('they are considered') }} <span class="font-medium italic">{{ __('longer stays') }}</span>.
-                </h4>
+    <section class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-12 bg-purpleGhost/50">
+        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">{{ __('Pricing') }}</p>
+        <h1 class="text-4xl md:text-5xl text-navy font-serif mb-3">{{ __('Transparent pricing for every apartment.') }}</h1>
+        <p class="text-sm md:text-base text-muted max-w-3xl">
+            {{ __('Prices are loaded directly from apartment settings. Short stays include cleaning, longer stays are charged without cleaning fee.') }}
+        </p>
+    </section>
 
-                <div class="grid grid-cols-3 gap-4 font-light text-[20px] leading-[80px] tracking-low text-center mx-auto">
-                    <div></div>
-                    <div>
-                        <span>{{ __('apartment price/night') }}</span>
-                    </div>
-                    <div>
-                        <span>{{ __('cleaning fee') }}</span>
-                    </div>
+    @foreach ($apartments as $apartment)
+        @php
+            $basePrice = (float) ($apartment->base_price ?? 0);
+            $cleaningFee = (float) ($apartment->cleaning_fee ?? 0);
+            $thresholdDays = max(1, (int) ($apartment->days_for_cleaning_fee ?? 1));
 
-                    <div>{{ __('shorter stays') }}</div>
-                    <div>
-                        <span class="font-semibold">{{ __('from 1 790 CZK') }}</span>
-                    </div>
-                    <div>
-                        <span class="font-semibold">{{ __('600 CZK') }}</span>
-                    </div>
+            $shortStayAvgPrice = $basePrice + ($cleaningFee / $thresholdDays);
+            $shortStayTotal = ($basePrice * $thresholdDays) + $cleaningFee;
+            $longStayDays = $thresholdDays + 2;
+            $longStayTotal = $basePrice * $longStayDays;
+        @endphp
 
-                    <div>{{ __('longer stays') }}</div>
-                    <div>
-                        <span class="font-semibold">{{ __('from 1 790 CZK') }}</span>
-                    </div>
-                    <div>
-                        <span class="font-semibold">-</span>
-                    </div>                
+        <section class="flex flex-col px-8 md:px-14 py-10 md:py-12 border-t border-border/70">
+            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">{{ __($apartment->address) }}</p>
+            <h2 class="text-3xl md:text-4xl text-navy font-serif mb-5">{{ __($apartment->name) }}</h2>
+
+            <div class="max-w-5xl border border-border rounded-2xl bg-white overflow-hidden transition-all duration-300 hover:shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
+                    <p class="text-xs uppercase font-bold text-muted">{{ __('Base price / night') }}</p>
+                    <p class="text-lg font-bold text-navy">{{ number_format($basePrice, 0, ',', ' ') }} {{ __('CZK') }}</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
+                    <p class="text-xs uppercase font-bold text-muted">{{ __('Cleaning fee') }}</p>
+                    <p class="text-lg font-bold text-navy">{{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
+                    <p class="text-xs uppercase font-bold text-muted">{{ __('Short stay rule') }}</p>
+                    <p class="text-sm text-navy">{{ __('Up to :days nights includes cleaning fee.', ['days' => $thresholdDays]) }}</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
+                    <p class="text-xs uppercase font-bold text-muted">{{ __('Long stay rule') }}</p>
+                    <p class="text-sm text-navy">{{ __('From :days nights, cleaning fee is not charged.', ['days' => $thresholdDays + 1]) }}</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
+                    <p class="text-xs uppercase font-bold text-muted">{{ __('Effective short-stay price / night') }}</p>
+                    <p class="text-sm text-navy">
+                        {{ number_format($shortStayAvgPrice, 0, ',', ' ') }} {{ __('CZK') }}
+                        <span class="text-muted">({{ __(':days nights total :total CZK incl. cleaning', ['days' => $thresholdDays, 'total' => number_format($shortStayTotal, 0, ',', ' ')]) }})</span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4">
+                    <p class="text-xs uppercase font-bold text-muted">{{ __('Long-stay example') }}</p>
+                    <p class="text-sm text-navy">
+                        {{ __(':days nights total :total CZK (no cleaning fee)', ['days' => $longStayDays, 'total' => number_format($longStayTotal, 0, ',', ' ')]) }}
+                    </p>
                 </div>
             </div>
-        </div>
 
-        <div x-data="{ shown: false }" x-intersect.once.margin.-100px="shown = true" class="flex flex-col gap-lg mt-12">
-            <h2 x-cloak x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" class="font-bold text-custom-xl">{{ __('Occupancy') }}</h2>
-
-            <div class="flex justify-between px-4">
-                <div x-cloak x-show="shown" x-transition:enter="transition ease-out duration-700 delay-200" x-transition:enter-start="opacity-0 -translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" class="flex flex-col">
-                    <h6 class="font-light text-custom-md tracking-low w-[860px]">
-                        {{ __('We still have') }} <span class="font-medium italic">{{ __('available dates') }}</span> {{ __('for the upcoming season, don\'t hesitate to contact us and arrange your stay.') }}
-                    </h6>
-                    <h5 class="font-medium italic text-custom-md tracking-low">
-                        {{ __('We look forward to seeing you!') }}
-                    </h5>
-                    
-                    <div x-cloak :class="shown ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-90'" style="transition-delay: 600ms;" class="transition-all mt-4 duration-700 ease-out flex justify-center text-center bg-white w-[220px] h-[64px] rounded-[24px] cursor-pointer">
-                        <a href="{{ route('reservation') }}" class="w-full h-full flex items-center justify-center">
-                            <span class="text-primary font-light text-[36px] tracking-low hover:underline">
-                                {{ __('reserve') }}
-                            </span>
-                        </a>
-                    </div>
-                </div>
-
-                <div x-cloak x-show="shown" x-transition:enter="transition ease-out duration-700 delay-400" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" class="w-[920px]">
-                    <div class="calendar bg-white text-primary p-4 rounded-lg shadow-sm">
-                        <div class="calendar-header">December 2026</div>
-
-                        <div class="calendar-weekdays">
-                            <div class="weekday">Mon</div>
-                            <div class="weekday">Tue</div>
-                            <div class="weekday">Wed</div>
-                            <div class="weekday">Thu</div>
-                            <div class="weekday">Fri</div>
-                            <div class="weekday">Sat</div>
-                            <div class="weekday">Sun</div>
-                        </div>
-
-                        <div class="calendar-grid">
-                            @php
-                                $booked = [5,6,10,11,12,18,19,20,24,25,26,31];
-                            @endphp
-
-                            @for ($d = 1; $d <= 31; $d++)
-                                <div class="calendar-cell @if(in_array($d, $booked)) booked @endif">
-                                    <div class="date">{{ $d }}</div>
-                                </div>
-                            @endfor
-                        </div>
-
-                        <div class="calendar-legend">
-                            <span class="flex items-center gap-2"><span class="dot" style="background:var(--color-primary);"></span> Booked</span>
-                            <span class="flex items-center gap-2"><span class="dot" style="background:#e6e7eb;"></span> Available</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a href="{{ route('apartments.show', $apartment->slug) }}" class="bg-teal px-5 py-2 rounded-xl w-fit font-bold text-sm teal-shadow duration-300 transition-all hover:-translate-y-1 hover:bg-tealD">
+                    {{ __('Explore apartment') }}
+                </a>
+                <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}" class="px-5 py-2 rounded-xl border border-border text-navy font-bold text-sm duration-300 transition-all hover:-translate-y-1 hover:border-purple hover:bg-purpleGhost hover:text-purple">
+                    {{ __('Book') }}
+                </a>
             </div>
-        </div>
-    </div>
+        </section>
+    @endforeach
+
+    <section class="px-8 md:px-14 pb-12 md:pb-16 pt-24 md:pt-32">
+        <livewire:reservation-widget />
+    </section>
 </x-app-layout>
+
