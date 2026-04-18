@@ -43,7 +43,12 @@ return [
         'user_id' => env('STRATOS_INSTAGRAM_ID'),
         'rapidapi_key' => env('RAPIDAPI_KEY'),
     ],
-    
+
+    'google' => [
+        'gtm_id' => env('GTM_ID'),
+        'site_verification' => env('GOOGLE_SITE_VERIFICATION'),
+    ],
+
     'sitemap' => [
         'use_crawler' => env('SITEMAP_USE_CRAWLER', false),
         'base_url' => env('SITEMAP_BASE_URL', env('APP_URL')),
