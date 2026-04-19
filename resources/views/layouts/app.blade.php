@@ -9,7 +9,15 @@
             <meta name="google-site-verification" content="{{ config('services.google.site_verification') }}">
         @endif
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        {!! seo() !!}
+
+        @php
+            $faviconPath = config('seo.favicon') ?? '/storage/icons/icon.png';
+            $faviconUrl = \Illuminate\Support\Str::startsWith($faviconPath, ['http://','https://']) ? $faviconPath : asset(ltrim($faviconPath, '/'));
+        @endphp
+        <link rel="icon" type="image/png" href="{{ $faviconUrl }}">
+        <link rel="apple-touch-icon" href="{{ $faviconUrl }}">
+        <link rel="shortcut icon" href="{{ $faviconUrl }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 

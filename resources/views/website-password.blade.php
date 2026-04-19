@@ -6,7 +6,7 @@
     @if(config('services.google.site_verification'))
         <meta name="google-site-verification" content="{{ config('services.google.site_verification') }}">
     @endif
-    <title>Enter Website Password</title>
+    {!! seo() !!}
     <link rel="stylesheet" href="/css/app.css">
     <style>
         body { display:flex; align-items:center; justify-content:center; min-height:100vh; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
