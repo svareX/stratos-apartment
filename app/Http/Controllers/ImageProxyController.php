@@ -23,7 +23,6 @@ class ImageProxyController extends Controller
             abort(404);
         }
 
-        // Normalize common storage URL variants to a disk path
         if (Str::startsWith($path, ['http://', 'https://'])) {
             $u = parse_url($path);
             $path = isset($u['path']) ? ltrim($u['path'], '/') : $path;
@@ -50,12 +49,10 @@ class ImageProxyController extends Controller
             return response()->file($original);
         }
 
-        // If no resize requested, return original
         if ($width <= 0) {
             return response()->file($original);
         }
 
-        // Cache directory: storage/app/public/_cache
         $cacheDir = storage_path('app/public/_cache');
         if (! is_dir($cacheDir)) {
             mkdir($cacheDir, 0755, true);

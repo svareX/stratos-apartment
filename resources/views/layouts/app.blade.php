@@ -45,7 +45,6 @@
                         setTimeout(() => {
                             let y = el.getBoundingClientRect().top + window.scrollY - 80;
                             
-                            // Only trigger smooth scroll if the browser didn't already natively jump there
                             if (Math.abs(window.scrollY - y) > 5) {
                                 window.scrollTo({top: y, behavior: 'smooth'});
                             }

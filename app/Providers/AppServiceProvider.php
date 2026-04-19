@@ -37,7 +37,6 @@ class AppServiceProvider extends ServiceProvider
                 ->locales(['cs', 'en', 'de']);
         });
 
-        // Global SEO data transformer: ensure sensible defaults and apply templates
         SEOManager::SEODataTransformer(function (SEOData $SEOData) {
             if (! $SEOData->site_name) {
                 $SEOData->site_name = config('seo.site_name') ?? config('app.name');
@@ -55,7 +54,6 @@ class AppServiceProvider extends ServiceProvider
                 $SEOData->canonical_url = url()->current();
             }
 
-            // Apply title/description templates if configured
             $templates = config('seo.templates', []);
             $siteName = config('seo.site_name') ?? config('app.name');
 
@@ -74,16 +72,13 @@ class AppServiceProvider extends ServiceProvider
 
             $modelType = $SEOData->type ?? null;
 
-            // Title
             $titleTemplate = $templates['title']['models'][$modelType] ?? $templates['title']['default'] ?? null;
 
-            // Homepage fallback title
             $isHomepage = request()->is('/') || trim(url()->current(), '/') === trim(config('app.url'), '/');
             if ($isHomepage && empty($SEOData->title)) {
                 $SEOData->title = config('seo.title.homepage_title') ?? ($SEOData->site_name ?? config('app.name'));
             }
 
-            // If no title was set, prefer translated static page titles for common route names
             if (empty($SEOData->title)) {
                 try {
                     $routeName = Route::currentRouteName();
@@ -103,7 +98,6 @@ class AppServiceProvider extends ServiceProvider
                         $SEOData->title = __($routeTitleMap[$routeName]);
                     }
                 } catch (\Throwable $e) {
-                    // non-fatal: skip translation fallback
                 }
             }
 
@@ -111,7 +105,6 @@ class AppServiceProvider extends ServiceProvider
                 $SEOData->title = $applyTemplate($titleTemplate);
             }
 
-            // Description
             $descTemplate = $templates['description']['models'][$modelType] ?? $templates['description']['default'] ?? null;
             if (empty($SEOData->description) && config('seo.description.fallback')) {
                 $SEOData->description = config('seo.description.fallback');
@@ -121,13 +114,11 @@ class AppServiceProvider extends ServiceProvider
                 $SEOData->description = $applyTemplate($descTemplate);
             }
 
-            // Apply title suffix if configured and not already present
             $suffix = config('seo.title.suffix');
             if ($suffix && $SEOData->title && ! str_ends_with($SEOData->title, $suffix)) {
                 $SEOData->title = $SEOData->title . $suffix;
             }
 
-            // If no structured schema is present, add a basic LodgingBusiness/Organization schema
             if (! $SEOData->schema) {
                 try {
                     $contact = ContactSettings::current();
@@ -153,7 +144,6 @@ class AppServiceProvider extends ServiceProvider
                         ];
                     });
 
-                    // Basic BreadcrumbList JSON-LD (Homepage + current page)
                     $schemas->push(function (SEOData $data) use ($siteUrl) {
                         return [
                             '@context' => 'https://schema.org',
@@ -175,7 +165,6 @@ class AppServiceProvider extends ServiceProvider
                         ];
                     });
 
-                    // If this is an FAQ page, add FAQPage schema
                     if ($modelType === 'faq') {
                         $schemas->push(function (SEOData $d) {
                             return [
@@ -195,7 +184,6 @@ class AppServiceProvider extends ServiceProvider
                         });
                     }
 
-                    // If this is an Apartment page, add an apartment-specific schema
                     if ($modelType === 'apartment') {
                         $schemas->push(function (SEOData $data) {
                             try {
@@ -236,12 +224,9 @@ class AppServiceProvider extends ServiceProvider
 
                     $SEOData->schema = $schemas;
                 } catch (\Throwable $e) {
-                    // non-fatal: don't break rendering if contact settings unavailable
                 }
             }
 
-            // Translate simple static titles when a translation exists.
-            // Preserve configured suffix (if any) when translating the base title.
             try {
                 if (! empty($SEOData->title)) {
                     $suffix = config('seo.title.suffix');
@@ -259,31 +244,26 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
             } catch (\Throwable $e) {
-                // non-fatal: ignore translation errors
             }
 
             return $SEOData;
         });
 
-        // Tag transformer: ensure some helpful OG/Twitter tags exist when missing
         SEOManager::tagTransformer(function ($tags) {
             try {
                 $siteName = config('seo.site_name') ?? config('app.name');
                 $locale = app()->getLocale();
 
-                // og:locale
                 $hasOgLocale = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:locale');
                 if (! $hasOgLocale) {
                     $tags->push(new OpenGraphTag('locale', $locale));
                 }
 
-                // og:site_name
                 $hasOgSiteName = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:site_name');
                 if (! $hasOgSiteName) {
                     $tags->push(new OpenGraphTag('site_name', $siteName));
                 }
 
-                // twitter:site
                 $twitter = config('seo.twitter.@username');
                 if ($twitter) {
                     $hasTwitter = $tags->first(fn($t) => $t instanceof TwitterCardTag && $t->collectAttributes()->get('name') === 'twitter:site');
@@ -292,13 +272,11 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
 
-                // Ensure og:url exists
                 $hasOgUrl = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:url');
                 if (! $hasOgUrl) {
                     $tags->push(new OpenGraphTag('url', url()->current()));
                 }
 
-                // Ensure og:type exists (prefer product for apartment pages)
                 $hasOgType = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:type');
                 if (! $hasOgType) {
                     $routeName = \Illuminate\Support\Facades\Route::currentRouteName();
@@ -310,7 +288,6 @@ class AppServiceProvider extends ServiceProvider
                     $tags->push(new OpenGraphTag('type', $ogType));
                 }
 
-                // Ensure twitter:card exists (prefer large image card when image present)
                 $hasTwitterCard = $tags->first(fn($t) => $t instanceof TwitterCardTag && $t->collectAttributes()->get('name') === 'twitter:card');
                 if (! $hasTwitterCard) {
                     $hasImage = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:image');
@@ -318,20 +295,17 @@ class AppServiceProvider extends ServiceProvider
                     $tags->push(new TwitterCardTag('card', $card));
                 }
 
-                // Description meta fallback
                 $hasDescription = $tags->first(fn($t) => $t instanceof MetaTag && $t->collectAttributes()->get('name') === 'description');
                 if (! $hasDescription && config('seo.description.fallback')) {
                     $tags->push(new MetaTag('description', config('seo.description.fallback')));
                 }
 
-                // Robots meta fallback
                 $hasRobots = $tags->first(fn($t) => $t instanceof MetaTag && $t->collectAttributes()->get('name') === 'robots');
                 $robotsDefault = config('seo.robots.default');
                 if (! $hasRobots && $robotsDefault) {
                     $tags->push(new MetaTag('robots', $robotsDefault));
                 }
 
-                // Ensure canonical link exists when enabled
                 if (config('seo.canonical_link')) {
                     $hasCanonical = $tags->first(fn($t) => $t instanceof LinkTag && $t->collectAttributes()->get('rel') === 'canonical');
                     if (! $hasCanonical) {
@@ -339,7 +313,6 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
 
-                // Hreflang / alternate tags: generate per supported locale
                 $locales = ['cs', 'en', 'de'];
                 $existingAlternates = $tags->filter(fn($t) => $t instanceof AlternateTag)->map(fn($t) => $t->collectAttributes()->get('hreflang'))->filter()->values()->all();
 
@@ -356,7 +329,6 @@ class AppServiceProvider extends ServiceProvider
                             $params['locale'] = $l;
                             $alternateUrl = route($routeName, $params);
                         } else {
-                            // fallback: replace locale prefix in path
                             $path = request()->path();
                             $parts = explode('/', trim($path, '/'));
                             if (isset($parts[0]) && in_array($parts[0], $locales)) {
@@ -369,11 +341,9 @@ class AppServiceProvider extends ServiceProvider
 
                         $tags->push(new AlternateTag($l, $alternateUrl));
                     } catch (\Throwable $e) {
-                        // non-fatal: skip
                     }
                 }
             } catch (\Throwable $e) {
-                // Non-fatal
             }
 
             return $tags;

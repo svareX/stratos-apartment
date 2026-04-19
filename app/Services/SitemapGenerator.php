@@ -25,27 +25,22 @@ class SitemapGenerator
         try {
             if (! class_exists(Sitemap::class)) {
                 Log::warning('Spatie Sitemap not available; falling back to blade sitemap renderer.');
-                // Fallback handled by caller; just return target path
                 return $path;
             }
 
             $sitemap = Sitemap::create();
 
-            // Supported locales (keep in sync with SetLocale and LanguageSwitch)
             $locales = ['cs', 'en', 'de'];
 
-            // Static named routes: prefer named routes if available; generate per-locale
             $static = ['about','contact','packages','activities','pricing','reservation','terms','cookies','terms-and-conditions'];
 
             foreach ($locales as $locale) {
-                // Homepage per-locale
                 try {
                     $sitemap->add(SitemapUrl::create(route('home', ['locale' => $locale]))->setLastModificationDate(now()));
                 } catch (\Throwable $e) {
                     $sitemap->add(SitemapUrl::create(url($locale . '/'))->setLastModificationDate(now()));
                 }
 
-                // Static routes
                 foreach ($static as $nameOrPath) {
                     if (Route::has($nameOrPath)) {
                         try {
@@ -58,7 +53,6 @@ class SitemapGenerator
                     }
                 }
 
-                // Apartments per-locale
                 foreach (Apartment::where('active', true)->get() as $apartment) {
                     try {
                         $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
@@ -70,7 +64,6 @@ class SitemapGenerator
                         $url->setLastModificationDate($apartment->updated_at);
                     }
 
-                    // Images
                     $photos = $apartment->photos()->orderBy('position')->get();
                     if ($photos->isNotEmpty()) {
                         foreach ($photos as $photo) {
@@ -93,7 +86,6 @@ class SitemapGenerator
                     $sitemap->add($url);
                 }
 
-                // Places and Hikes (anchor links on apartment pages)
                 foreach (Place::all() as $place) {
                     if ($place->apartment) {
                         try {
@@ -132,7 +124,6 @@ class SitemapGenerator
                     }
                 }
 
-                // FAQs as standalone pages (if routed) or anchor on relevant page
                 foreach (FrequentlyAskedQuestion::where('is_active', true)->get() as $faq) {
                     $sitemap->add(SitemapUrl::create(url($locale . '/'))->setLastModificationDate(now()));
                 }

@@ -44,7 +44,6 @@ class SocialPreviewController extends BaseController
             abort(404);
         }
 
-        // Prefer model-provided SEOData when available
         $seoData = null;
         if (method_exists($model, 'getDynamicSEOData')) {
             $seoData = $model->getDynamicSEOData();

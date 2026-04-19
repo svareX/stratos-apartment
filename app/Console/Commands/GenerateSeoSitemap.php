@@ -33,10 +33,8 @@ class GenerateSeoSitemap extends Command
 
         $sitemap = Sitemap::create();
 
-        // Homepage
         $sitemap->add(Url::create(url('/'))->setLastModificationDate(now()));
 
-        // Static named routes (if present)
         $staticRoutes = ['about','contact','packages','activities','pricing','reservation','cookies','terms'];
         foreach ($staticRoutes as $name) {
             if (Route::has($name)) {
@@ -44,7 +42,6 @@ class GenerateSeoSitemap extends Command
             }
         }
 
-        // Apartments
         foreach (Apartment::where('active', true)->get() as $apartment) {
             $url = route('apartments.show', $apartment->slug);
             $tag = Url::create($url)->setLastModificationDate($apartment->updated_at);
@@ -59,7 +56,6 @@ class GenerateSeoSitemap extends Command
             $sitemap->add($tag);
         }
 
-        // Places (anchor on apartment pages)
         foreach (Place::all() as $place) {
             if ($place->apartment) {
                 $url = route('apartments.show', $place->apartment->slug) . '#nearby';
@@ -76,7 +72,6 @@ class GenerateSeoSitemap extends Command
             }
         }
 
-        // Hikes (anchor on apartment pages)
         foreach (Hike::all() as $hike) {
             if ($hike->apartment) {
                 $url = route('apartments.show', $hike->apartment->slug) . '#hikes';

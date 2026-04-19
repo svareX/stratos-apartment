@@ -23,7 +23,6 @@ class SetLocale
 
         app()->setLocale($locale);
 
-        // Make the locale available as a default when generating URLs
         URL::defaults(['locale' => $locale]);
 
         return $next($request);

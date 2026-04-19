@@ -10,7 +10,7 @@ class RobotsController
     public function __invoke()
     {
         $cacheKey = 'robots-txt';
-        $ttl = 3600; // seconds
+        $ttl = 3600;
 
         $content = Cache::remember($cacheKey, $ttl, function () {
             $baseUrl = rtrim(config('services.sitemap.base_url', config('app.url')), '/');
