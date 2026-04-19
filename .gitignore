@@ -16,6 +16,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/sitemap.xml
+/public/sitemap*.xml
 /storage/*.key
 /storage/pail
 /vendor

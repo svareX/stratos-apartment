@@ -22,7 +22,6 @@ class RequireWebsitePassword
             return $next($request);
         }
 
-        // Allow the password routes and typical asset paths
         $allowedPatterns = [
             'password',
             'password/*',
