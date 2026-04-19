@@ -10,7 +10,7 @@
     @foreach ($apartments as $apartment)
         <section class="flex flex-col px-8 md:px-14 py-10 md:py-12 border-t border-border/70">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">{{ __($apartment->address) }}</p>
-            <h2 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __($apartment->name) }}</h2>
+            <h2 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ $apartment->name }}</h2>
 
             <div class="mt-6">
                 <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-3">{{ __('Trails and skiing') }}</p>

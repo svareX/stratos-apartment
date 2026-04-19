@@ -467,5 +467,21 @@
     ":days nights total :total CZK (no cleaning fee)": ":days Nächte insgesamt :total CZK (ohne Reinigungsgebühr)",
     "Up to :days nights includes cleaning fee.": "Bis zu :days Nächten inklusive Reinigungsgebühr.",
     "From :days nights, cleaning fee is not charged.": "Ab :days Nächten wird keine Reinigungsgebühr berechnet.",
-    "Learn more": "Erfahren Sie mehr"
+    "Learn more": "Erfahren Sie mehr",
+    "Enter a tag in English": "Geben Sie einen Tag auf Englisch ein",
+    "Enter a tag in Czech": "Geben Sie einen Tag auf Tschechisch ein",
+    "Enter a tag in German": "Geben Sie einen Tag auf Deutsch ein",
+    "Tag (EN)": "Tag (EN)",
+    "Tag (CS)": "Tag (CS)",
+    "Tag (DE)": "Tag (DE)",
+    "Enter apartment description (EN)": "Geben Sie die Beschreibung des Apartments auf Englisch ein",
+    "Enter apartment description (CS)": "Geben Sie die Beschreibung des Apartments auf Tschechisch ein",
+    "Enter apartment description (DE)": "Geben Sie die Beschreibung des Apartments auf Deutsch ein",
+    "Enter apartment name (EN)": "Geben Sie den Namen des Apartments auf Englisch ein",
+    "Enter apartment name (CS)": "Geben Sie den Namen des Apartments auf Tschechisch ein",
+    "Enter apartment name (DE)": "Geben Sie den Namen des Apartments auf Deutsch ein",
+    "Select Package": "Paket auswählen",
+    "Select a package...": "Wählen Sie ein Paket aus...",
+    "Package:": "Paket:",
+    "Basic booking without extras": "Basisbuchung ohne Extras"
 }

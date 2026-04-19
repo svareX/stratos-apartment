@@ -19,7 +19,7 @@
             </div>
             <h2 class="text-3xl md:text-4xl font-serif font-bold text-navy mb-4">{{ __('Session expired') }}</h2>
             <p class="text-muted text-lg mb-10 max-w-lg mx-auto">{{ __('We could not verify your reservation. Please try again or contact us.') }}</p>
-            <a href="{{ route('reservation') }}" wire:navigate class="btn-pri inline-flex justify-center px-8 py-3 text-base">{{ __('New reservation') }}</a>
+            <a href="{{ route('reservation', ['locale' => app()->getLocale()]) }}" wire:navigate class="btn-pri inline-flex justify-center px-8 py-3 text-base">{{ __('New reservation') }}</a>
         </div>
     @endif
 </div>
