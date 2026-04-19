@@ -21,7 +21,7 @@
 
         <section class="flex flex-col px-8 md:px-14 py-10 md:py-12 border-t border-border/70">
             <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">{{ __($apartment->address) }}</p>
-            <h2 class="text-3xl md:text-4xl text-navy font-serif mb-5">{{ __($apartment->name) }}</h2>
+            <h2 class="text-3xl md:text-4xl text-navy font-serif mb-5">{{ $apartment->name }}</h2>
 
             <div class="max-w-5xl border border-border rounded-2xl bg-white overflow-hidden transition-all duration-300 hover:shadow-md">
                 <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
@@ -64,7 +64,7 @@
                 <a href="{{ route('apartments.show', $apartment->slug) }}" class="bg-teal px-5 py-2 rounded-xl w-fit font-bold text-sm teal-shadow duration-300 transition-all hover:-translate-y-1 hover:bg-tealD">
                     {{ __('Explore apartment') }}
                 </a>
-                <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}" class="px-5 py-2 rounded-xl border border-border text-navy font-bold text-sm duration-300 transition-all hover:-translate-y-1 hover:border-purple hover:bg-purpleGhost hover:text-purple">
+                <a href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}" class="px-5 py-2 rounded-xl border border-border text-navy font-bold text-sm duration-300 transition-all hover:-translate-y-1 hover:border-purple hover:bg-purpleGhost hover:text-purple">
                     {{ __('Book') }}
                 </a>
             </div>
