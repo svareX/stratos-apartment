@@ -6,6 +6,7 @@ use App\Models\Apartment;
 use Illuminate\Http\Response;
 use App\Jobs\GenerateSitemap;
 use Illuminate\Support\Facades\Log;
+use App\Services\SitemapGenerator;
 
 class SitemapController
 {
@@ -18,14 +19,13 @@ class SitemapController
             return response()->file($sitemapPath, ['Content-Type' => 'application/xml']);
         }
 
-        // If missing, run the queued job synchronously to generate it now (keeps behaviour consistent with nightly job).
+        // If missing, attempt synchronous generation via the shared SitemapGenerator service.
         try {
-            if (class_exists(GenerateSitemap::class)) {
-                GenerateSitemap::dispatchSync();
-            }
+            $generator = app(SitemapGenerator::class);
+            $generator->generate($sitemapPath);
         } catch (\Throwable $e) {
             Log::warning('Synchronous sitemap generation failed: '.$e->getMessage());
-            // fall through to attempt generation below
+            // fall through to attempt other generation below
         }
 
         // If generation created the file, serve it.
