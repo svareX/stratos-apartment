@@ -5,11 +5,14 @@ namespace App\Models;
 use App\Enums\ApartmentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Apartment extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSEO;
 
     protected $fillable = [
         'name',
@@ -83,5 +86,18 @@ class Apartment extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        $image = $this->photosMain()->first()?->path;
+
+        return new SEOData(
+            title: $this->name,
+            description: Str::of(strip_tags((string) $this->description))->trim()->limit(155),
+            image: $image ? Storage::url($image) : route('og.image', ['type' => 'apartment', 'identifier' => $this->slug]),
+            url: route('apartments.show', $this->slug),
+            type: 'apartment',
+        );
     }
 }

@@ -16,6 +16,7 @@
         "livewire/flux": "^2.13",
         "livewire/flux-pro": "^2.13",
         "livewire/livewire": "^3.6.4",
+        "ralphjsmit/laravel-seo": "^1.8",
         "spatie/laravel-sitemap": "^8.1"
     },
     "require-dev": {
