@@ -9,8 +9,21 @@
 **{{ __('Apartment') }}:** {{ $reservation->apartment->name }}  
 **{{ __('Check-in') }}:** {{ \Carbon\Carbon::parse($reservation->check_in)->format('d. m. Y') }}  
 **{{ __('Check-out') }}:** {{ \Carbon\Carbon::parse($reservation->check_out)->format('d. m. Y') }}  
+**{{ __('Package') }}:** @if($reservation->apartmentPackage) {{ $reservation->apartmentPackage->name }} @else {{ __('Standard') }} @endif  
+**{{ __('Package price') }}:** {{ number_format($reservation->package_price ?? 0, 0, ',', ' ') }} {{ __('CZK') }}  
 **{{ __('Total price') }}:** {{ number_format($reservation->price, 0, ',', ' ') }} {{ __('CZK') }}
 </x-mail::panel>
+
+@if($reservation->apartmentPackage && count($reservation->apartmentPackage->translated_features ?? []))
+<x-mail::panel>
+**{{ __('Included package features') }}:**
+
+@foreach($reservation->apartmentPackage->translated_features as $feature)
+- {{ $feature }}
+@endforeach
+
+</x-mail::panel>
+@endif
 
 **{{ __('Location') }}:** {{ $reservation->apartment->address }}
 

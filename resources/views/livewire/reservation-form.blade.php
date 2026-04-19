@@ -35,12 +35,52 @@
                         @enderror
                     </div>
                     
-                    <div class="transition-all duration-500 ease-in-out {{ $apartment_id ? 'opacity-100 translate-y-0' : 'opacity-30 pointer-events-none -translate-y-2' }}">
+                    <div class="mb-6 p-5 bg-purpleGhost rounded-xl border {{ $errors->has('apartment_package_id') ? 'border-red' : 'border-purplePale' }}">
+                        <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-tight">{{ __('Select Package') }}</label>
+                        <div class="relative">
+                            <div class="flex gap-4 overflow-x-auto py-2 -mx-2 px-2">
+                                <div role="button" tabindex="0" wire:click="$set('apartment_package_id', 'standard')" class="min-w-[220px] flex flex-col p-4 rounded-2xl border border-border bg-white cursor-pointer transition-transform duration-200 {{ $apartment_package_id === 'standard' ? 'border-primary scale-105 shadow-md' : 'hover:shadow-lg hover:-translate-y-1' }}">
+                                    <div class="flex items-center justify-start">
+                                        <span class="text-2xl font-extrabold text-tealD">{{ number_format(0, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <span class="text-sm">🏷️</span>
+                                        <span class="text-navy text-sm font-bold">{{ __('Standard') }}</span>
+                                    </div>
+                                    <div class="text-muted text-xs mt-2">
+                                        <p><span>✓</span> <span>{{ __('Basic booking without extras') }}</span></p>
+                                    </div>
+                                </div>
+
+                                @foreach($availablePackages as $pkg)
+                                    <div role="button" tabindex="0" wire:click="$set('apartment_package_id', {{ $pkg['id'] }})" class="min-w-[220px] flex flex-col p-4 rounded-2xl border border-border bg-white cursor-pointer transition-transform duration-200 {{ $apartment_package_id == $pkg['id'] ? 'border-primary scale-105 shadow-md' : 'hover:shadow-lg hover:-translate-y-1' }}">
+                                        <div class="flex items-center justify-start">
+                                            <span class="text-2xl font-extrabold text-tealD">{{ number_format($pkg['price'], 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="text-sm">{!! $pkg['icon'] ?? '' !!}</span>
+                                            <span class="text-navy text-sm font-bold">{{ $pkg['name'] }}</span>
+                                        </div>
+                                        <div class="text-muted text-xs mt-2">
+                                            @foreach($pkg['features'] ?? [] as $feature)
+                                                <p class="leading-tight"><span>✓</span> <span>{{ $feature }}</span></p>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @error('apartment_package_id')
+                            <p class="text-red text-xs mt-2 flex items-center gap-1 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="transition-all duration-500 ease-in-out {{ $apartment_id && $apartment_package_id !== null && $apartment_package_id !== '' ? 'opacity-100 translate-y-0' : 'opacity-30 pointer-events-none -translate-y-2' }}">
                         <div class="flex flex-col gap-y-2 md:flex-row items-center justify-between mb-6">
                             <div class="flex items-center gap-3">
-                                <button wire:click="prevMonth" class="p-2 hover:bg-purplePale rounded-full text-primary">&larr;</button>
+                                <button wire:click="prevMonth" class="p-2 hover:bg-purplePale rounded-full text-primary hover:cursor-pointer">&larr;</button>
                                 <h3 class="text-2xl font-bold text-primary">{{ \Carbon\Carbon::create($displayYear, $displayMonth, 1)->translatedFormat('F Y') }}</h3>
-                                <button wire:click="nextMonth" class="p-2 hover:bg-purplePale rounded-full text-primary">&rarr;</button>
+                                <button wire:click="nextMonth" class="p-2 hover:bg-purplePale rounded-full text-primary hover:cursor-pointer">&rarr;</button>
                             </div>
                             <div class="text-sm text-muted">{{ __('Tip: pick start and end dates') }}</div>
                         </div>
@@ -98,6 +138,10 @@
                                 <div class="flex justify-between text-sm">
                                     <span class="text-muted">{{ __('Accommodation:') }}</span>
                                     <span class="font-bold">{{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-muted">{{ __('Package:') }}</span>
+                                    <span class="font-bold">+ {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}</span>
                                 </div>
                                 @if($this->cleaningApplies())
                                     <div class="flex justify-between text-sm">
@@ -265,6 +309,7 @@
                             <span class="block text-xs font-bold text-muted uppercase">{{ __('Price breakdown') }}</span>
                             <div class="text-sm font-medium text-navy space-y-1 mt-1">
                                 <div>{{ __('Accommodation:') }} {{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</div>
+                                <div>{{ __('Package:') }} {{ $this->selectedPackageName ?: __('Standard') }} — {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}</div>
                                 @if($this->cleaningApplies())
                                     <div class="text-muted italic">{{ __('Cleaning fee:') }} + {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</div>
                                 @else

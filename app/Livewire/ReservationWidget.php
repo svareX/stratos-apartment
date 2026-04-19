@@ -63,8 +63,14 @@ class ReservationWidget extends Component
 
     public function goToReservation()
     {
+        $slug = null;
+        if ($this->apartment_id) {
+            $slug = Apartment::find($this->apartment_id)?->slug;
+        }
+
         $params = [
             'apartment_id' => $this->apartment_id,
+            'apartment' => $slug,
             'start_date' => $this->dateStart,
             'end_date' => $this->dateEnd,
             'adults' => $this->adults,
@@ -76,7 +82,8 @@ class ReservationWidget extends Component
             return $v !== null && $v !== '';
         }));
 
-        $this->redirect(route('reservation').($query ? '?'.$query : ''));
+        $url = route('reservation', ['locale' => app()->getLocale()]);
+        $this->redirect($url.($query ? '?'.$query : ''));
     }
 
     public function selectDate($date)
