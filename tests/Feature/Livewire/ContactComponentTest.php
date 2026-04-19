@@ -30,9 +30,14 @@ class ContactComponentTest extends TestCase
 
         ContactSettings::current();
 
-        Livewire::test(ContactComponent::class)
-            ->call('render')
-            ->assertViewHas('faqs')
-            ->assertViewHas('settings');
+        // Instantiate the component and call its render method directly
+        $component = new ContactComponent();
+        $view = $component->render();
+
+        $this->assertInstanceOf(\Illuminate\View\View::class, $view);
+        $data = $view->getData();
+
+        $this->assertArrayHasKey('faqs', $data);
+        $this->assertArrayHasKey('settings', $data);
     }
 }

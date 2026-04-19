@@ -14,6 +14,24 @@ class HomepageSettingsTest extends TestCase
 
     public function test_create_update_delete_homepage_settings(): void
     {
+        $settings = HomepageSettings::create([
+            'hero_slides' => [
+                ['title' => 'Slide 1', 'image' => 's1.jpg'],
+            ],
+        ]);
+
+        $this->assertDatabaseHas('homepage_settings', ['id' => $settings->id]);
+
+        $settings->update(['hero_slides' => [['title' => 'Slide X', 'image' => 'x.jpg']]]);
+
+        $this->assertEquals('Slide X', $settings->fresh()->hero_slides[0]['title']);
+
+        $settings->delete();
+        $this->assertDatabaseMissing('homepage_settings', ['id' => $settings->id]);
+    }
+
+    public function test_hero_slides_storage_and_update(): void
+    {
         $slides = [
             ['title' => 'Slide 1', 'image' => 's1.jpg'],
             ['title' => 'Slide 2', 'image' => 's2.jpg'],
