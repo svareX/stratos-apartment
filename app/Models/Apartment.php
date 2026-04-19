@@ -3,26 +3,28 @@
 namespace App\Models;
 
 use App\Enums\ApartmentType;
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\App as AppFacade;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Apartment extends Model
 {
-    use HasFactory, HasSEO;
+    use HasFactory, HasTranslations, HasSEO;
 
     protected $fillable = [
-        'name',
-        'description',
+        'name_en', 'name_cs', 'name_de',
+        'description_en', 'description_cs', 'description_de',
         'address',
         'capacity',
         'amenities',
         'slug',
         'type',
-        'tags',
+        'tags_en', 'tags_cs', 'tags_de',
         'base_price',
         'cleaning_fee',
         'days_for_cleaning_fee',
@@ -31,13 +33,17 @@ class Apartment extends Model
 
     protected $casts = [
         'amenities' => 'array',
-        'tags' => 'array',
+        'tags_en' => 'array',
+        'tags_cs' => 'array',
+        'tags_de' => 'array',
         'active' => 'boolean',
         'base_price' => 'decimal:2',
         'cleaning_fee' => 'decimal:2',
         'days_for_cleaning_fee' => 'integer',
         'type' => ApartmentType::class,
     ];
+
+    protected $appends = ['name', 'description', 'tags'];
 
     public function reservations()
     {
@@ -77,8 +83,11 @@ class Apartment extends Model
     protected static function booted()
     {
         static::creating(function ($apartment) {
-            if (empty($apartment->slug) && ! empty($apartment->name)) {
-                $apartment->slug = Str::slug($apartment->name);
+            if (empty($apartment->slug)) {
+                $name = $apartment->getTranslatedAttribute('name') ?? ($apartment->attributes['name'] ?? null);
+                if (! empty($name)) {
+                    $apartment->slug = Str::slug($name);
+                }
             }
         });
     }
@@ -99,5 +108,44 @@ class Apartment extends Model
             url: route('apartments.show', $this->slug),
             type: 'apartment',
         );
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->getTranslatedAttribute('name');
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return $this->getTranslatedAttribute('description');
+    }
+
+    public function getTagsAttribute()
+    {
+        $locale = AppFacade::getLocale();
+
+        // For English locale keep existing behavior (English or legacy tags)
+        if ($locale === 'en') {
+            $val = $this->getAttributeValue('tags_en');
+            if (! empty($val)) {
+                return $val;
+            }
+
+            if (isset($this->attributes['tags'])) {
+                $raw = $this->attributes['tags'];
+                return $raw ? json_decode($raw, true) : [];
+            }
+
+            return [];
+        }
+
+        // For non-English locales only return localized tags if present, otherwise empty array
+        $column = "tags_{$locale}";
+        $val = $this->getAttributeValue($column);
+        if (! empty($val)) {
+            return $val;
+        }
+
+        return [];
     }
 }
