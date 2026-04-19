@@ -18,8 +18,7 @@ class WebRoutesTest extends TestCase
 
         $session = ['website_authenticated' => true];
 
-        $this->withSession($session)->get('/en')->assertStatus(200);
-
+        // Ensure at least one apartment exists because navigation expects one to build links
         $apartment = Apartment::create([
             'name_en' => 'Route Apt',
             'slug' => 'route-apt',
@@ -28,6 +27,8 @@ class WebRoutesTest extends TestCase
             'base_price' => 1000,
             'active' => true,
         ]);
+
+        $this->withSession($session)->get('/en')->assertStatus(200);
 
         $this->withSession($session)->get('/en/apartments/route-apt')->assertStatus(200);
 

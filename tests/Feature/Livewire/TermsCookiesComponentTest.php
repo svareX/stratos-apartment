@@ -17,11 +17,9 @@ class TermsCookiesComponentTest extends TestCase
     public function test_terms_and_cookies_components_render_without_errors(): void
     {
         Livewire::test(TermsPage::class)
-            ->call('render')
             ->assertHasNoErrors();
 
         Livewire::test(CookiesPage::class)
-            ->call('render')
             ->assertHasNoErrors();
     }
 }
