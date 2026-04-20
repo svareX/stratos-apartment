@@ -121,7 +121,7 @@
                          :style="`transition-delay: ${item.originalIndex * 100}ms;`"
                          class="transition-all duration-700 ease-out h-[300px] w-[400px] object-cover rounded-xl snap-center snap-always cursor-pointer hover:opacity-90 hover:shadow-lg shrink-0" 
                          :src="item.src" 
-                         alt="Gallery image">
+                         :alt="'Gallery image ' + (item.originalIndex + 1) + ' of ' + images.length">
                 </div>
             </template>
         </div>
@@ -154,7 +154,7 @@
 
               <img :src="images[activeIndex]" 
                   class="lightbox-img shadow-2xl" 
-                  alt="Fullscreen image">
+                  :alt="'Fullscreen image ' + (activeIndex + 1) + ' of ' + images.length">
 
             <button @click="nextImage" class="absolute right-4 sm:right-10 text-white/70 hover:text-white transition-colors z-50 p-4 bg-black/20 hover:bg-black/40 rounded-full cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">

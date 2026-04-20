@@ -28,16 +28,16 @@
                     @foreach ($apartments as $apartment)
                         <li><a href="{{ route('apartments.show', $apartment->slug) }}" class="text-white/70 hover:text-white">{{ $apartment->name }}</a></li>
                     @endforeach
-                    <li><a href="#gallery" class="text-white/70 hover:text-white">{{ __('Gallery') }}</a></li>
+                    <li><a href="{{ route('home').'#gallery' }}" class="text-white/70 hover:text-white">{{ __('Gallery') }}</a></li>
                 </ul>
             </div>
 
             <div class="text-xxs">
                 <h4 class="font-bold uppercase text-[rgba(255,255,255,0.3)] tracking-[8%] mb-2 md:mb-4">{{ __('Stay') }}</h4>
                 <ul class="space-y-1">
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Special offers') }}</a></li>
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Pricing') }}</a></li>
-                    <li><a href="#" class="text-white/70 hover:text-white">{{ __('Activities and tips') }}</a></li>
+                    <li><a href="{{ route('packages') }}" class="text-white/70 hover:text-white">{{ __('Special offers') }}</a></li>
+                    <li><a href="{{ route('pricing') }}" class="text-white/70 hover:text-white">{{ __('Pricing') }}</a></li>
+                    <li><a href="{{ route('activities') }}" class="text-white/70 hover:text-white">{{ __('Activities and tips') }}</a></li>
                 </ul>
             </div>
 

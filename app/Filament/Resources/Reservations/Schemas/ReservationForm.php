@@ -8,6 +8,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use App\Models\Apartment;
 
 class ReservationForm
 {
@@ -17,7 +18,7 @@ class ReservationForm
             ->components([
                 Select::make('apartment_id')
                     ->label(__('Apartment'))
-                    ->relationship('apartment', 'name')
+                    ->options(fn () => Apartment::all()->mapWithKeys(fn ($a) => [$a->id => $a->name])->toArray())
                     ->preload()
                     ->searchable()
                     ->required(),
