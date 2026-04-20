@@ -44,6 +44,11 @@ return [
         'rapidapi_key' => env('RAPIDAPI_KEY'),
     ],
 
+    'recaptcha' => [
+        'site_key' => env('RECAPTCHA_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_SECRET_KEY'),
+    ],
+
     'google' => [
         'gtm_id' => env('GTM_ID'),
         'site_verification' => env('GOOGLE_SITE_VERIFICATION'),

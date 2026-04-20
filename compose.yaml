@@ -23,7 +23,7 @@ services:
             - sail
         depends_on:
             - mysql
-            
+            - pgsql
     queue:
         build:
             context: ./vendor/laravel/sail/runtimes/8.5
@@ -36,14 +36,13 @@ services:
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-        command: "php artisan queue:listen"
+        command: 'php artisan queue:listen'
         volumes:
             - '.:/var/www/html'
         networks:
             - sail
         depends_on:
             - mysql
-
     mysql:
         image: 'mysql:8.4'
         ports:
@@ -69,11 +68,36 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
-
+    pgsql:
+        image: 'pgvector/pgvector:pg16'
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        environment:
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        volumes:
+            - 'sail-pgsql:/var/lib/postgresql'
+            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - pg_isready
+                - '-q'
+                - '-d'
+                - '${DB_DATABASE}'
+                - '-U'
+                - '${DB_USERNAME}'
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
-
 volumes:
     sail-mysql:
+        driver: local
+    sail-pgsql:
         driver: local

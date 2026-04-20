@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
+
         @if(config('services.google.site_verification'))
             <meta name="google-site-verification" content="{{ config('services.google.site_verification') }}">
         @endif
@@ -33,7 +33,7 @@
             <!-- End Google Tag Manager -->
         @endif
     </head>
-    <body class="font-sans antialiased" 
+    <body class="font-sans antialiased"
         x-data
         x-init="
             if (window.location.hash) {
@@ -44,7 +44,7 @@
                         clearInterval(interval);
                         setTimeout(() => {
                             let y = el.getBoundingClientRect().top + window.scrollY - 80;
-                            
+
                             if (Math.abs(window.scrollY - y) > 5) {
                                 window.scrollTo({top: y, behavior: 'smooth'});
                             }
@@ -71,6 +71,8 @@
 
             @include('layouts.footer')
         </div>
+
+        <livewire:chatbot />
 
         @stack('modals')
 
