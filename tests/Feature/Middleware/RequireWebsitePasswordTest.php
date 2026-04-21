@@ -14,9 +14,8 @@ class RequireWebsitePasswordTest extends TestCase
 
     public function test_redirects_to_password_when_set_and_not_authenticated(): void
     {
-        putenv('WEBSITE_PASSWORD=1');
+        config(['app.website_password' => '1']); // use the config key your middleware actually checks
 
-        // ensure layout route generation has an apartment
         Apartment::create([
             'name_en' => 'Nav Apt',
             'address' => 'Addr',
@@ -25,9 +24,7 @@ class RequireWebsitePasswordTest extends TestCase
             'active' => true,
         ]);
 
-        $res = $this->get('/en/');
-
-        $res->assertRedirect('/password');
+        $this->get('/en/')->assertRedirect('/password');
     }
 
     public function test_allows_password_route_when_set(): void
