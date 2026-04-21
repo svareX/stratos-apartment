@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Livewire;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use App\Livewire\ContactComponent;
+use App\Models\FrequentlyAskedQuestion;
+use App\Models\ContactSettings;
+
+class ContactComponentTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_contact_component_renders_with_data(): void
+    {
+        FrequentlyAskedQuestion::create([
+            'question_en' => 'Q1',
+            'answer_en' => 'A1',
+            'question_cs' => 'Q1 CS',
+            'answer_cs' => 'A1 CS',
+            'question_de' => 'Q1 DE',
+            'answer_de' => 'A1 DE',
+            'position' => 1,
+            'is_active' => true,
+        ]);
+
+        ContactSettings::current();
+
+        // Instantiate the component and call its render method directly
+        $component = new ContactComponent();
+        $view = $component->render();
+
+        $this->assertInstanceOf(\Illuminate\View\View::class, $view);
+        $data = $view->getData();
+
+        $this->assertArrayHasKey('faqs', $data);
+        $this->assertArrayHasKey('settings', $data);
+    }
+}

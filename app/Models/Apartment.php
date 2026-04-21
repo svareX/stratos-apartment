@@ -105,7 +105,7 @@ class Apartment extends Model
             title: $this->name,
             description: Str::of(strip_tags((string) $this->description))->trim()->limit(155),
             image: $image ? Storage::url($image) : route('og.image', ['type' => 'apartment', 'identifier' => $this->slug]),
-            url: route('apartments.show', $this->slug),
+            url: route('apartments.show', ['locale' => app()->getLocale() ?? config('app.locale'), 'apartment' => $this->slug]),
             type: 'apartment',
         );
     }
