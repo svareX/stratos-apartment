@@ -1,26 +1,33 @@
 <x-mail::message>
-# {{ __('Reservation Update') }}
 
-{{ __('Hello') }} **{{ $reservation->user->name ?? __('Guest') }}**,
+@if($logoPath)
+<div style="text-align: center; margin-bottom: 30px;">
+    <img src="{{ $message->embed(public_path('images/logo/icon-big.png')) }}" alt="{{ config('app.name', 'Apartmán Stratos') }}" style="max-width: 200px; height: auto;">
+</div>
+@endif
 
-{{ __('The status of your reservation has been updated.') }}
+# {{ 'Reservation Update' }}
+
+{{ 'Hello' }} **{{ $reservation->user->name ?? 'Guest' }}**,
+
+{{ 'The status of your reservation has been updated.' }}
 
 <x-mail::panel>
-**{{ __('New Status') }}:** {{ $reservation->status instanceof \App\Enums\ReservationStatus ? $reservation->status->label() : \App\Enums\ReservationStatus::from($reservation->status)->label() }}  
-**{{ __('Apartment') }}:** {{ $reservation->apartment->name }}  
-**{{ __('Check-in') }}:** {{ \Carbon\Carbon::parse($reservation->check_in)->format('d. m. Y') }}  
-**{{ __('Check-out') }}:** {{ \Carbon\Carbon::parse($reservation->check_out)->format('d. m. Y') }}  
-**{{ __('Total price') }}:** {{ number_format($reservation->price, 0, ',', ' ') }} {{ __('CZK') }}
+**{{ 'New Status' }}:** {{ $reservation->status instanceof \App\Enums\ReservationStatus ? $reservation->status->label() : \App\Enums\ReservationStatus::from($reservation->status)->label() }}<br>
+**{{ 'Apartment' }}:** {{ $reservation->apartment->name }}<br>
+**{{ 'Check-in' }}:** {{ \Carbon\Carbon::parse($reservation->check_in)->format('d. m. Y') }}<br>
+**{{ 'Check-out' }}:** {{ \Carbon\Carbon::parse($reservation->check_out)->format('d. m. Y') }}<br>
+**{{ 'Total price' }}:** {{ number_format($reservation->price, 0, ',', ' ') }} {{ 'CZK' }}
 </x-mail::panel>
 
-**{{ __('Location') }}:** {{ $reservation->apartment->address }}
+**{{ 'Location' }}:** {{ $reservation->apartment->address }}
 
-<x-mail::button :url="'http://maps.google.com/maps?q=' . urlencode($reservation->apartment->address)">
-{{ __('Navigate to Apartment') }}
+<x-mail::button :url="'https://www.google.com/maps/search/?api=1&query=' . urlencode($reservation->apartment->address)">
+{{ 'Navigation to the Apartment' }}
 </x-mail::button>
 
-{{ __('If you have any questions, feel free to reply directly to this email.') }}
+{{ 'If you have any questions, feel free to reply directly to this email.' }}
 
-{{ __('Best regards,') }}<br>
+{{ 'Best regards,' }}<br>
 {{ config('app.name', 'Apartmán Stratos') }}
 </x-mail::message>
