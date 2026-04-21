@@ -14,7 +14,7 @@ return [
     'favicon' => env('SEO_FAVICON_PATH', '/images/logo/icon.png'),
     'title' => [
         'infer_title_from_url' => true,
-        'suffix' => env('SEO_TITLE_SUFFIX', ' - ' . env('APP_NAME')),
+        'suffix' => env('SEO_TITLE_SUFFIX', ' - '.env('APP_NAME')),
         'homepage_title' => env('SEO_HOMEPAGE_TITLE', null),
     ],
     'description' => [

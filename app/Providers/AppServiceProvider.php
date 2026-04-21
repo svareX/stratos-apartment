@@ -19,9 +19,7 @@ use RalphJSmit\Laravel\SEO\Support\TwitterCardTag;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 
     public function boot(): void
     {
@@ -98,7 +96,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $suffix = config('seo.title.suffix');
                 if ($suffix && $SEOData->title && ! str_ends_with($SEOData->title, $suffix)) {
-                    $SEOData->title = $SEOData->title . $suffix;
+                    $SEOData->title = $SEOData->title.$suffix;
                 }
             }
 
@@ -238,7 +236,7 @@ class AppServiceProvider extends ServiceProvider
 
                         $translated = __($base);
                         if ($translated !== $base) {
-                            $SEOData->title = $translated . ($hadSuffix ? $suffix : '');
+                            $SEOData->title = $translated.($hadSuffix ? $suffix : '');
                         }
                     }
                 } catch (\Throwable $e) {
