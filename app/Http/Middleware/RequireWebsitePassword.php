@@ -12,7 +12,7 @@ class RequireWebsitePassword
      */
     public function handle(Request $request, Closure $next)
     {
-        $password = env('WEBSITE_PASSWORD', '');
+        $password = (string) config('app.website_password', env('WEBSITE_PASSWORD', ''));
 
         if ($password === '') {
             return $next($request);

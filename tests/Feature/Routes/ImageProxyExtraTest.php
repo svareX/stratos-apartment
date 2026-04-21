@@ -64,7 +64,7 @@ class ImageProxyExtraTest extends TestCase
         $res = $this->get('/img?path=photos/bad.png&w=100');
 
         // Current controller attempts to list() the result of getimagesize().
-        // When getimagesize() returns false this leads to a 500 error. Assert current behavior.
-        $res->assertStatus(500);
+        // When getimagesize() returns false this leads to a 404 error. Assert current behavior.
+        $res->assertStatus(404);
     }
 }
