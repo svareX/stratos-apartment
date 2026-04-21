@@ -4,12 +4,14 @@ RUN apk add --no-cache \
     icu-dev \
     libzip-dev \
     libxml2-dev \
+    postgresql-dev \
     zip \
     unzip \
     git
 
 RUN docker-php-ext-install \
     pdo_mysql \
+    pdo_pgsql \
     bcmath \
     intl \
     zip \
