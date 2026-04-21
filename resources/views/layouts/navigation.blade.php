@@ -42,6 +42,9 @@
         @else
             @php
                 $apartmentsActive = \Illuminate\Support\Str::startsWith($currentRoute ?? '', 'apartments');
+                $packagesActive = ($currentRoute === 'packages');
+                $activitiesActive = ($currentRoute === 'activities');
+                $pricingActive = ($currentRoute === 'pricing');
             @endphp
             <div class="flex justify-center gap-4 text-sm tracking-[3%] text-muted items-center">
                 <div x-data="{ open: false }" class="relative">
@@ -73,9 +76,9 @@
                     </div>
                 </div>
 
-                <a href="{{ $hashPrefix }}#packages" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Packages') }}</a>
-                <a href="{{ $hashPrefix }}#nearby" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Activities') }}</a>
-                <a href="{{ $hashPrefix }}#reservation" class="hover:text-purple transition-all duration-300 hover:cursor-pointer">{{ __('Pricing') }}</a>
+                <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#packages' : route('packages') }}" class="transition-all duration-300 hover:cursor-pointer {{ $packagesActive ? 'font-bold text-purple' : 'hover:text-purple' }}">{{ __('Packages') }}</a>
+                <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#nearby' : route('activities') }}" class="transition-all duration-300 hover:cursor-pointer {{ $activitiesActive ? 'font-bold text-purple' : 'hover:text-purple' }}">{{ __('Activities') }}</a>
+                <a href="{{ route('pricing') }}" class="transition-all duration-300 hover:cursor-pointer {{ $pricingActive ? 'font-bold text-purple' : 'hover:text-purple' }}">{{ __('Pricing') }}</a>
                 <a href="{{ route('contact') }}" class="transition-colors duration-300 hover:cursor-pointer {{ $currentRoute === 'contact' ? 'font-bold text-purple' : 'hover:text-purple' }}">{{ __('Contact') }}</a>
             </div>
         @endif
@@ -94,14 +97,14 @@
             class="p-1 px-3 rounded-lg text-sm font-bold tracking-[-10%] transition-colors duration-300 text-purple {{ $currentLocale === 'en' ? 'bg-purplePale border-[1px] border-border' : 'hover:bg-purplePale' }}">
             <span class="inline-block mr-2" aria-hidden>🇬🇧</span>{{ __('EN') }}
         </a>
-        <a href="{{ route('reservation') }}"
+        <a href="{{ route('reservation', ['locale' => app()->getLocale()]) }}"
             class="bg-teal text-white teal-shadow px-5 py-2 rounded-lg font-bold text-sm duration-200 transition-all hover:bg-tealD">
             {{ __('Book') }}
         </a>
     </div>
 
     <div class="flex lg:hidden items-center gap-3 relative z-50">
-        <a href="{{ route('reservation') }}" class="bg-teal text-white px-4 py-1.5 rounded-lg font-bold text-xs shadow-sm hover:bg-tealD transition-colors">
+        <a href="{{ route('reservation', ['locale' => app()->getLocale()]) }}" class="bg-teal text-white px-4 py-1.5 rounded-lg font-bold text-xs shadow-sm hover:bg-tealD transition-colors">
             {{ __('Book') }}
         </a>
         <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-navy p-1 focus:outline-none hover:text-purple transition-colors">
@@ -157,9 +160,9 @@
                         </div>
                     </div>
                     
-                    <a href="{{ $hashPrefix }}#packages" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Packages') }}</a>
-                    <a href="{{ $hashPrefix }}#nearby" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Activities') }}</a>
-                    <a href="{{ $hashPrefix }}#reservation" @click="mobileMenuOpen = false" class="hover:text-purple transition-colors">{{ __('Pricing') }}</a>
+                    <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#packages' : route('packages') }}" @click="mobileMenuOpen = false" class="transition-colors {{ $packagesActive ? 'text-purple' : 'hover:text-purple' }}">{{ __('Packages') }}</a>
+                    <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#nearby' : route('activities') }}" @click="mobileMenuOpen = false" class="transition-colors {{ $activitiesActive ? 'text-purple' : 'hover:text-purple' }}">{{ __('Activities') }}</a>
+                    <a href="{{ $hashPrefix }}#reservation" @click="mobileMenuOpen = false" class="transition-colors {{ $pricingActive ? 'text-purple' : 'hover:text-purple' }}">{{ __('Pricing') }}</a>
                     <a href="{{ route('contact') }}" class="transition-colors {{ $currentRoute === 'contact' ? 'text-purple' : 'hover:text-purple' }}">{{ __('Contact') }}</a>
                 </div>
             @endif

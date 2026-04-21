@@ -32,13 +32,28 @@ class ApartmentFormV2
                                 'lg' => 3,
                             ])
                             ->schema([
-                                TextInput::make('name')
-                                    ->label(__('Name'))
-                                    ->placeholder(__('Enter apartment name'))
+                                TextInput::make('name_en')
+                                    ->label(__('Name (EN)'))
+                                    ->placeholder(__('Enter apartment name (EN)'))
                                     ->required()
                                     ->live(debounce: 500)
-                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str()->slug($state)))
-                                    ->maxLength(64),
+                                    ->afterStateUpdated(fn ($state, callable $set) => [$set('slug', str()->slug($state)), $set('name', $state)])
+                                    ->maxLength(64)
+                                    ->columnSpan(1),
+
+                                TextInput::make('name_cs')
+                                    ->label(__('Name (CS)'))
+                                    ->placeholder(__('Enter apartment name (CS)'))
+                                    ->maxLength(64)
+                                    ->columnSpan(1),
+
+                                TextInput::make('name_de')
+                                    ->label(__('Name (DE)'))
+                                    ->placeholder(__('Enter apartment name (DE)'))
+                                    ->maxLength(64)
+                                    ->columnSpan(1),
+
+                                Hidden::make('name'),
 
                                 TextInput::make('slug')
                                     ->label(__('Slug'))
@@ -94,11 +109,36 @@ class ApartmentFormV2
                                     ->default(true)
                                     ->label(__('Active')),
 
-                                Textarea::make('description')
-                                    ->label(__('Description'))
-                                    ->placeholder(__('Enter apartment description'))
-                                    ->maxLength(65535)
-                                    ->columnSpan('full'),
+                                Tabs::make('Description')
+                                    ->columnSpan('full')
+                                    ->tabs([
+                                        Tab::make(__('English'))
+                                            ->schema([
+                                                Textarea::make('description_en')
+                                                    ->label(__('Description (EN)'))
+                                                    ->placeholder(__('Enter apartment description (EN)'))
+                                                    ->maxLength(65535)
+                                                    ->rows(6)
+                                                    ->afterStateUpdated(fn ($state, callable $set) => $set('description', $state)),
+                                            ]),
+                                        Tab::make(__('Czech'))
+                                            ->schema([
+                                                Textarea::make('description_cs')
+                                                    ->label(__('Description (CS)'))
+                                                    ->placeholder(__('Enter apartment description (CS)'))
+                                                    ->maxLength(65535)
+                                                    ->rows(6),
+                                            ]),
+                                        Tab::make(__('German'))
+                                            ->schema([
+                                                Textarea::make('description_de')
+                                                    ->label(__('Description (DE)'))
+                                                    ->placeholder(__('Enter apartment description (DE)'))
+                                                    ->maxLength(65535)
+                                                    ->rows(6),
+                                            ]),
+                                    ]),
+                                Hidden::make('description'),
 
                                 KeyValue::make('amenities')
                                     ->label(__('Amenities (key-value)'))
@@ -108,13 +148,26 @@ class ApartmentFormV2
                                 Repeater::make('tags')
                                     ->label(__('Tags'))
                                     ->schema([
-                                        TextInput::make('value')
-                                            ->label(__('Tag'))
-                                            ->placeholder(__('Enter a tag'))
+                                        TextInput::make('value_en')
+                                            ->label(__('Tag (EN)'))
+                                            ->placeholder(__('Enter a tag in English'))
                                             ->required()
-                                            ->maxLength(50),
+                                            ->maxLength(50)
+                                            ->columnSpan(1),
+
+                                        TextInput::make('value_cs')
+                                            ->label(__('Tag (CS)'))
+                                            ->placeholder(__('Enter a tag in Czech'))
+                                            ->maxLength(50)
+                                            ->columnSpan(1),
+
+                                        TextInput::make('value_de')
+                                            ->label(__('Tag (DE)'))
+                                            ->placeholder(__('Enter a tag in German'))
+                                            ->maxLength(50)
+                                            ->columnSpan(1),
                                     ])
-                                    ->columns(1)
+                                    ->columns(3)
                                     ->addActionLabel(__('Add tag'))
                                     ->columnSpan('full'),
                             ]),
@@ -188,9 +241,35 @@ class ApartmentFormV2
                                     ->label(__('Other photos'))
                                     ->relationship('photosOther')
                                     ->reorderable('position')
+                                    ->columns([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ])
                                     ->schema([
-                                        FileUpload::make('path')->label(__('Photo'))->image()->required(),
-                                        TextInput::make('tag')->label(__('Tag'))->maxLength(50)->placeholder(__('Enter a tag')),
+                                        FileUpload::make('path')
+                                            ->label(__('Photo'))
+                                            ->image()
+                                            ->columnSpan('full')
+                                            ->required(),
+                                        TextInput::make('tag_en')
+                                            ->label(__('Tag (EN)'))
+                                            ->maxLength(50)
+                                            ->placeholder(__('Enter a tag'))
+                                            ->required()
+                                            ->columnSpan(1),
+
+                                        TextInput::make('tag_cs')
+                                            ->label(__('Tag (CS)'))
+                                            ->maxLength(50)
+                                            ->placeholder(__('Enter a tag'))
+                                            ->columnSpan(1),
+
+                                        TextInput::make('tag_de')
+                                            ->label(__('Tag (DE)'))
+                                            ->maxLength(50)
+                                            ->placeholder(__('Enter a tag'))
+                                            ->columnSpan(1),
                                         Hidden::make('is_main')->default(false),
                                         Hidden::make('position'),
                                     ])

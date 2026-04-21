@@ -32,10 +32,10 @@
                                 <p class="max-w-xl text-white/80 mb-6" x-text="slide.description"></p>
                                 
                                 <div class="flex gap-3">
-                                    <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
+                                    <a href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}"
                                         class="flex flex-col justify-center md:hidden btn-teal px-4 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                                         __('Book') }}</a>
-                                    <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
+                                    <a href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}"
                                         class="hidden md:flex flex-col justify-center btn-teal px-6 py-3 rounded-xl font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                                         __('Book') }} →</a>
                                     <a href="#apartments"
@@ -73,17 +73,18 @@
         <section class="flex flex-col gap-4 p-8 md:px-14 md:py-12 md:pb-14 rounded-t-lg" id ="gallery">
             <h5 class="text-2xl font-serif text-navy">{{ __('Photo gallery') }}</h5>
             
-            <div x-data="{ 
+                <div x-data="{ 
                     lightbox: false, 
                     lightboxIdx: 0, 
                     images: {{ Js::from($apartmentImages) }},
-                    tags: {{ $galleryPhotos->count() > 0 ? Js::from($galleryPhotos->map(fn($p) => $p->tag ? __($p->tag) : '')->values()) : Js::from(array_fill(0, count($apartmentImages), '')) }}
+                    apartmentName: {{ Js::from($apartment->name ?? '') }},
+                    tags: {{ $galleryPhotos->count() > 0 ? Js::from($galleryPhotos->map(fn($p) => $p->tag ?? '')->values()) : Js::from(array_fill(0, count($apartmentImages), '')) }}
                 }" class="w-full">
                 
                 <div class="flex md:hidden overflow-x-auto gap-4 snap-x snap-mandatory pb-2 touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     <template x-for="(img, idx) in images" :key="idx">
                         <div class="w-[85%] shrink-0 snap-center rounded-3xl overflow-hidden relative h-64 border border-border/50 shadow-sm">
-                            <img :src="img" alt="{{ __('Apartment view') }}" class="w-full h-full object-cover" />
+                            <img :src="img" :alt="tags[idx] || apartmentName || '{{ __('Apartment view') }}'" class="w-full h-full object-cover" />
                             <div class="absolute bottom-4 right-4 text-xs font-bold tracking-widest text-white/90 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
                                 <span x-text="idx + 1"></span> / <span x-text="images.length"></span>
                             </div>
@@ -106,11 +107,11 @@
                         @if ($count === 1)
                             <div class="flex flex-col justify-end col-span-1 row-span-1 rounded-3xl cursor-pointer group overflow-hidden relative"
                                 @click="lightbox = true; lightboxIdx = 0">
-                                <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                    <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                                @if($photo->tag)
+                                    @if($photo->tag ?? false)
                                     <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                        {{ __($photo->tag) }}
+                                        {{ $photo->tag }}
                                     </div>
                                 @endif
                             </div>
@@ -118,11 +119,11 @@
                         @elseif ($count === 2)
                             <div class="flex flex-col justify-end col-span-1 row-span-1 {{ $index === 0 ? 'rounded-l-3xl' : 'rounded-r-3xl' }} cursor-pointer group overflow-hidden relative"
                                 @click="lightbox = true; lightboxIdx = {{ $index }}">
-                                <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                    <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                                @if($photo->tag)
+                                    @if($photo->tag ?? false)
                                     <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                        {{ __($photo->tag) }}
+                                        {{ $photo->tag }}
                                     </div>
                                 @endif
                             </div>
@@ -130,11 +131,11 @@
                         @elseif ($count === 3)
                             <div class="flex flex-col justify-end col-span-1 row-span-1 {{ $index === 0 ? 'rounded-l-3xl' : ($index === 2 ? 'rounded-r-3xl' : '') }} cursor-pointer group overflow-hidden relative"
                                 @click="lightbox = true; lightboxIdx = {{ $index }}">
-                                <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                    <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                                @if($photo->tag)
+                                    @if($photo->tag ?? false)
                                     <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                        {{ __($photo->tag) }}
+                                        {{ $photo->tag }}
                                     </div>
                                 @endif
                             </div>
@@ -142,11 +143,11 @@
                         @elseif ($count === 4)
                             <div class="flex flex-col justify-end {{ $index === 0 ? 'col-span-2 row-span-2 rounded-l-3xl' : 'col-span-1 row-span-1' }} {{ $index === 2 ? 'rounded-tr-3xl' : '' }} {{ $index === 3 ? 'rounded-br-3xl' : '' }} cursor-pointer group overflow-hidden relative"
                                 @click="lightbox = true; lightboxIdx = {{ $index }}">
-                                <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                    <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                                @if($photo->tag)
+                                    @if($photo->tag)
                                     <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                        {{ __($photo->tag) }}
+                                        {{ $photo->tag }}
                                     </div>
                                 @endif
                             </div>
@@ -155,42 +156,42 @@
                             @if ($index === 0)
                                 <div class="flex flex-col justify-end col-span-2 row-span-2 rounded-l-3xl cursor-pointer group overflow-hidden relative"
                                     @click="lightbox = true; lightboxIdx = 0">
-                                    <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                    <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                                     @if($photo->tag)
                                         <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                            {{ __($photo->tag) }}
+                                            {{ $photo->tag }}
                                         </div>
                                     @endif
                                 </div>
                             @elseif ($index === 1 || $index === 2)
                                 <div class="flex flex-col justify-end col-span-1 row-span-1 {{ $index === 2 ? 'rounded-tr-3xl' : '' }} cursor-pointer group overflow-hidden relative"
                                     @click="lightbox = true; lightboxIdx = {{ $index }}">
-                                    <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                    <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                                     @if($photo->tag)
                                         <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                            {{ __($photo->tag) }}
+                                            {{ $photo->tag }}
                                         </div>
                                     @endif
                                 </div>
                             @elseif ($index === 3)
                                 <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
                                     @click="lightbox = true; lightboxIdx = {{ $index }}">
-                                    <img src="{{ Storage::url($photo->path) }}" alt="{{ $photo->tag ?? __('Apartment view') }}"
+                                        <x-responsive-image :path="$photo->path" :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                                    @if($photo->tag)
+                                        @if($photo->tag ?? false)
                                         <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
-                                            {{ __($photo->tag) }}
+                                            {{ $photo->tag }}
                                         </div>
                                     @endif
                                 </div>
                             @elseif ($index === 4)
                                 <div class="flex flex-col justify-center col-span-1 row-span-1 rounded-br-3xl cursor-pointer group overflow-hidden relative"
                                     @click="lightbox = true; lightboxIdx = {{ $index }}">
-                                    <img src="{{ Storage::url($photo->path) }}" alt="{{ __('More photos') }}"
+                                        <x-responsive-image :path="$photo->path" :alt="__('More photos')"
                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
-                                        @if ($galleryPhotos->count() - 5 > 0)
+                                        @if ($galleryPhotos->count() - 5 > 0 ?? false)
                                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
                                                 +{{ $galleryPhotos->count() - 5 }} {{ __('photos') }} →
                                             </div>
@@ -201,29 +202,29 @@
                     @empty
                         <div class="flex flex-col justify-end col-span-2 row-span-2 rounded-l-3xl cursor-pointer group overflow-hidden relative"
                             @click="lightbox = true; lightboxIdx = 0">
-                            <img :src="images[0]" alt="{{ __('Apartment view') }}"
+                            <img :src="images[0]" :alt="tags[0] || apartmentName || '{{ __('Apartment view') }}'"
                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                             <div class="absolute bottom-0 left-0 ml-4 mb-3 text-sm tracking-[8%] uppercase font-bold w-fit px-3 rounded-xl text-[rgba(255,255,255,0.6)] bg-[rgba(0,0,0,0.3)] border-[1px] border-[rgba(255,255,255,0.15)] backdrop-blur">
                                 {{ __('Apartment view') }}</div>
                         </div>
                         <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
                             @click="lightbox = true; lightboxIdx = 1">
-                            <img :src="images[1]" alt="{{ __('Apartment view') }}"
+                            <img :src="images[1]" :alt="tags[1] || apartmentName || '{{ __('Apartment view') }}'"
                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         </div>
                         <div class="flex flex-col justify-end col-span-1 row-span-1 rounded-tr-3xl cursor-pointer group overflow-hidden relative"
                             @click="lightbox = true; lightboxIdx = 2">
-                            <img :src="images[2]" alt="{{ __('Apartment view') }}"
+                            <img :src="images[2]" :alt="tags[2] || apartmentName || '{{ __('Apartment view') }}'"
                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         </div>
                         <div class="flex flex-col justify-end col-span-1 row-span-1 cursor-pointer group overflow-hidden relative"
                             @click="lightbox = true; lightboxIdx = 3">
-                            <img :src="images[3]" alt="{{ __('Apartment view') }}"
+                            <img :src="images[3]" :alt="tags[3] || apartmentName || '{{ __('Apartment view') }}'"
                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         </div>
                         <div class="flex flex-col justify-center col-span-1 row-span-1 rounded-br-3xl cursor-pointer group overflow-hidden relative"
                             @click="lightbox = true; lightboxIdx = 4">
-                            <img :src="images[4]" alt="{{ __('More photos') }}"
+                            <img :src="images[4]" :alt="tags[4] || '{{ __('More photos') }}'"
                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80" />
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-lg">
                                 +{{ count($apartmentImages) }} {{ __('photos') }} →</div>
@@ -266,6 +267,7 @@
 
                     <div class="relative w-full flex-1 flex items-center justify-center p-16 mb-24 mt-16" @click.self="lightbox = false">
                         <img :src="images[lightboxIdx]" 
+                            :alt="tags[lightboxIdx] || apartmentName || '{{ __('Apartment view') }}'"
                             class="max-h-[80vh] max-w-full rounded-lg shadow-2xl object-contain ring-1 ring-white/10" />
                     </div>
 
@@ -275,7 +277,7 @@
                                 <button @click="lightboxIdx = idx; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })" 
                                         class="relative shrink-0 h-20 w-32 rounded-lg overflow-hidden transition-all duration-300 focus:outline-none"
                                         :class="lightboxIdx === idx ? 'ring-2 ring-teal scale-105 z-10 opacity-100' : 'ring-1 ring-white/20 opacity-40 hover:opacity-100 hover:scale-105'">
-                                    <img :src="img" class="w-full h-full object-cover" />
+                                    <img :src="img" :alt="tags[idx] || apartmentName || '{{ __('Apartment view') }}'" class="w-full h-full object-cover" />
                                 </button>
                             </template>
                         </div>
@@ -292,12 +294,11 @@
                 <h6 class="text-4xl text-white font-serif">{{ __('No excuses.') }}</h6>
                 <h6 class="text-4xl text-white font-serif mb-3">{{ __('Thermals are 5 minutes away.') }}</h6>
                 <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
-                    <span>
-                        {{ __('Therme Laa - one of the most beautiful thermal baths in lower Austria.') }}
-                    </span>
-                    <span>
+                        <span
+                            class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border border-border">
+                            {{ $apartment->tags[0]['value'] ?? '' }}
+                        </span>
                         {{ __('Swimming pools, saunas, relaxation zones and more!') }}
-                    </span>
                 </p>
 
                 <div class="grid grid-cols-1 max-w-6xl gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
@@ -315,7 +316,7 @@
                                 <span class="text-sm text-[rgba(255,255,255,0.6)] mb-3">
                                     {{ __('2 nights + 2 admissions to Therme Laa + welcome set (vine, candles, towels). Ideal for couples\' getaway') }}
                                 </span>
-                                <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}" class="flex flex-col justify-center w-fit text-sm btn-teal px-8 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">
+                                <a href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}" class="flex flex-col justify-center w-fit text-sm btn-teal px-8 py-2 rounded-xl font-semibold duration-200 transition-all hover:-translate-y-1 teal-shadow">
                                     {{ __('Book') }}
                                 </a>
                             </div>
@@ -338,7 +339,7 @@
                     @foreach ($apartment->tags as $tag)
                         <span
                             class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
-                            {{ __($tag['value']) }}
+                            {{ $tag['value'] }}
                         </span>
                     @endforeach
                 </div>
@@ -358,7 +359,7 @@
                     @foreach ($apartment->tags as $tag)
                         <span
                             class="flex flex-col justify-center py-2 px-4 rounded-2xl text-xs font-bold text-purple bg-purplePale border-[1px] border-border">
-                            {{ __($tag['value']) }}
+                            {{ $tag['value'] }}
                         </span>                       
                     @endforeach
                 </div>
@@ -368,13 +369,17 @@
             @if ($apartment->hikes && $apartment->hikes->isNotEmpty())
                 <section class="bg-skiing w-full" id="hikes">
                     <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
-                        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                        <div class="flex flex-row justify-between">
+                            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                            <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline"
+                                href={{ route('activities') }}>{{ __('Learn more') }}</a>
+                        </div>
                         <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
                         <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
-                            <span>
-                                {{ __('Direct access to ski slopes, cross-country trails, and hiking trails. Filter by difficulty.') }}
+                            <span
+                                class="flex flex-col justify-center py-1 px-3 rounded-xl text-xs text-purple bg-purplePale border border-border">
+                                {{ $apartment->tags[0]['value'] ?? '' }}
                             </span>
-                        </p>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-[rgba(255,255,255,0.72)]">
                             @foreach ($apartment->hikes as $hike)
@@ -413,7 +418,11 @@
             @else
                 <section class="bg-skiing w-full" id="about">
                     <div class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-16">
-                        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                        <div class="flex flex-row justify-between">
+                            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3">{{ __('Trails and skiing') }}</p>
+                            <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline"
+                                href={{ route('activities') }}>{{ __('Learn more') }}</a>
+                        </div>
                         <h6 class="text-4xl text-white font-serif mb-3">{{ __('Selection of the best routes.') }}</h6>
                         <p class="flex flex-col gap-1 text-[rgba(255,255,255,0.5)] text-sm md:text-base">
                             <span>
@@ -503,7 +512,11 @@
     @endif
 
     <section class="flex flex-col px-8 md:px-14 py-10 pb-12 scroll-mt-20" id="nearby">
-        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
+        <div class="flex flex-row justify-between">
+            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Nearby Area') }}</p>
+            <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline" href={{
+                route('activities') }}>{{ __('Learn more') }}</a>
+        </div>
         <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Things worth seeing.') }}</h6>
         
         @if($apartment->places && $apartment->places->count() > 0)
@@ -781,7 +794,11 @@
 
     @if ($apartment->packages->isNotEmpty())
         <section class="flex flex-col px-8 py-10 md:px-14 md:pt-10 md:pb-12 bg-purpleGhost" id="packages">
-            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
+            <div class="flex flex-row justify-between">
+                <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2 md:mb-4">{{ __('Vacation packages') }}</p>
+                <a class="text-xs text-teal uppercase font-bold tracking-[8%] mb-1 md:mb-3 hover:underline" href={{
+                    route('packages') }}>{{ __('Learn more') }}</a>
+            </div>
             <h6 class="text-3xl md:text-4xl text-navy font-serif mb-2">{{ __('Try a different approach.') }}</h6>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                 @foreach ($apartment->packages as $package)
@@ -827,7 +844,7 @@
                         <div class="relative flex flex-col justify-end w-full h-32 rounded-t-2xl overflow-hidden">
                             <div class="apt-slides flex h-full transition-transform duration-700">
                                 <div class="apt-slide min-w-full h-full relative">
-                                    <img src="{{ Storage::url($place->image) }}" alt="{{ __($place->name) }}" class="w-full h-full object-cover" />
+                                    <x-responsive-image :path="$place->image" :alt="__($place->name)" class="w-full h-full object-cover" />
                                 </div>
                             </div>
                         </div>
@@ -957,7 +974,7 @@
                 <p class="text-muted mt-2">{{ __('Directly with us – no commission,') }}<br> {{ __('with a personal touch.') }}</p>
             </div>
             <div class="cta-btns flex gap-4">
-                <a href="{{ route('reservation', ['apartment' => $apartment->slug]) }}"
+                <a href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}"
                     class="btn-teal px-5 sm:px-7 lg:px-10 pt-2 pb-1 sm:py-2 md:py-3 rounded-xl text-sm sm:text-base font-normal sm:font-bold duration-200 transition-all hover:-translate-y-1 teal-shadow">{{
                     __('Book') }}</a>
                 <a href="#"

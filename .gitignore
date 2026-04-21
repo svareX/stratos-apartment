@@ -16,9 +16,15 @@
 /public/build
 /public/hot
 /public/storage
+/public/sitemap.xml
+/public/sitemap*.xml
 /storage/*.key
 /storage/pail
 /vendor
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# PHPUnit coverage HTML/report
+/storage/coverage/
+

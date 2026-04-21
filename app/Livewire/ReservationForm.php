@@ -6,6 +6,7 @@ use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
 use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
+use App\Models\ApartmentPackage;
 use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -21,6 +22,9 @@ class ReservationForm extends Component
 
     #[Url]
     public $apartment_id;
+
+    #[Url]
+    public $apartment;
 
     public $apartments;
 
@@ -67,6 +71,14 @@ class ReservationForm extends Component
 
     public $country;
 
+    public $apartment_package_id;
+
+    public $availablePackages = [];
+
+    public $packagePrice = 0;
+
+    public $selectedPackageName = '';
+
     protected function rules()
     {
         return [
@@ -111,7 +123,8 @@ class ReservationForm extends Component
 
     public function mount()
     {
-        $this->apartments = Apartment::where('active', true)->get();
+        // eager-load packages so initial selection can access them without extra reloads
+        $this->apartments = Apartment::where('active', true)->with('packages')->get();
         $now = Carbon::now();
 
         if ($this->start_date) {
@@ -128,9 +141,31 @@ class ReservationForm extends Component
             $this->displayYear = $now->year;
         }
 
-        if ($this->apartment_id) {
-            $this->updateApartmentDetails();
-            $this->loadBookedDates();
+        // default package values — set before attempting to load apartment-specific packages
+        $this->apartment_package_id = '';
+        $this->availablePackages = [];
+        $this->packagePrice = 0;
+        $this->selectedPackageName = '';
+
+        // Support incoming apartment value from either `apartment` (slug) or `apartment_id` (id)
+        $incoming = $this->apartment ?? $this->apartment_id;
+        if ($incoming) {
+            // attempt to resolve slug or id to a numeric apartment id
+            $query = Apartment::where('active', true);
+            $query->where(function ($q) use ($incoming) {
+                if (is_numeric($incoming)) {
+                    $q->where('id', $incoming)->orWhere('slug', $incoming);
+                } else {
+                    $q->where('slug', $incoming);
+                }
+            });
+
+            $found = $query->first();
+            if ($found) {
+                $this->apartment_id = $found->id;
+                $this->updateApartmentDetails();
+                $this->loadBookedDates();
+            }
         }
 
         $this->adults = $this->adults ? (int) $this->adults : 1;
@@ -155,12 +190,31 @@ class ReservationForm extends Component
 
     public function updateApartmentDetails()
     {
-        $apt = $this->apartments->firstWhere('id', $this->apartment_id);
+        // Ensure we load a fresh Apartment model with packages to avoid hydration/serialization issues
+        $apt = Apartment::with('packages')->find($this->apartment_id);
         if ($apt) {
             $this->pricePerNight = $apt->base_price ?? 0;
             $this->cleaningFee = $apt->cleaning_fee ?? 600;
             $this->daysForCleaningFee = $apt->days_for_cleaning_fee ?? 3;
+
+            // include features and icon so the frontend can render rich package cards
+            $this->availablePackages = $apt->packages->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'name' => $p->name,
+                    'price' => $p->price,
+                    'features' => $p->translated_features,
+                    'icon' => $p->icon,
+                ];
+            })->toArray();
+        } else {
+            $this->availablePackages = [];
         }
+
+        // reset package selection when apartment changes
+        $this->apartment_package_id = '';
+        $this->packagePrice = 0;
+        $this->selectedPackageName = '';
     }
 
     public function loadBookedDates()
@@ -189,6 +243,21 @@ class ReservationForm extends Component
             ->unique()
             ->values()
             ->toArray();
+    }
+
+    public function updatedApartmentPackageId()
+    {
+        if ($this->apartment_package_id === 'standard') {
+            $this->packagePrice = 0;
+            $this->selectedPackageName = __('Standard');
+        } elseif (is_numeric($this->apartment_package_id) && $this->apartment_package_id) {
+            $pkg = ApartmentPackage::find((int) $this->apartment_package_id);
+            $this->packagePrice = $pkg ? $pkg->price : 0;
+            $this->selectedPackageName = $pkg ? $pkg->name : '';
+        } else {
+            $this->packagePrice = 0;
+            $this->selectedPackageName = '';
+        }
     }
 
     public function generateCalendar()
@@ -280,8 +349,10 @@ class ReservationForm extends Component
         if ($n === 0) {
             return 0;
         }
-
+        // package price is a flat fee (not per-night)
         $total = $n * $this->pricePerNight;
+        $total += $this->packagePrice ?? 0;
+
         if ($this->cleaningApplies()) {
             $total += $this->cleaningFee;
         }
@@ -296,6 +367,11 @@ class ReservationForm extends Component
         if ($this->step === 1) {
             if (! $this->apartment_id) {
                 $this->addError('apartment_id', __('Please select an apartment.'));
+
+                return;
+            }
+            if ($this->apartment_package_id === null || $this->apartment_package_id === '') {
+                $this->addError('apartment_package_id', __('Please select a package.'));
 
                 return;
             }
@@ -338,6 +414,8 @@ class ReservationForm extends Component
             'check_in' => $this->start_date,
             'check_out' => $this->end_date,
             'price' => $this->total(),
+            'apartment_package_id' => is_numeric($this->apartment_package_id) ? (int) $this->apartment_package_id : null,
+            'package_price' => $this->packagePrice,
             'status' => ReservationStatus::Pending,
             'booking_source' => BookingSource::Local,
         ]);
@@ -345,6 +423,6 @@ class ReservationForm extends Component
         Mail::to($user->email)->queue(new ReservationConfirmation($reservation));
 
         session()->put('reservation_completed', true);
-        $this->redirectRoute('reservation.result', navigate: true);
+        $this->redirectRoute('reservation.result', ['locale' => app()->getLocale()], navigate: true);
     }
 }

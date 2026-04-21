@@ -5,10 +5,14 @@ namespace App\Models;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Place extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasSEO, HasTranslations;
 
     protected $fillable = [
         'apartment_id',
@@ -42,5 +46,24 @@ class Place extends Model
     public function getDistanceTextAttribute()
     {
         return $this->getTranslatedAttribute('distance_text');
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        $image = $this->image ? Storage::url($this->image) : route('og.image', ['type' => 'place', 'identifier' => $this->id]);
+
+        $title = $this->name;
+
+        $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
+
+        $url = $this->url ?: ($this->apartment ? route('apartments.show', $this->apartment->slug).'#nearby' : null);
+
+        return new SEOData(
+            title: $title,
+            description: (string) $description,
+            image: $image,
+            url: $url,
+            type: 'place',
+        );
     }
 }

@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Enter Website Password</title>
+    @if(config('services.google.site_verification'))
+        <meta name="google-site-verification" content="{{ config('services.google.site_verification') }}">
+    @endif
+    {!! seo() !!}
     <link rel="stylesheet" href="/css/app.css">
     <style>
         body { display:flex; align-items:center; justify-content:center; min-height:100vh; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }

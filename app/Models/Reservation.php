@@ -18,6 +18,8 @@ class Reservation extends Model
         'status',
         'booking_source',
         'external_booking_id',
+        'apartment_package_id',
+        'package_price',
     ];
 
     protected $casts = [
@@ -25,11 +27,17 @@ class Reservation extends Model
         'check_out' => 'date',
         'price' => 'decimal:2',
         'status' => \App\Enums\ReservationStatus::class,
+        'package_price' => 'decimal:2',
     ];
 
     public function apartment()
     {
         return $this->belongsTo(Apartment::class);
+    }
+
+    public function apartmentPackage()
+    {
+        return $this->belongsTo(ApartmentPackage::class, 'apartment_package_id');
     }
 
     public function user()

@@ -12,7 +12,7 @@ class RequireWebsitePassword
      */
     public function handle(Request $request, Closure $next)
     {
-        $password = env('WEBSITE_PASSWORD', '');
+        $password = (string) config('app.website_password', env('WEBSITE_PASSWORD', ''));
 
         if ($password === '') {
             return $next($request);
@@ -22,7 +22,6 @@ class RequireWebsitePassword
             return $next($request);
         }
 
-        // Allow the password routes and typical asset paths
         $allowedPatterns = [
             'password',
             'password/*',

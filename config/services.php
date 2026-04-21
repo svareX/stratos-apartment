@@ -39,4 +39,30 @@ return [
         'key' => env('MAPS_API_KEY'),
     ],
 
+    'instagram' => [
+        'user_id' => env('STRATOS_INSTAGRAM_ID'),
+        'rapidapi_key' => env('RAPIDAPI_KEY'),
+    ],
+
+    'recaptcha' => [
+        'site_key' => env('RECAPTCHA_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_SECRET_KEY'),
+    ],
+
+    'google' => [
+        'gtm_id' => env('GTM_ID'),
+        'site_verification' => env('GOOGLE_SITE_VERIFICATION'),
+    ],
+
+    'sitemap' => [
+        'use_crawler' => env('SITEMAP_USE_CRAWLER', false),
+        'base_url' => env('SITEMAP_BASE_URL', env('APP_URL')),
+    ],
+
+    'bank' => [
+        'iban' => env('BANK_IBAN'),
+        'bic' => env('BANK_BIC'),
+        'name' => env('BANK_NAME'),
+    ],
+
 ];
