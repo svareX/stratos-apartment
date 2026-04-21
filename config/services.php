@@ -59,4 +59,10 @@ return [
         'base_url' => env('SITEMAP_BASE_URL', env('APP_URL')),
     ],
 
+    'bank' => [
+        'iban' => env('BANK_IBAN'),
+        'bic' => env('BANK_BIC'),
+        'name' => env('BANK_NAME'),
+    ],
+
 ];
