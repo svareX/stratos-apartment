@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mail;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use App\Models\User;
-use App\Mail\ReservationConfirmation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ReservationConfirmationTest extends TestCase
 {

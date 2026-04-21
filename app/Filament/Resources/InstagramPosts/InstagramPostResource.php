@@ -21,7 +21,6 @@ class InstagramPostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'caption';
 
-
     public static function getNavigationLabel(): string
     {
         return __('Instagram Posts');

@@ -4,11 +4,11 @@ namespace App\Filament\Resources\Reservations\Schemas;
 
 use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
+use App\Models\Apartment;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use App\Models\Apartment;
 
 class ReservationForm
 {

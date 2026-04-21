@@ -20,7 +20,7 @@ class InstagramPostsTable
                 TextColumn::make('image_url')
                     ->label(__('Image'))
                     ->html()
-                    ->formatStateUsing(fn ($state) => $state ? new HtmlString('<img src="' . Storage::url($state) . '" referrerpolicy="no-referrer" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />') : ''),
+                    ->formatStateUsing(fn ($state) => $state ? new HtmlString('<img src="'.Storage::url($state).'" referrerpolicy="no-referrer" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />') : ''),
 
                 TextColumn::make('instagram_id')
                     ->label(__('Instagram ID'))

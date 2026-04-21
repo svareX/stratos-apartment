@@ -12,7 +12,7 @@ use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Hike extends Model
 {
-    use HasFactory, HasTranslations, HasSEO;
+    use HasFactory, HasSEO, HasTranslations;
 
     protected $fillable = [
         'apartment_id',
@@ -58,7 +58,7 @@ class Hike extends Model
 
         $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
 
-        $url = $this->apartment ? route('apartments.show', $this->apartment->slug) . '#hikes' : null;
+        $url = $this->apartment ? route('apartments.show', $this->apartment->slug).'#hikes' : null;
 
         return new SEOData(
             title: $title,

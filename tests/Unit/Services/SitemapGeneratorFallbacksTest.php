@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Services\SitemapGenerator;
 use App\Models\Apartment;
 use App\Models\FrequentlyAskedQuestion;
+use App\Services\SitemapGenerator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SitemapGeneratorFallbacksTest extends TestCase
 {
@@ -35,9 +35,9 @@ class SitemapGeneratorFallbacksTest extends TestCase
         ]);
 
         // clear named routes to force route() to throw and exercise url() fallback
-        $this->app['router']->setRoutes(new \Illuminate\Routing\RouteCollection());
+        $this->app['router']->setRoutes(new \Illuminate\Routing\RouteCollection);
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written = $generator->generate($path);
 
         if (file_exists($written)) {
@@ -64,7 +64,7 @@ class SitemapGeneratorFallbacksTest extends TestCase
             'active' => true,
         ]);
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written = $generator->generate($path);
 
         if (file_exists($written)) {
@@ -83,7 +83,7 @@ class SitemapGeneratorFallbacksTest extends TestCase
         @unlink($before);
         @unlink($after);
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written1 = $generator->generate($before);
 
         $count1 = 0;

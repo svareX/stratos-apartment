@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartment;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Schema;
 
 class PricingController extends Controller
 {

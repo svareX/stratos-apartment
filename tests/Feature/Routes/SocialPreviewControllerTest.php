@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\Place;
 use App\Models\Apartment;
+use App\Models\Place;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SocialPreviewControllerTest extends TestCase
 {
@@ -42,7 +42,7 @@ class SocialPreviewControllerTest extends TestCase
             'url' => 'https://example.com',
         ]);
 
-        $res = $this->get('/og-image/place/' . $place->id . '.svg');
+        $res = $this->get('/og-image/place/'.$place->id.'.svg');
 
         $res->assertStatus(200);
         $this->assertStringContainsString('<svg', $res->getContent());

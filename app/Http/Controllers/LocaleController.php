@@ -29,9 +29,9 @@ class LocaleController extends BaseController
 
         if (isset($segments[0]) && in_array($segments[0], $available, true)) {
             $segments[0] = $locale;
-            $newPath = '/' . implode('/', $segments);
+            $newPath = '/'.implode('/', $segments);
         } else {
-            $newPath = '/' . $locale . ($path === '/' ? '' : $path);
+            $newPath = '/'.$locale.($path === '/' ? '' : $path);
         }
 
         return redirect($newPath);

@@ -2,14 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Models\Apartment;
+use App\Services\SitemapGenerator;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use App\Services\SitemapGenerator;
 
 class GenerateSitemap implements ShouldQueue
 {
@@ -24,7 +23,7 @@ class GenerateSitemap implements ShouldQueue
             $generator = app(SitemapGenerator::class);
             $generator->generate();
         } catch (\Throwable $e) {
-            Log::error('GenerateSitemap job failed: ' . $e->getMessage());
+            Log::error('GenerateSitemap job failed: '.$e->getMessage());
         }
     }
 }

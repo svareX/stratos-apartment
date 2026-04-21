@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use App\Models\Apartment;
-use App\Models\Place;
-use App\Models\Hike;
 use App\Models\FrequentlyAskedQuestion;
-use Illuminate\Support\Facades\Route;
+use App\Models\Hike;
+use App\Models\Place;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url as SitemapUrl;
@@ -18,13 +18,14 @@ class SitemapGenerator
      * Generate a sitemap and write it to the given path (defaults to public/sitemap.xml).
      * Returns the path written.
      */
-    public function generate(string $path = null): string
+    public function generate(?string $path = null): string
     {
         $path = $path ?? public_path('sitemap.xml');
 
         try {
             if (! class_exists(Sitemap::class)) {
                 Log::warning('Spatie Sitemap not available; falling back to blade sitemap renderer.');
+
                 return $path;
             }
 
@@ -32,13 +33,13 @@ class SitemapGenerator
 
             $locales = ['cs', 'en', 'de'];
 
-            $static = ['about','contact','packages','activities','pricing','reservation','terms','cookies','terms-and-conditions'];
+            $static = ['about', 'contact', 'packages', 'activities', 'pricing', 'reservation', 'terms', 'cookies', 'terms-and-conditions'];
 
             foreach ($locales as $locale) {
                 try {
                     $sitemap->add(SitemapUrl::create(route('home', ['locale' => $locale]))->setLastModificationDate(now()));
                 } catch (\Throwable $e) {
-                    $sitemap->add(SitemapUrl::create(url($locale . '/'))->setLastModificationDate(now()));
+                    $sitemap->add(SitemapUrl::create(url($locale.'/'))->setLastModificationDate(now()));
                 }
 
                 foreach ($static as $nameOrPath) {
@@ -46,10 +47,10 @@ class SitemapGenerator
                         try {
                             $sitemap->add(SitemapUrl::create(route($nameOrPath, ['locale' => $locale])));
                         } catch (\Throwable $e) {
-                            $sitemap->add(SitemapUrl::create(url($locale . '/' . ltrim($nameOrPath, '/'))));
+                            $sitemap->add(SitemapUrl::create(url($locale.'/'.ltrim($nameOrPath, '/'))));
                         }
                     } else {
-                        $sitemap->add(SitemapUrl::create(url($locale . '/' . ltrim($nameOrPath, '/'))));
+                        $sitemap->add(SitemapUrl::create(url($locale.'/'.ltrim($nameOrPath, '/'))));
                     }
                 }
 
@@ -57,7 +58,7 @@ class SitemapGenerator
                     try {
                         $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
                     } catch (\Throwable $e) {
-                        $url = SitemapUrl::create(url($locale . '/apartments/' . $apartment->slug));
+                        $url = SitemapUrl::create(url($locale.'/apartments/'.$apartment->slug));
                     }
 
                     if ($apartment->updated_at) {
@@ -89,9 +90,9 @@ class SitemapGenerator
                 foreach (Place::all() as $place) {
                     if ($place->apartment) {
                         try {
-                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $place->apartment->slug]) . '#nearby';
+                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $place->apartment->slug]).'#nearby';
                         } catch (\Throwable $e) {
-                            $u = url($locale . '/apartments/' . $place->apartment->slug) . '#nearby';
+                            $u = url($locale.'/apartments/'.$place->apartment->slug).'#nearby';
                         }
                         $url = SitemapUrl::create($u);
                         if ($place->updated_at) {
@@ -112,9 +113,9 @@ class SitemapGenerator
                 foreach (Hike::all() as $hike) {
                     if ($hike->apartment) {
                         try {
-                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hike->apartment->slug]) . '#hikes';
+                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hike->apartment->slug]).'#hikes';
                         } catch (\Throwable $e) {
-                            $u = url($locale . '/apartments/' . $hike->apartment->slug) . '#hikes';
+                            $u = url($locale.'/apartments/'.$hike->apartment->slug).'#hikes';
                         }
                         $url = SitemapUrl::create($u);
                         if ($hike->updated_at) {
@@ -125,7 +126,7 @@ class SitemapGenerator
                 }
 
                 foreach (FrequentlyAskedQuestion::where('is_active', true)->get() as $faq) {
-                    $sitemap->add(SitemapUrl::create(url($locale . '/'))->setLastModificationDate(now()));
+                    $sitemap->add(SitemapUrl::create(url($locale.'/'))->setLastModificationDate(now()));
                 }
             }
 
@@ -133,7 +134,8 @@ class SitemapGenerator
 
             return $path;
         } catch (\Throwable $e) {
-            Log::error('SitemapGenerator failed: ' . $e->getMessage());
+            Log::error('SitemapGenerator failed: '.$e->getMessage());
+
             return $path;
         }
     }

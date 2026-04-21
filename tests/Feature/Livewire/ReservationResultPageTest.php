@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
+use Tests\TestCase;
 
 class ReservationResultPageTest extends TestCase
 {
@@ -16,7 +15,7 @@ class ReservationResultPageTest extends TestCase
     {
         session()->put('reservation_completed', true);
 
-        $component = new \App\Livewire\ReservationResultPage();
+        $component = new \App\Livewire\ReservationResultPage;
         $component->mount();
 
         $this->assertTrue($component->success);
@@ -27,7 +26,7 @@ class ReservationResultPageTest extends TestCase
         // Ensure session is clear
         session()->forget('reservation_completed');
 
-        $component = new \App\Livewire\ReservationResultPage();
+        $component = new \App\Livewire\ReservationResultPage;
         $component->mount();
 
         $this->assertFalse($component->success);

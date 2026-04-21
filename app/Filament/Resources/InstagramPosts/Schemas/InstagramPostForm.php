@@ -25,7 +25,7 @@ class InstagramPostForm
 
                 Placeholder::make('image_preview')
                     ->label(__('Image'))
-                    ->content(fn ($record) => $record?->image_url ? new HtmlString('<img src="' . Storage::url($record->image_url) . '" style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain;" />') : ''),
+                    ->content(fn ($record) => $record?->image_url ? new HtmlString('<img src="'.Storage::url($record->image_url).'" style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain;" />') : ''),
 
                 Hidden::make('image_url'),
 

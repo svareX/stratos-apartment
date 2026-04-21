@@ -6,9 +6,9 @@ use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
 use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
+use App\Models\ApartmentPackage;
 use App\Models\Reservation;
 use App\Models\User;
-use App\Models\ApartmentPackage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -168,7 +168,6 @@ class ReservationForm extends Component
             }
         }
 
-
         $this->adults = $this->adults ? (int) $this->adults : 1;
         $this->children = $this->children ? (int) $this->children : 0;
         $this->pets = filter_var($this->pets, FILTER_VALIDATE_BOOLEAN);
@@ -217,6 +216,7 @@ class ReservationForm extends Component
         $this->packagePrice = 0;
         $this->selectedPackageName = '';
     }
+
     public function loadBookedDates()
     {
         if (! $this->apartment_id) {

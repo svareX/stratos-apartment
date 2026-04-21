@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use App\Models\Apartment;
 use App\Enums\ApartmentType;
 use App\Filament\Resources\Apartments\Pages\CreateApartment;
 use App\Filament\Resources\Apartments\Pages\EditApartment;
+use App\Models\Apartment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class ApartmentResourceTest extends TestCase
 {

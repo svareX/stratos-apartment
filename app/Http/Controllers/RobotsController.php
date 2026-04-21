@@ -14,7 +14,7 @@ class RobotsController
 
         $content = Cache::remember($cacheKey, $ttl, function () {
             $baseUrl = rtrim(config('services.sitemap.base_url', config('app.url')), '/');
-            $sitemapLine = 'Sitemap: ' . $baseUrl . '/sitemap.xml';
+            $sitemapLine = 'Sitemap: '.$baseUrl.'/sitemap.xml';
 
             $publicPath = public_path('robots.txt');
 

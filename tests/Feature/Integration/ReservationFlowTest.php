@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use App\Models\Reservation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class TestReservationForm extends \App\Livewire\ReservationForm
 {
@@ -19,6 +19,7 @@ class TestReservationForm extends \App\Livewire\ReservationForm
     {
         $r = parent::rules();
         $r['email'] = 'required|email';
+
         return $r;
     }
 }
@@ -33,11 +34,13 @@ class ReservationFlowTest extends TestCase
 
         // Avoid DNS-based email validation in tests by binding a test subclass
         $this->app->bind(\App\Livewire\ReservationForm::class, function ($app) {
-            return new class extends \App\Livewire\ReservationForm {
+            return new class extends \App\Livewire\ReservationForm
+            {
                 protected function rules()
                 {
                     $r = parent::rules();
                     $r['email'] = 'required|email';
+
                     return $r;
                 }
             };

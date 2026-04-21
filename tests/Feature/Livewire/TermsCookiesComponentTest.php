@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use Tests\TestCase;
+use App\Livewire\CookiesPage;
+use App\Livewire\TermsPage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use App\Livewire\TermsPage;
-use App\Livewire\CookiesPage;
+use Tests\TestCase;
 
 class TermsCookiesComponentTest extends TestCase
 {

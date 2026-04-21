@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Apartment;
-use App\Models\FrequentlyAskedQuestion;
-use App\Models\KnowledgeBase;
 use App\Models\ContactSettings;
-use App\Models\HomepageSettings;
+use App\Models\FrequentlyAskedQuestion;
 use App\Models\Hike;
+use App\Models\HomepageSettings;
+use App\Models\KnowledgeBase;
 use App\Models\Place;
 use Illuminate\Console\Command;
 use Laravel\Ai\Embeddings;
@@ -40,8 +40,8 @@ class SyncKnowledgeBase extends Command
         $contact = ContactSettings::current();
         $contactText = "KONTAKTNÍ INFORMACE:\n";
         $contactText .= "E-mail: {$contact->email}\nTelefon: {$contact->phone}\nDIČ/VAT: {$contact->vat}\n";
-        $contactText .= "Adresa: " . str_replace("\n", ", ", $contact->address_cs) . "\n";
-        $contactText .= "Sociální sítě: " . collect($contact->socials)->pluck('url')->implode(', ');
+        $contactText .= 'Adresa: '.str_replace("\n", ', ', $contact->address_cs)."\n";
+        $contactText .= 'Sociální sítě: '.collect($contact->socials)->pluck('url')->implode(', ');
         $this->storeInKb($contactText, 'contact', $contact->id);
 
         // 2. APARTMÁNY, CENY A BALÍČKY
@@ -54,12 +54,12 @@ class SyncKnowledgeBase extends Command
             $aptText .= "Cena: {$apt->base_price} Kč/noc\n";
             $aptText .= "Popis: {$apt->description}\n";
             $aptText .= "Poplatek za úklid: {$apt->cleaning_fee} Kč (účtován pokud je délka pobytu kratší než {$apt->days_for_cleaning_fee} dní)\n";
-            $aptText .= "Vybavení: " . (is_array($apt->amenities) ? implode(', ', $apt->amenities) : '') . "\n";
+            $aptText .= 'Vybavení: '.(is_array($apt->amenities) ? implode(', ', $apt->amenities) : '')."\n";
             $tags = is_array($apt->tags) ? array_filter($apt->tags, 'is_scalar') : [];
-            $aptText .= "Tagy: " . implode(', ', $tags) . "\n";
+            $aptText .= 'Tagy: '.implode(', ', $tags)."\n";
 
             foreach ($apt->packages as $pkg) {
-                $aptText .= "BALÍČEK PRO {$apt->name}: {$pkg->name_cs} za {$pkg->price} Kč. Obsahuje: " . implode(', ', $pkg->translated_features ?? []) . "\n";
+                $aptText .= "BALÍČEK PRO {$apt->name}: {$pkg->name_cs} za {$pkg->price} Kč. Obsahuje: ".implode(', ', $pkg->translated_features ?? [])."\n";
             }
             $this->storeInKb($aptText, 'apartment', $apt->id);
 
@@ -83,7 +83,7 @@ class SyncKnowledgeBase extends Command
         foreach (Hike::all() as $hike) {
             $hikeText = "VÝLET/TRASA: {$hike->name_cs}\nPopis: {$hike->description_cs}\n";
             $hikeText .= "Délka: {$hike->length} km, Obtížnost: {$hike->difficulty->value}\n";
-            $hikeText .= $hike->is_for_families ? "Vhodné pro rodiny s dětmi." : "Náročnější trasa.";
+            $hikeText .= $hike->is_for_families ? 'Vhodné pro rodiny s dětmi.' : 'Náročnější trasa.';
             $this->storeInKb($hikeText, 'hike', $hike->id);
         }
 
@@ -96,7 +96,7 @@ class SyncKnowledgeBase extends Command
         if ($home && $home->hero_slides) {
             $slidesText = "MARKETINGOVÉ SLOGANY A INFO:\n";
             foreach ($home->hero_slides as $slide) {
-                $slidesText .= "- " . ($slide['title_cs'] ?? '') . ": " . ($slide['subtitle_cs'] ?? '') . "\n";
+                $slidesText .= '- '.($slide['title_cs'] ?? '').': '.($slide['subtitle_cs'] ?? '')."\n";
             }
             $this->storeInKb($slidesText, 'homepage', $home->id);
         }

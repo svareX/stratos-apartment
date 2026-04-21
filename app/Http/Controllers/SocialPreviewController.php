@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartment;
+use App\Models\FrequentlyAskedQuestion;
 use App\Models\Hike;
 use App\Models\Place;
-use App\Models\FrequentlyAskedQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class SocialPreviewController extends BaseController
 {

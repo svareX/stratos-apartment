@@ -20,7 +20,7 @@ class SupportBot implements Agent, Conversational
 
     public function instructions(): Stringable|string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
             Jsi špičkový digitální průvodce pro ubytování "Apartmány Stratos". Tvým úkolem je být maximálně užitečný, věcný a přesný.
 
             1. STRIKTNÍ ZÁKAZ CITOVÁNÍ TECHNICKÝCH ZNAČEK:

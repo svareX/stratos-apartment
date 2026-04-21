@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Middleware;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Apartment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RequireWebsitePasswordTest extends TestCase
 {

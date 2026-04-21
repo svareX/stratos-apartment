@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use App\Models\Reservation;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class ReservationFlowTest extends TestCase
 {
@@ -22,7 +22,7 @@ class ReservationFlowTest extends TestCase
     {
         Mail::fake();
 
-        $apartment = new Apartment();
+        $apartment = new Apartment;
         $apartment->name_en = 'Test Apartment';
         $apartment->address = 'Test address';
         $apartment->capacity = 2;

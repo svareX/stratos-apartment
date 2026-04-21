@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use Tests\TestCase;
 
 class RobotsControllerTest extends TestCase
 {
@@ -30,7 +30,7 @@ class RobotsControllerTest extends TestCase
         $res->assertStatus(200);
         $this->assertStringContainsString('text/plain', $res->baseResponse->headers->get('Content-Type'));
         $res->assertSee('User-agent: *', false);
-        $res->assertSee('Sitemap: ' . rtrim(config('services.sitemap.base_url', config('app.url')), '/') . '/sitemap.xml', false);
+        $res->assertSee('Sitemap: '.rtrim(config('services.sitemap.base_url', config('app.url')), '/').'/sitemap.xml', false);
     }
 
     public function test_reads_existing_robots_and_inserts_sitemap_if_missing(): void
@@ -44,7 +44,7 @@ class RobotsControllerTest extends TestCase
         $res->assertStatus(200);
         $this->assertStringContainsString('text/plain', $res->baseResponse->headers->get('Content-Type'));
         $res->assertSee('Disallow: /admin', false);
-        $res->assertSee('Sitemap: ' . rtrim(config('services.sitemap.base_url', config('app.url')), '/') . '/sitemap.xml', false);
+        $res->assertSee('Sitemap: '.rtrim(config('services.sitemap.base_url', config('app.url')), '/').'/sitemap.xml', false);
     }
 
     public function test_updates_sitemap_line_when_present_and_different(): void
@@ -57,6 +57,6 @@ class RobotsControllerTest extends TestCase
 
         $res->assertStatus(200);
         $this->assertStringContainsString('text/plain', $res->baseResponse->headers->get('Content-Type'));
-        $res->assertSee('Sitemap: ' . rtrim(config('services.sitemap.base_url', config('app.url')), '/') . '/sitemap.xml', false);
+        $res->assertSee('Sitemap: '.rtrim(config('services.sitemap.base_url', config('app.url')), '/').'/sitemap.xml', false);
     }
 }

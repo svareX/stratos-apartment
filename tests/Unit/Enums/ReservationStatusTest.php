@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Enums;
 
-use Tests\TestCase;
 use App\Enums\ReservationStatus;
+use Tests\TestCase;
 
 class ReservationStatusTest extends TestCase
 {

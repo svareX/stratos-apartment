@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ImageProxyExtraTest extends TestCase
 {
@@ -30,7 +30,7 @@ class ImageProxyExtraTest extends TestCase
             mkdir($cacheDir, 0755, true);
         }
 
-        $cacheFile = $cacheDir . '/' . md5('photos/orig.jpg') . '-100.jpg';
+        $cacheFile = $cacheDir.'/'.md5('photos/orig.jpg').'-100.jpg';
         file_put_contents($cacheFile, $jpeg);
 
         $res = $this->get('/img?path=photos/orig.jpg&w=100');

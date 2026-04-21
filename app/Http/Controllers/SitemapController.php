@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartment;
-use Illuminate\Http\Response;
-use App\Jobs\GenerateSitemap;
-use Illuminate\Support\Facades\Log;
 use App\Services\SitemapGenerator;
+use Illuminate\Support\Facades\Log;
 
 class SitemapController
 {
@@ -35,14 +33,14 @@ class SitemapController
 
                 $sitemap->add(\Spatie\Sitemap\Tags\Url::create(url('/'))->setLastModificationDate(now()));
 
-                $static = ['about','contact','packages','activities','pricing','reservation','terms-and-conditions','cookies'];
+                $static = ['about', 'contact', 'packages', 'activities', 'pricing', 'reservation', 'terms-and-conditions', 'cookies'];
                 foreach ($static as $path) {
                     $sitemap->add(\Spatie\Sitemap\Tags\Url::create(url($path)));
                 }
 
                 $apartments = Apartment::where('active', true)->get();
                 foreach ($apartments as $apartment) {
-                    $url = \Spatie\Sitemap\Tags\Url::create(url('/apartments/' . $apartment->slug));
+                    $url = \Spatie\Sitemap\Tags\Url::create(url('/apartments/'.$apartment->slug));
                     if ($apartment->updated_at) {
                         $url->setLastModificationDate($apartment->updated_at);
                     }
@@ -64,7 +62,7 @@ class SitemapController
             'lastmod' => now()->toAtomString(),
         ];
 
-        $static = ['about','contact','packages','activities','pricing','reservation','terms-and-conditions','cookies'];
+        $static = ['about', 'contact', 'packages', 'activities', 'pricing', 'reservation', 'terms-and-conditions', 'cookies'];
         foreach ($static as $path) {
             $urls[] = [
                 'loc' => url($path),
@@ -74,7 +72,7 @@ class SitemapController
         $apartments = Apartment::where('active', true)->get();
         foreach ($apartments as $apartment) {
             $urls[] = [
-                'loc' => url('/apartments/' . $apartment->slug),
+                'loc' => url('/apartments/'.$apartment->slug),
                 'lastmod' => optional($apartment->updated_at)->toAtomString(),
             ];
         }

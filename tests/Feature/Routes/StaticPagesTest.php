@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class StaticPagesTest extends TestCase
 {

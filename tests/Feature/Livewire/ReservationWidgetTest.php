@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use Tests\TestCase;
+use App\Models\Apartment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use App\Models\Apartment;
-use Carbon\Carbon;
+use Tests\TestCase;
 
 class ReservationWidgetTest extends TestCase
 {

@@ -2,20 +2,20 @@
 
 namespace App\Providers;
 
+use App\Models\ContactSettings;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Facades\SEOManager;
-use RalphJSmit\Laravel\SEO\Support\SEOData;
 use RalphJSmit\Laravel\SEO\SchemaCollection;
+use RalphJSmit\Laravel\SEO\Support\AlternateTag;
+use RalphJSmit\Laravel\SEO\Support\LinkTag;
 use RalphJSmit\Laravel\SEO\Support\MetaTag;
 use RalphJSmit\Laravel\SEO\Support\OpenGraphTag;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 use RalphJSmit\Laravel\SEO\Support\TwitterCardTag;
-use RalphJSmit\Laravel\SEO\Support\LinkTag;
-use RalphJSmit\Laravel\SEO\Support\AlternateTag;
-use Illuminate\Support\Facades\Route;
-use App\Models\ContactSettings;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -116,7 +116,7 @@ class AppServiceProvider extends ServiceProvider
 
             $suffix = config('seo.title.suffix');
             if ($suffix && $SEOData->title && ! str_ends_with($SEOData->title, $suffix)) {
-                $SEOData->title = $SEOData->title . $suffix;
+                $SEOData->title = $SEOData->title.$suffix;
             }
 
             if (! $SEOData->schema) {
@@ -125,7 +125,7 @@ class AppServiceProvider extends ServiceProvider
                     $siteUrl = config('app.url');
                     $siteName = $SEOData->site_name ?? config('seo.site_name') ?? config('app.name');
 
-                    $schemas = SchemaCollection::initialize() ?? new SchemaCollection();
+                    $schemas = SchemaCollection::initialize() ?? new SchemaCollection;
 
                     $schemas->push(function (SEOData $data) use ($contact, $siteName, $siteUrl) {
                         return [
@@ -140,7 +140,7 @@ class AppServiceProvider extends ServiceProvider
                                 'streetAddress' => $contact?->address ? Str::of($contact->address)->trim()->toString() : null,
                             ],
                             'image' => $data->image ?? null,
-                            'sameAs' => collect($contact?->socials ?? [])->map(fn($s) => $s['url'] ?? null)->filter()->values()->all(),
+                            'sameAs' => collect($contact?->socials ?? [])->map(fn ($s) => $s['url'] ?? null)->filter()->values()->all(),
                         ];
                     });
 
@@ -240,7 +240,7 @@ class AppServiceProvider extends ServiceProvider
 
                     $translated = __($base);
                     if ($translated !== $base) {
-                        $SEOData->title = $translated . ($hadSuffix ? $suffix : '');
+                        $SEOData->title = $translated.($hadSuffix ? $suffix : '');
                     }
                 }
             } catch (\Throwable $e) {
@@ -254,30 +254,30 @@ class AppServiceProvider extends ServiceProvider
                 $siteName = config('seo.site_name') ?? config('app.name');
                 $locale = app()->getLocale();
 
-                $hasOgLocale = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:locale');
+                $hasOgLocale = $tags->first(fn ($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:locale');
                 if (! $hasOgLocale) {
                     $tags->push(new OpenGraphTag('locale', $locale));
                 }
 
-                $hasOgSiteName = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:site_name');
+                $hasOgSiteName = $tags->first(fn ($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:site_name');
                 if (! $hasOgSiteName) {
                     $tags->push(new OpenGraphTag('site_name', $siteName));
                 }
 
                 $twitter = config('seo.twitter.@username');
                 if ($twitter) {
-                    $hasTwitter = $tags->first(fn($t) => $t instanceof TwitterCardTag && $t->collectAttributes()->get('name') === 'twitter:site');
+                    $hasTwitter = $tags->first(fn ($t) => $t instanceof TwitterCardTag && $t->collectAttributes()->get('name') === 'twitter:site');
                     if (! $hasTwitter) {
                         $tags->push(new TwitterCardTag('site', $twitter));
                     }
                 }
 
-                $hasOgUrl = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:url');
+                $hasOgUrl = $tags->first(fn ($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:url');
                 if (! $hasOgUrl) {
                     $tags->push(new OpenGraphTag('url', url()->current()));
                 }
 
-                $hasOgType = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:type');
+                $hasOgType = $tags->first(fn ($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:type');
                 if (! $hasOgType) {
                     $routeName = \Illuminate\Support\Facades\Route::currentRouteName();
                     $ogType = 'website';
@@ -288,33 +288,33 @@ class AppServiceProvider extends ServiceProvider
                     $tags->push(new OpenGraphTag('type', $ogType));
                 }
 
-                $hasTwitterCard = $tags->first(fn($t) => $t instanceof TwitterCardTag && $t->collectAttributes()->get('name') === 'twitter:card');
+                $hasTwitterCard = $tags->first(fn ($t) => $t instanceof TwitterCardTag && $t->collectAttributes()->get('name') === 'twitter:card');
                 if (! $hasTwitterCard) {
-                    $hasImage = $tags->first(fn($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:image');
+                    $hasImage = $tags->first(fn ($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:image');
                     $card = $hasImage ? 'summary_large_image' : 'summary';
                     $tags->push(new TwitterCardTag('card', $card));
                 }
 
-                $hasDescription = $tags->first(fn($t) => $t instanceof MetaTag && $t->collectAttributes()->get('name') === 'description');
+                $hasDescription = $tags->first(fn ($t) => $t instanceof MetaTag && $t->collectAttributes()->get('name') === 'description');
                 if (! $hasDescription && config('seo.description.fallback')) {
                     $tags->push(new MetaTag('description', config('seo.description.fallback')));
                 }
 
-                $hasRobots = $tags->first(fn($t) => $t instanceof MetaTag && $t->collectAttributes()->get('name') === 'robots');
+                $hasRobots = $tags->first(fn ($t) => $t instanceof MetaTag && $t->collectAttributes()->get('name') === 'robots');
                 $robotsDefault = config('seo.robots.default');
                 if (! $hasRobots && $robotsDefault) {
                     $tags->push(new MetaTag('robots', $robotsDefault));
                 }
 
                 if (config('seo.canonical_link')) {
-                    $hasCanonical = $tags->first(fn($t) => $t instanceof LinkTag && $t->collectAttributes()->get('rel') === 'canonical');
+                    $hasCanonical = $tags->first(fn ($t) => $t instanceof LinkTag && $t->collectAttributes()->get('rel') === 'canonical');
                     if (! $hasCanonical) {
                         $tags->push(new LinkTag('canonical', url()->current()));
                     }
                 }
 
                 $locales = ['cs', 'en', 'de'];
-                $existingAlternates = $tags->filter(fn($t) => $t instanceof AlternateTag)->map(fn($t) => $t->collectAttributes()->get('hreflang'))->filter()->values()->all();
+                $existingAlternates = $tags->filter(fn ($t) => $t instanceof AlternateTag)->map(fn ($t) => $t->collectAttributes()->get('hreflang'))->filter()->values()->all();
 
                 foreach ($locales as $l) {
                     if (in_array($l, $existingAlternates)) {
@@ -333,9 +333,9 @@ class AppServiceProvider extends ServiceProvider
                             $parts = explode('/', trim($path, '/'));
                             if (isset($parts[0]) && in_array($parts[0], $locales)) {
                                 $parts[0] = $l;
-                                $alternateUrl = url('/' . implode('/', $parts));
+                                $alternateUrl = url('/'.implode('/', $parts));
                             } else {
-                                $alternateUrl = url('/' . $l . '/' . ltrim($path, '/'));
+                                $alternateUrl = url('/'.$l.'/'.ltrim($path, '/'));
                             }
                         }
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Services\SitemapGenerator;
 use App\Models\Apartment;
-use App\Models\Place;
-use App\Models\Hike;
 use App\Models\FrequentlyAskedQuestion;
+use App\Models\Hike;
+use App\Models\Place;
+use App\Services\SitemapGenerator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SitemapGeneratorTest extends TestCase
 {
@@ -57,7 +57,7 @@ class SitemapGeneratorTest extends TestCase
             'is_active' => true,
         ]);
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written = $generator->generate($path);
 
         $this->assertIsString($written);

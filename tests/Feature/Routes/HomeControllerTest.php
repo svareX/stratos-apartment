@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Apartment;
-use Illuminate\Support\Facades\Storage;
 use App\Models\HomepageSettings;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class HomeControllerTest extends TestCase
 {

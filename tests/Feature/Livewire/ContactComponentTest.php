@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 use App\Livewire\ContactComponent;
-use App\Models\FrequentlyAskedQuestion;
 use App\Models\ContactSettings;
+use App\Models\FrequentlyAskedQuestion;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ContactComponentTest extends TestCase
 {
@@ -31,7 +30,7 @@ class ContactComponentTest extends TestCase
         ContactSettings::current();
 
         // Instantiate the component and call its render method directly
-        $component = new ContactComponent();
+        $component = new ContactComponent;
         $view = $component->render();
 
         $this->assertInstanceOf(\Illuminate\View\View::class, $view);

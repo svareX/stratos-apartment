@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Apartment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RoutesTest extends TestCase
 {
@@ -15,7 +15,7 @@ class RoutesTest extends TestCase
     public function test_reservation_pages_return_ok(): void
     {
         // Ensure at least one apartment exists because navigation expects one to build links
-        $apartment = new Apartment();
+        $apartment = new Apartment;
         $apartment->name_en = 'Test Apt';
         $apartment->address = 'Addr';
         $apartment->capacity = 2;
@@ -33,7 +33,7 @@ class RoutesTest extends TestCase
 
     public function test_apartment_show_returns_ok_for_existing_apartment(): void
     {
-        $apartment = new Apartment();
+        $apartment = new Apartment;
         $apartment->name_en = 'Test Apt';
         $apartment->address = 'Addr';
         $apartment->capacity = 2;

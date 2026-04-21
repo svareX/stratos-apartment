@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Services\SitemapGenerator;
 use App\Models\Apartment;
+use App\Services\SitemapGenerator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class SitemapGeneratorImagesTest extends TestCase
 {
@@ -44,7 +44,7 @@ class SitemapGeneratorImagesTest extends TestCase
             'position' => 1,
         ]);
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written = $generator->generate($path);
 
         if (file_exists($written)) {
@@ -81,7 +81,7 @@ class SitemapGeneratorImagesTest extends TestCase
             'length' => 1.0,
         ]);
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written = $generator->generate($path);
 
         if (file_exists($written)) {

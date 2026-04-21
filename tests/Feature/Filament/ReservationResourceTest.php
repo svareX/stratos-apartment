@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Apartment;
-use App\Models\Reservation;
-use App\Models\User;
+use App\Enums\ReservationStatus;
 use App\Filament\Resources\Reservations\Pages\CreateReservation;
 use App\Filament\Resources\Reservations\Pages\EditReservation;
 use App\Mail\ReservationConfirmation;
 use App\Mail\ReservationStatusChanged;
-use App\Enums\ReservationStatus;
+use App\Models\Apartment;
+use App\Models\Reservation;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class ReservationResourceTest extends TestCase
 {
@@ -57,6 +57,7 @@ class ReservationResourceTest extends TestCase
             if (is_array($recipient)) {
                 return ($recipient['address'] ?? null) === $user->email;
             }
+
             return $recipient?->address === $user->email;
         });
     }
@@ -95,6 +96,7 @@ class ReservationResourceTest extends TestCase
             if (is_array($recipient)) {
                 return ($recipient['address'] ?? null) === $user->email;
             }
+
             return $recipient?->address === $user->email;
         });
     }

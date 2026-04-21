@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament\RelationManagers;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Apartment;
-use App\Models\ApartmentPackage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PackagesRelationManagerTest extends TestCase
 {

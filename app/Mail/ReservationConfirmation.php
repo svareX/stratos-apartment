@@ -3,8 +3,8 @@
 namespace App\Mail;
 
 use App\Models\Reservation;
-use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Illuminate\Bus\Queueable;
@@ -58,6 +58,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
                 foreach ($lines as $line) {
                     if (str_contains($line, 'EMU|euro|1|EUR')) {
                         $parts = explode('|', $line);
+
                         return (float) str_replace(',', '.', $parts[4]);
                     }
                 }
@@ -73,7 +74,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
     {
         $renderer = new ImageRenderer(
             new RendererStyle(200),
-            new ImagickImageBackEnd()
+            new ImagickImageBackEnd
         );
 
         $writer = new Writer($renderer);
@@ -85,10 +86,10 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
     {
         $amount = number_format($this->reservation->price, 2, '.', '');
         $iban = config('services.bank.iban');
-        $ref = 'RES' . $this->reservation->id;
+        $ref = 'RES'.$this->reservation->id;
 
         $spaydString = sprintf(
-            "SPD*1.0*ACC:%s*AM:%s*CC:CZK*MSG:%s",
+            'SPD*1.0*ACC:%s*AM:%s*CC:CZK*MSG:%s',
             $iban,
             $amount,
             $ref
@@ -103,7 +104,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
         $iban = config('services.bank.iban');
         $bic = config('services.bank.bic');
         $name = config('services.bank.name');
-        $ref = 'RES' . $this->reservation->id;
+        $ref = 'RES'.$this->reservation->id;
 
         $qrContent = [
             'BCD',
@@ -113,11 +114,11 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             $bic,
             $name,
             $iban,
-            'EUR' . $amount,
+            'EUR'.$amount,
             '',
             '',
             $ref,
-            ''
+            '',
         ];
 
         return $this->generateQrCode(implode("\n", $qrContent));

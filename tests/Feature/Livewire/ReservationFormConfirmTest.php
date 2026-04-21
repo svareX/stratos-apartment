@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use App\Models\Reservation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class ReservationFormConfirmTest extends TestCase
 {

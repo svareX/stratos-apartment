@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\SitemapGenerator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SitemapControllerTest extends TestCase
 {
@@ -18,10 +18,12 @@ class SitemapControllerTest extends TestCase
 
         $path = public_path('sitemap_test_generated.xml');
 
-        $fake = new class {
+        $fake = new class
+        {
             public function generate($path)
             {
                 file_put_contents($path, '<?xml version="1.0"?><urlset><url><loc>FAKE</loc></url></urlset>');
+
                 return $path;
             }
         };
@@ -43,7 +45,8 @@ class SitemapControllerTest extends TestCase
     {
         @unlink(public_path('sitemap.xml'));
 
-        $thrower = new class {
+        $thrower = new class
+        {
             public function generate($path)
             {
                 throw new \Exception('boom');
@@ -67,7 +70,8 @@ class SitemapControllerTest extends TestCase
     {
         @unlink(public_path('sitemap.xml'));
 
-        $thrower = new class {
+        $thrower = new class
+        {
             public function generate($path)
             {
                 throw new \Exception('boom');

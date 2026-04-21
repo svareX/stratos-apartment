@@ -58,7 +58,7 @@ class ImageProxyController extends Controller
             mkdir($cacheDir, 0755, true);
         }
 
-        $cacheFile = $cacheDir . '/' . md5($path) . "-{$width}." . $ext;
+        $cacheFile = $cacheDir.'/'.md5($path)."-{$width}.".$ext;
         if (file_exists($cacheFile)) {
             return response()->file($cacheFile, ['Content-Type' => $this->mime($ext)]);
         }

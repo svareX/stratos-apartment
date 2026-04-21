@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Enums\HikeDifficulty;
 use App\Models\Apartment;
 use App\Models\Hike;
-use App\Enums\HikeDifficulty;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class HikeTest extends TestCase
 {

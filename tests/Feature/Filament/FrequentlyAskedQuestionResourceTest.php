@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use App\Models\FrequentlyAskedQuestion;
 use App\Filament\Resources\FrequentlyAskedQuestions\Pages\CreateFrequentlyAskedQuestion;
 use App\Filament\Resources\FrequentlyAskedQuestions\Pages\EditFrequentlyAskedQuestion;
+use App\Models\FrequentlyAskedQuestion;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class FrequentlyAskedQuestionResourceTest extends TestCase
 {

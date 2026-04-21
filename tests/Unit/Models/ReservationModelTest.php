@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\Reservation;
+use App\Enums\ReservationStatus;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
+use App\Models\Reservation;
 use App\Models\User;
-use App\Enums\ReservationStatus;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ReservationModelTest extends TestCase
 {

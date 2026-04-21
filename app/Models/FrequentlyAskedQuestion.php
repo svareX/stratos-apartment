@@ -10,7 +10,7 @@ use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class FrequentlyAskedQuestion extends Model
 {
-    use HasTranslations, HasSEO;
+    use HasSEO, HasTranslations;
 
     protected $fillable = [
         'question_en', 'question_cs', 'question_de',

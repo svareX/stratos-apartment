@@ -5,14 +5,14 @@ namespace App\Models;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Place extends Model
 {
-    use HasFactory, HasTranslations, HasSEO;
+    use HasFactory, HasSEO, HasTranslations;
 
     protected $fillable = [
         'apartment_id',
@@ -56,7 +56,7 @@ class Place extends Model
 
         $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
 
-        $url = $this->url ?: ($this->apartment ? route('apartments.show', $this->apartment->slug) . '#nearby' : null);
+        $url = $this->url ?: ($this->apartment ? route('apartments.show', $this->apartment->slug).'#nearby' : null);
 
         return new SEOData(
             title: $title,

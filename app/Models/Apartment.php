@@ -6,15 +6,15 @@ use App\Enums\ApartmentType;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App as AppFacade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\App as AppFacade;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class Apartment extends Model
 {
-    use HasFactory, HasTranslations, HasSEO;
+    use HasFactory, HasSEO, HasTranslations;
 
     protected $fillable = [
         'name_en', 'name_cs', 'name_de',
@@ -133,6 +133,7 @@ class Apartment extends Model
 
             if (isset($this->attributes['tags'])) {
                 $raw = $this->attributes['tags'];
+
                 return $raw ? json_decode($raw, true) : [];
             }
 

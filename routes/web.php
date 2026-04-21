@@ -5,18 +5,18 @@ use App\Http\Controllers\Apartment\ApartmentDetailController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageProxyController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationResultController;
-use App\Http\Controllers\TermsController;
-use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SocialPreviewController;
-use App\Http\Controllers\ImageProxyController;
+use App\Http\Controllers\TermsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LocaleController;
 
 Route::get('/password', function () {
     return view('website-password');
@@ -44,6 +44,7 @@ Route::get('/img', [ImageProxyController::class, 'proxy'])->name('image.proxy');
 
 Route::get('/', function () {
     $locale = app()->getLocale() ?? config('app.locale', 'en');
+
     return redirect()->route('home', ['locale' => $locale]);
 });
 

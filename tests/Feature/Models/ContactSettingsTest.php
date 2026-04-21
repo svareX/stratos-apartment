@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\ContactSettings;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ContactSettingsTest extends TestCase
 {

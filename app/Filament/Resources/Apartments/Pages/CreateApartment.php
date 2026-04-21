@@ -42,5 +42,4 @@ class CreateApartment extends CreateRecord
 
         return $data;
     }
-
 }

@@ -5,18 +5,21 @@ namespace App\Livewire;
 use App\Ai\Agents\SupportBot;
 use App\Models\KnowledgeBase;
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Laravel\Ai\Embeddings;
 use Laravel\Ai\Enums\Lab;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Chatbot extends Component
 {
     public bool $isOpen = false;
+
     public string $userInput = '';
+
     public array $messages = [];
+
     public int $messageCount = 0;
 
     public function sendMessage(?string $recaptchaToken = null): void
@@ -26,7 +29,7 @@ class Chatbot extends Component
         }
 
         if ($this->messageCount === 0 || $this->messageCount % 5 === 0) {
-            if (!$recaptchaToken) {
+            if (! $recaptchaToken) {
                 return;
             }
 
@@ -35,14 +38,15 @@ class Chatbot extends Component
                 'response' => $recaptchaToken,
             ]);
 
-            if (!$response->json('success') || $response->json('score') < 0.5) {
+            if (! $response->json('success') || $response->json('score') < 0.5) {
                 $this->messages[] = [
                     'role' => 'assistant',
                     'content' => __('Ověření proti spamu selhalo. Pokud jste člověk, zkuste stránku obnovit.'),
                     'should_type' => true,
-                    'is_typing' => true
+                    'is_typing' => true,
                 ];
                 $this->dispatch('scroll-to-bottom');
+
                 return;
             } else {
                 Log::info('reCAPTCHA hodnoceni:', $response->json());
@@ -58,7 +62,7 @@ class Chatbot extends Component
             'role' => 'assistant',
             'content' => '',
             'should_type' => true,
-            'is_typing' => true
+            'is_typing' => true,
         ];
 
         $this->messageCount++;
@@ -83,7 +87,7 @@ class Chatbot extends Component
                 ->pluck('content')
                 ->implode("\n---\n");
 
-            $agent = new SupportBot();
+            $agent = new SupportBot;
 
             $locale = app()->getLocale();
 
@@ -98,7 +102,7 @@ class Chatbot extends Component
             $this->messages[$lastIndex]['content'] = $response->text;
 
         } catch (Exception $e) {
-            Log::error('AI Support Bot Error: ' . $e->getMessage());
+            Log::error('AI Support Bot Error: '.$e->getMessage());
 
             $lastIndex = count($this->messages) - 1;
             $this->messages[$lastIndex]['content'] = __('Omlouvám se, ale momentálně se mi nepodařilo spojit se serverem. Zkuste to prosím za chvíli.');

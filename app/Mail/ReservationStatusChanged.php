@@ -24,7 +24,7 @@ class ReservationStatusChanged extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Update - ' . config('app.name', 'Apartmán Stratos'),
+            subject: 'Reservation Update - '.config('app.name', 'Apartmán Stratos'),
         );
     }
 

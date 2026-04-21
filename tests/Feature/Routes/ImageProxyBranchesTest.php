@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ImageProxyBranchesTest extends TestCase
 {
@@ -54,11 +54,11 @@ class ImageProxyBranchesTest extends TestCase
         Storage::disk('public')->put($path, $jpeg);
 
         $width = 80;
-        $res = $this->get('/img?path=' . urlencode($path) . '&w=' . $width);
+        $res = $this->get('/img?path='.urlencode($path).'&w='.$width);
         $res->assertStatus(200);
         $res->assertHeader('Content-Type', 'image/jpeg');
 
-        $cacheFile = storage_path('app/public/_cache/' . md5($path) . "-{$width}.jpg");
+        $cacheFile = storage_path('app/public/_cache/'.md5($path)."-{$width}.jpg");
         $this->assertFileExists($cacheFile);
     }
 

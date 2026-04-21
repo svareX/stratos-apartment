@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\InstagramPost;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
 class InstagramSyncService
 {
@@ -45,9 +45,9 @@ class InstagramSyncService
                 $imageUrl = $node['thumbnail_src'] ?? $node['display_url'] ?? '';
                 $localPath = '';
 
-                if (!empty($imageUrl)) {
+                if (! empty($imageUrl)) {
                     $imageContents = Http::get($imageUrl)->body();
-                    $filename = 'instagram/' . $instagramId . '.jpg';
+                    $filename = 'instagram/'.$instagramId.'.jpg';
                     Storage::disk('public')->put($filename, $imageContents);
                     $localPath = $filename;
                 }
@@ -56,7 +56,7 @@ class InstagramSyncService
                     ['instagram_id' => $instagramId],
                     [
                         'image_url' => $localPath,
-                        'url' => 'https://instagram.com/p/' . ($node['shortcode'] ?? ''),
+                        'url' => 'https://instagram.com/p/'.($node['shortcode'] ?? ''),
                         'caption' => data_get($node, 'edge_media_to_caption.edges.0.node.text'),
                         'posted_at' => isset($node['taken_at_timestamp']) ? Carbon::createFromTimestamp($node['taken_at_timestamp']) : now(),
                     ]

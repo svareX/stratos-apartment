@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-use App\Models\InstagramPost;
 use App\Filament\Resources\InstagramPosts\Pages\CreateInstagramPost;
 use App\Filament\Resources\InstagramPosts\Pages\EditInstagramPost;
+use App\Models\InstagramPost;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class InstagramPostResourceTest extends TestCase
 {

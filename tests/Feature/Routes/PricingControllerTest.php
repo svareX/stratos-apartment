@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
-use Tests\TestCase;
+use App\Models\Apartment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Apartment;
+use Tests\TestCase;
 
 class PricingControllerTest extends TestCase
 {
