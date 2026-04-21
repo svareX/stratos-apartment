@@ -19,22 +19,14 @@ use RalphJSmit\Laravel\SEO\Support\TwitterCardTag;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
-            $switch
-                ->locales(['cs', 'en', 'de']);
+            $switch->locales(['cs', 'en', 'de']);
         });
 
         SEOManager::SEODataTransformer(function (SEOData $SEOData) {
@@ -43,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if (! $SEOData->favicon) {
-                $SEOData->favicon = config('seo.favicon') ?? '/storage/icons/icon.png';
+                $SEOData->favicon = config('seo.favicon') ?? asset('images/logo/icon.png');
             }
 
             if (! $SEOData->image && config('seo.image.fallback')) {
@@ -71,38 +63,43 @@ class AppServiceProvider extends ServiceProvider
             };
 
             $modelType = $SEOData->type ?? null;
-
             $titleTemplate = $templates['title']['models'][$modelType] ?? $templates['title']['default'] ?? null;
 
-            $isHomepage = request()->is('/') || trim(url()->current(), '/') === trim(config('app.url'), '/');
-            if ($isHomepage && empty($SEOData->title)) {
-                $SEOData->title = config('seo.title.homepage_title') ?? ($SEOData->site_name ?? config('app.name'));
-            }
+            $routeName = Route::currentRouteName();
+            $isHomepage = request()->is('/') || in_array(request()->path(), ['cs', 'en', 'de']) || $routeName === 'home' || trim(url()->current(), '/') === trim(config('app.url'), '/');
 
-            if (empty($SEOData->title)) {
-                try {
-                    $routeName = Route::currentRouteName();
-                    $routeTitleMap = [
-                        'home' => 'Home',
-                        'contact' => 'Contact',
-                        'about' => 'About the apartment',
-                        'packages' => 'Packages',
-                        'activities' => 'Activities',
-                        'pricing' => 'Pricing',
-                        'reservation' => 'Reservation',
-                        'terms' => 'Terms and Conditions',
-                        'cookies' => 'Cookies',
-                    ];
+            if ($isHomepage) {
+                $SEOData->title = config('app.name');
+            } else {
+                if (empty($SEOData->title)) {
+                    try {
+                        $routeTitleMap = [
+                            'home' => 'Home',
+                            'contact' => 'Contact',
+                            'about' => 'About the apartment',
+                            'packages' => 'Packages',
+                            'activities' => 'Activities',
+                            'pricing' => 'Pricing',
+                            'reservation' => 'Reservation',
+                            'terms' => 'Terms and Conditions',
+                            'cookies' => 'Cookies',
+                        ];
 
-                    if ($routeName && array_key_exists($routeName, $routeTitleMap)) {
-                        $SEOData->title = __($routeTitleMap[$routeName]);
+                        if ($routeName && array_key_exists($routeName, $routeTitleMap)) {
+                            $SEOData->title = __($routeTitleMap[$routeName]);
+                        }
+                    } catch (\Throwable $e) {
                     }
-                } catch (\Throwable $e) {
                 }
-            }
 
-            if ($titleTemplate && $SEOData->title) {
-                $SEOData->title = $applyTemplate($titleTemplate);
+                if ($titleTemplate && $SEOData->title) {
+                    $SEOData->title = $applyTemplate($titleTemplate);
+                }
+
+                $suffix = config('seo.title.suffix');
+                if ($suffix && $SEOData->title && ! str_ends_with($SEOData->title, $suffix)) {
+                    $SEOData->title = $SEOData->title . $suffix;
+                }
             }
 
             $descTemplate = $templates['description']['models'][$modelType] ?? $templates['description']['default'] ?? null;
@@ -227,23 +224,25 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            try {
-                if (! empty($SEOData->title)) {
-                    $suffix = config('seo.title.suffix');
-                    $hadSuffix = false;
-                    $base = $SEOData->title;
+            if (! $isHomepage) {
+                try {
+                    if (! empty($SEOData->title)) {
+                        $suffix = config('seo.title.suffix');
+                        $hadSuffix = false;
+                        $base = $SEOData->title;
 
-                    if ($suffix && str_ends_with($base, $suffix)) {
-                        $hadSuffix = true;
-                        $base = substr($base, 0, -strlen($suffix));
-                    }
+                        if ($suffix && str_ends_with($base, $suffix)) {
+                            $hadSuffix = true;
+                            $base = substr($base, 0, -strlen($suffix));
+                        }
 
-                    $translated = __($base);
-                    if ($translated !== $base) {
-                        $SEOData->title = $translated.($hadSuffix ? $suffix : '');
+                        $translated = __($base);
+                        if ($translated !== $base) {
+                            $SEOData->title = $translated . ($hadSuffix ? $suffix : '');
+                        }
                     }
+                } catch (\Throwable $e) {
                 }
-            } catch (\Throwable $e) {
             }
 
             return $SEOData;
