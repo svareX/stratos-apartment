@@ -29,11 +29,17 @@
             <td style="width: 50%; vertical-align: top; padding: 10px;">
                 <p style="margin-top: 0; margin-bottom: 15px; font-size: 15px; color: #475569;"><strong>Payment in EUR</strong></p>
                 <img src="{{ $message->embedData($qrCodeEur, 'qrcode-eur.png', 'image/png') }}" alt="QR EUR" style="max-width: 140px; height: auto; border-radius: 8px; border: 1px solid #cbd5e1; padding: 5px; background-color: #ffffff;">
-                <p style="margin-top: 15px; margin-bottom: 0; font-size: 16px; font-weight: bold; color: #0f172a;">~ {{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
+                @if(isset($eurIsConverted) && $eurIsConverted)
+                    <p style="margin-top: 15px; margin-bottom: 0; font-size: 16px; font-weight: bold; color: #0f172a;">~ {{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
+                @else
+                    <p style="margin-top: 15px; margin-bottom: 0; font-size: 16px; font-weight: bold; color: #0f172a;">{{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
+                @endif
             </td>
         </tr>
     </table>
 </div>
+
+{{ 'For international transfers you may need to use SEPA (SCT) type of payment.' }}
 
 @if($reservation->apartmentPackage && count($reservation->apartmentPackage->translated_features ?? []))
 <x-mail::panel>

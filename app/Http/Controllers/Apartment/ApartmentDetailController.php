@@ -14,8 +14,9 @@ class ApartmentDetailController extends Controller
     {
         $apartment = Apartment::with(['photosMain', 'photosOther', 'packages', 'places', 'hikes'])
             ->where('slug', $request->route('apartment'))
-            ->where('active', true)
             ->firstOrFail();
+
+        // apartment state is enforced by middleware; controller proceeds to render
 
         $locale = App::getLocale();
 

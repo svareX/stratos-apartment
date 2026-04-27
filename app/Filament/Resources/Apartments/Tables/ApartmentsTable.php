@@ -31,11 +31,6 @@ class ApartmentsTable
                     ->label(__('Address'))
                     ->sortable(),
 
-                TextColumn::make('base_price')
-                    ->label(__('Base price'))
-                    ->money('CZK')
-                    ->sortable(),
-
                 TextColumn::make('capacity')
                     ->label(__('Capacity'))
                     ->sortable(),

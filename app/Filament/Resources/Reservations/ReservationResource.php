@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Reservations;
 use App\Filament\Resources\Reservations\Pages\CreateReservation;
 use App\Filament\Resources\Reservations\Pages\EditReservation;
 use App\Filament\Resources\Reservations\Pages\ListReservations;
+use App\Filament\Resources\Reservations\RelationManagers\UserRelationManager;
 use App\Filament\Resources\Reservations\Schemas\ReservationForm;
 use App\Filament\Resources\Reservations\Tables\ReservationsTable;
 use App\Models\Reservation;
@@ -48,6 +49,7 @@ class ReservationResource extends Resource
     public static function getRelations(): array
     {
         return [
+            UserRelationManager::class,
         ];
     }
 

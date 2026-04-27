@@ -1,5 +1,73 @@
-@import "tailwindcss";
+@import "../../../../vendor/filament/filament/resources/css/theme.css";
 
 @source "../../../../vendor/filament/**/*.blade.php";
 @source "../../../../app/Filament/**/*.php";
 @source "../../../../resources/views/filament/**/*.blade.php";
+
+@layer components {
+    .sa-summary-card {
+        background: linear-gradient(130deg, #111827 0%, #0f172a 50%, #111827 100%);
+        border: 1px solid #243041;
+        box-shadow: 0 14px 34px -26px rgba(15, 23, 42, 0.95);
+    }
+
+    .sa-summary-head h3 {
+        margin: 0;
+        color: #f8fafc;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+    }
+
+    .sa-summary-head p {
+        margin: 0.35rem 0 0;
+        color: #94a3b8;
+        font-size: 0.8125rem;
+    }
+
+    .sa-summary-grid {
+        margin-top: 1rem;
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .sa-stat-card {
+        border: 1px solid #273345;
+        background: linear-gradient(160deg, #1e293b 0%, #111827 100%);
+        border-radius: 0.75rem;
+        padding: 0.85rem 0.95rem;
+    }
+
+    .sa-stat-card p {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .sa-stat-card strong {
+        margin-top: 0.35rem;
+        display: block;
+        color: #f8fafc;
+        font-size: 1.28rem;
+        line-height: 1.1;
+        font-weight: 800;
+    }
+
+    .fi-wi-widget {
+        border-radius: 0.85rem;
+    }
+
+    .fi-wi-widget .apexcharts-canvas .apexcharts-legend-text {
+        color: #cbd5e1 !important;
+    }
+
+    .fi-wi-widget .apexcharts-canvas .apexcharts-gridline {
+        stroke: #2a3441 !important;
+    }
+
+    .fi-wi-widget .apexcharts-canvas text {
+        font-family: "Inter", "Segoe UI", sans-serif;
+    }
+}

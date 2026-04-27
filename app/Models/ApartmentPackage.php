@@ -16,12 +16,14 @@ class ApartmentPackage extends Model
         'name_en', 'name_cs', 'name_de',
         'features',
         'price',
+        'price_eur',
         'icon',
     ];
 
     protected $casts = [
         'features' => 'array',
-        'price' => 'double',
+        'price' => 'double:2',
+        'price_eur' => 'double:2',
     ];
 
     protected $appends = ['name', 'translated_features'];
