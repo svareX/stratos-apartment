@@ -492,5 +492,8 @@
     "Select Package": "Vyberte Balíček",
     "Select a package...": "Vyberte balíček...",
     "Package:": "Balíček:",
-    "Basic booking without extras": "Základní rezervace bez extra služeb"
+    "Basic booking without extras": "Základní rezervace bez extra služeb",
+    "Base price (EUR)": "Základní cena (EUR)",
+    "Cleaning fee (EUR)": "Poplatek za úklid (EUR)",
+    "Price (EUR)": "Cena (EUR)"
 }
