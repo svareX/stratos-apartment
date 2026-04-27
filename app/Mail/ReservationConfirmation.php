@@ -15,6 +15,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class ReservationConfirmation extends Mailable implements ShouldQueue
 {
@@ -36,20 +37,23 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
 
     public function content(): Content
     {
-        $eurAmount = $this->calculateEurAmount();
+        $eur = $this->calculateEurAmount();
 
         return new Content(
             markdown: 'emails.reservation.confirmation',
             with: [
                 'qrCodeCzk' => $this->generateSpaydQrCode(),
-                'qrCodeEur' => $this->generateEpcQrCode($eurAmount),
-                'eurAmount' => $eurAmount,
+                'qrCodeEur' => $this->generateEpcQrCode($eur['amount']),
+                'eurAmount' => $eur['amount'],
+                'eurIsConverted' => $eur['converted'],
             ],
         );
     }
 
-    private function calculateEurAmount(): float
+    private function calculateEurAmount()
     {
+        $apt = $this->reservation->apartment;
+
         $rate = Cache::remember('cnb_eur_rate', 3600, function () {
             $response = Http::get('https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt');
 
@@ -67,7 +71,37 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             return 25.00;
         });
 
-        return round($this->reservation->price / $rate, 2);
+        // We'll track whether the EUR amount was computed from explicit EUR fields
+        $usedConverted = false;
+
+        // If apartment has explicit EUR pricing, use those values to compute EUR total
+        if ($apt && $apt->base_price_eur !== null) {
+            $nights = Carbon::parse($this->reservation->check_in)->diffInDays(Carbon::parse($this->reservation->check_out));
+            $totalEur = $nights * $apt->base_price_eur;
+
+            // package price: prefer package's explicit EUR value when available
+            if ($this->reservation->apartmentPackage && $this->reservation->apartmentPackage->price_eur !== null) {
+                $totalEur += $this->reservation->apartmentPackage->price_eur;
+            } elseif (! empty($this->reservation->package_price)) {
+                $totalEur += round($this->reservation->package_price / $rate, 2);
+                $usedConverted = true;
+            }
+
+            // cleaning fee applies if nights <= days_for_cleaning_fee
+            if ($nights > 0 && $nights <= ($apt->days_for_cleaning_fee ?? 0)) {
+                if ($apt->cleaning_fee_eur !== null) {
+                    $totalEur += $apt->cleaning_fee_eur;
+                } else {
+                    $totalEur += ($apt->cleaning_fee ?? 0) / $rate;
+                    $usedConverted = true;
+                }
+            }
+
+            return ['amount' => round($totalEur, 2), 'converted' => $usedConverted];
+        }
+
+        // fallback: convert total CZK price to EUR using exchange rate
+        return ['amount' => round($this->reservation->price / $rate, 2), 'converted' => true];
     }
 
     private function generateQrCode(string $content): string
