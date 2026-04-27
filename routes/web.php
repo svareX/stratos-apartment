@@ -57,7 +57,13 @@ Route::group([
 
     Route::get('/', HomeController::class)->name('home');
 
-    Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)->name('apartments.show');
+    Route::get('/apartments/{apartment:slug}/unavailable', \App\Http\Controllers\Apartment\ApartmentUnavailableController::class)
+        ->name('apartments.unavailable')
+        ->middleware(\App\Http\Middleware\EnsureApartmentState::class.':inactive');
+
+    Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)
+        ->name('apartments.show')
+        ->middleware(\App\Http\Middleware\EnsureApartmentState::class.':active');
 
     Route::get('/contact', ContactController::class)->name('contact');
 

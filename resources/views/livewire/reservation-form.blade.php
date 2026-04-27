@@ -13,9 +13,9 @@
     <div class="bg-white rounded-xl shadow-sm border border-border p-6 sm:p-8 text-navy">
         @if ($step === 1)
             <div class="relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                
+
                 <div class="col-span-2 bg-white p-6 rounded-lg border border-border">
-                    
+
                     <div class="mb-8 p-5 bg-purpleGhost rounded-xl border {{ $errors->has('apartment_id') ? 'border-red' : 'border-purplePale' }}">
                         <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-tight">{{ __('Select Apartment') }}</label>
                         <div class="relative">
@@ -34,12 +34,13 @@
                             </p>
                         @enderror
                     </div>
-                    
-                    <div class="mb-6 p-5 bg-purpleGhost rounded-xl border {{ $errors->has('apartment_package_id') ? 'border-red' : 'border-purplePale' }}">
+
+                        @php $packagesDisabled = empty($apartment_id); @endphp
+                        <div class="mb-6 p-5 {{ $packagesDisabled ? 'bg-white' : 'bg-purpleGhost' }} rounded-xl border {{ $errors->has('apartment_package_id') ? 'border-red' : 'border-purplePale' }}">
                         <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-tight">{{ __('Select Package') }}</label>
-                        <div class="relative">
-                            <div class="flex gap-4 overflow-x-auto py-2 -mx-2 px-2">
-                                <div role="button" tabindex="0" wire:click="$set('apartment_package_id', 'standard')" class="min-w-[220px] flex flex-col p-4 rounded-2xl border border-border bg-white cursor-pointer transition-transform duration-200 {{ $apartment_package_id === 'standard' ? 'border-primary scale-105 shadow-md' : 'hover:shadow-lg hover:-translate-y-1' }}">
+                            <div class="relative">
+                            <div class="flex gap-4 overflow-x-auto py-2 -mx-2 px-2 {{ $packagesDisabled ? 'opacity-30 pointer-events-none' : '' }}">
+                                <div role="button" tabindex="0" wire:click="$set('apartment_package_id', 'standard')" class="min-w-[220px] flex flex-col p-4 rounded-2xl border border-border bg-white transition-transform duration-200 {{ $packagesDisabled ? 'opacity-30 pointer-events-none cursor-not-allowed' : 'cursor-pointer ' . ($apartment_package_id === 'standard' ? 'border-primary scale-105 shadow-md' : 'hover:shadow-lg hover:-translate-y-1') }}">
                                     <div class="flex items-center justify-start">
                                         <span class="text-2xl font-extrabold text-tealD">{{ number_format(0, 0, ',', ' ') }} {{ __('CZK') }}</span>
                                     </div>
@@ -53,9 +54,18 @@
                                 </div>
 
                                 @foreach($availablePackages as $pkg)
-                                    <div role="button" tabindex="0" wire:click="$set('apartment_package_id', {{ $pkg['id'] }})" class="min-w-[220px] flex flex-col p-4 rounded-2xl border border-border bg-white cursor-pointer transition-transform duration-200 {{ $apartment_package_id == $pkg['id'] ? 'border-primary scale-105 shadow-md' : 'hover:shadow-lg hover:-translate-y-1' }}">
+                                    <div role="button" tabindex="0" wire:click="$set('apartment_package_id', {{ $pkg['id'] }})" class="min-w-[220px] flex flex-col p-4 rounded-2xl border border-border bg-white transition-transform duration-200 {{ $packagesDisabled ? 'opacity-30 pointer-events-none cursor-not-allowed' : 'cursor-pointer ' . ($apartment_package_id == $pkg['id'] ? 'border-primary scale-105 shadow-md' : 'hover:shadow-lg hover:-translate-y-1') }}">
                                         <div class="flex items-center justify-start">
-                                            <span class="text-2xl font-extrabold text-tealD">{{ number_format($pkg['price'], 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                            @php
+                                                $locale = app()->getLocale();
+                                                $pkgEur = $pkg['price_eur'] ?? null;
+                                                $showPkgEurPrimary = in_array($locale, ['en', 'de']) && $pkgEur !== null;
+                                            @endphp
+                                            @if($showPkgEurPrimary)
+                                                <span class="text-2xl font-extrabold text-tealD">{{ number_format($pkgEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                            @else
+                                                <span class="text-2xl font-extrabold text-tealD">{{ number_format($pkg['price'], 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                            @endif
                                         </div>
                                         <div class="flex items-center gap-2 mt-2">
                                             <span class="text-sm">{!! $pkg['icon'] ?? '' !!}</span>
@@ -74,7 +84,7 @@
                             <p class="text-red text-xs mt-2 flex items-center gap-1 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
-                    
+
                     <div class="transition-all duration-500 ease-in-out {{ $apartment_id && $apartment_package_id !== null && $apartment_package_id !== '' ? 'opacity-100 translate-y-0' : 'opacity-30 pointer-events-none -translate-y-2' }}">
                         <div class="flex flex-col gap-y-2 md:flex-row items-center justify-between mb-6">
                             <div class="flex items-center gap-3">
@@ -103,7 +113,7 @@
                                             $isInRange = $start_date && $end_date && $date > $start_date && $date < $end_date;
                                             $isSelected = $isStart || $isEnd;
                                         @endphp
-                                        <button 
+                                        <button
                                             wire:click="selectDate('{{ $date }}')"
                                             @if($isBooked) disabled @endif
                                             class="h-14 relative flex flex-col items-center justify-center rounded-md transition-all text-sm hover:cursor-pointer hover:text-purple!
@@ -135,27 +145,92 @@
                         <div class="bg-white p-6 rounded-lg shadow-xl border border-border transition-all duration-500 {{ $apartment_id ? 'opacity-100 translate-y-0' : 'opacity-30 pointer-events-none translate-y-2' }}">
                             <h4 class="font-bold text-[13px] mb-4 uppercase tracking-wider text-sm">{{ __('Stay summary') }}</h4>
                             <div class="space-y-3 border-b border-border pb-4 mb-4">
+                                @php
+                                    $locale = app()->getLocale();
+                                    $showEurPrimary = in_array($locale, ['en', 'de']) && $pricePerNightEur !== null;
+                                @endphp
+
                                 <div class="flex justify-between text-sm">
                                     <span class="text-muted">{{ __('Accommodation:') }}</span>
-                                    <span class="font-bold">{{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    @if($showEurPrimary)
+                                        <span class="font-bold">{{ number_format($this->nights() * $pricePerNightEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                    @else
+                                        <span class="font-bold">{{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    @endif
                                 </div>
+
+                                @if($showEurPrimary)
+                                    <div class="flex justify-between text-xs text-muted">
+                                        <span></span>
+                                        <span> {{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    </div>
+                                @elseif($pricePerNightEur)
+                                    <div class="flex justify-between text-xs text-muted">
+                                        <span></span>
+                                        <span>{{ number_format($this->nights() * $pricePerNightEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                    </div>
+                                @endif
+
+                                @php $showPkgPrimary = in_array($locale, ['en', 'de']) && $packagePriceEur !== null; @endphp
                                 <div class="flex justify-between text-sm">
                                     <span class="text-muted">{{ __('Package:') }}</span>
-                                    <span class="font-bold">+ {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    @if($showPkgPrimary)
+                                        <span class="font-bold">+ {{ number_format($packagePriceEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                    @else
+                                        <span class="font-bold">+ {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    @endif
                                 </div>
+
+                                @if($showPkgPrimary)
+                                    <div class="flex justify-between text-xs text-muted">
+                                        <span></span>
+                                        <span>+  {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                    </div>
+                                @elseif($packagePriceEur)
+                                    <div class="flex justify-between text-xs text-muted">
+                                        <span></span>
+                                        <span>+ {{ number_format($packagePriceEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                    </div>
+                                @endif
+
                                 @if($this->cleaningApplies())
                                     <div class="flex justify-between text-sm">
                                         <span class="text-muted">{{ __('Cleaning:') }}</span>
-                                        <span class="font-bold">+ {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                        @if(in_array($locale, ['en', 'de']) && $cleaningFeeEur !== null)
+                                            <span class="font-bold">+ {{ number_format($cleaningFeeEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                        @else
+                                            <span class="font-bold">+ {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                        @endif
                                     </div>
+                                    @if(in_array($locale, ['en', 'de']) && $cleaningFeeEur !== null)
+                                        <div class="flex justify-between text-xs text-muted">
+                                            <span></span>
+                                            <span>+  {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                        </div>
+                                    @elseif($cleaningFeeEur !== null)
+                                        <div class="flex justify-between text-xs text-muted">
+                                            <span></span>
+                                            <span>+ {{ number_format($cleaningFeeEur, 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                        </div>
+                                    @endif
                                 @endif
+
                                 <div class="flex justify-between text-sm pt-2">
                                     <span class="text-muted">{{ __('Number of nights:') }}</span>
                                     <span class="font-bold">{{ $this->nights() }}</span>
                                 </div>
                             </div>
                             <div class="text-2xl font-bold mb-4 text-primary">
-                                {{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}
+                                @php $locale = app()->getLocale(); $showEurPrimary = in_array($locale, ['en', 'de']) && $pricePerNightEur !== null; @endphp
+                                @if($showEurPrimary)
+                                    {{ number_format($this->totalEur(), 2, ',', ' ') }} {{ __('EUR') }}
+                                    <div class="text-sm text-muted mt-1"> {{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}</div>
+                                @else
+                                    {{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}
+                                    @if($pricePerNightEur !== null)
+                                        <div class="text-sm text-muted mt-1"> {{ number_format($this->totalEur(), 2, ',', ' ') }} {{ __('EUR') }}</div>
+                                    @endif
+                                @endif
                             </div>
                             <button wire:click="nextStep" class="w-full py-3 bg-teal text-white rounded-lg font-bold hover:opacity-90 transition-opacity hover:cursor-pointer">{{ __('Continue') }}</button>
                         </div>
@@ -170,7 +245,7 @@
                                         <button wire:click="$set('adults', {{ (int)$adults + 1 }})" class="w-8 h-8 rounded-full bg-white border border-border flex items-center justify-center font-bold text-primary hover:bg-purplePale transition hover:cursor-pointer">+</button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex flex-col p-3 bg-purpleGhost rounded-xl border border-border">
                                     <span class="text-xs font-bold text-primary uppercase mb-2">{{ __('Children') }}</span>
                                     <div class="flex items-center justify-between">
@@ -180,7 +255,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="flex flex-col p-4 bg-purpleGhost rounded-xl border border-border justify-center">
                                 <label class="flex items-center gap-3 cursor-pointer h-full px-2">
                                     <flux:checkbox wire:model.live="pets" class="bg-white! border border-border"/>
@@ -287,7 +362,7 @@
         @elseif ($step === 3)
             <div class="max-w-2xl mx-auto">
                 <h3 class="text-2xl font-bold text-primary mb-6 sm:mb-8 text-center">{{ __('Reservation recap') }}</h3>
-                
+
                 <div class="space-y-6 bg-purpleGhost p-6 sm:p-8 rounded-xl border border-border">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
                         <div class="col-span-1 sm:col-span-2">
@@ -302,16 +377,50 @@
                             <span class="block text-xs font-bold text-muted uppercase">{{ __('Guest') }}</span>
                             <span class="font-medium text-navy">{{ $first_name }} {{ $last_name }}</span>
                         </div>
-                        
+
                         <div class="col-span-1 sm:col-span-2 border-t border-border pt-4"></div>
-                        
+
                         <div>
                             <span class="block text-xs font-bold text-muted uppercase">{{ __('Price breakdown') }}</span>
                             <div class="text-sm font-medium text-navy space-y-1 mt-1">
-                                <div>{{ __('Accommodation:') }} {{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}</div>
-                                <div>{{ __('Package:') }} {{ $this->selectedPackageName ?: __('Standard') }} — {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}</div>
+                                @php $locale = app()->getLocale(); $showEurPrimary = in_array($locale, ['en', 'de']) && $pricePerNightEur !== null; @endphp
+                                <div>{{ __('Accommodation:') }}
+                                    @if($showEurPrimary)
+                                        {{ number_format($this->nights() * $pricePerNightEur, 2, ',', ' ') }} {{ __('EUR') }}
+                                        <span class="text-muted text-xs">({{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} CZK)</span>
+                                    @else
+                                        {{ number_format($this->nights() * $pricePerNight, 0, ',', ' ') }} {{ __('CZK') }}
+                                        @if($pricePerNightEur !== null)
+                                            <span class="text-muted text-xs">({{ number_format($this->nights() * $pricePerNightEur, 2, ',', ' ') }} EUR)</span>
+                                        @endif
+                                    @endif
+                                </div>
+
+                                @php $showPkgPrimary = in_array($locale, ['en', 'de']) && $packagePriceEur !== null; @endphp
+                                <div>{{ __('Package:') }} {{ $this->selectedPackageName ?: __('Standard') }} —
+                                    @if($showPkgPrimary)
+                                        {{ number_format($packagePriceEur, 2, ',', ' ') }} {{ __('EUR') }}
+                                        <span class="text-muted text-xs">({{ number_format($packagePrice, 0, ',', ' ') }} CZK)</span>
+                                    @else
+                                        {{ number_format($packagePrice, 0, ',', ' ') }} {{ __('CZK') }}
+                                        @if($packagePriceEur)
+                                            <span class="text-muted text-xs">({{ number_format($packagePriceEur, 2, ',', ' ') }} EUR)</span>
+                                        @endif
+                                    @endif
+                                </div>
+
                                 @if($this->cleaningApplies())
-                                    <div class="text-muted italic">{{ __('Cleaning fee:') }} + {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</div>
+                                    <div class="text-muted italic">{{ __('Cleaning fee:') }}
+                                        @if(in_array($locale, ['en', 'de']) && $cleaningFeeEur !== null)
+                                            + {{ number_format($cleaningFeeEur, 2, ',', ' ') }} {{ __('EUR') }}
+                                            <span class="text-muted text-xs">({{ number_format($cleaningFee, 0, ',', ' ') }} CZK)</span>
+                                        @else
+                                            + {{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}
+                                            @if($cleaningFeeEur !== null)
+                                                <span class="text-muted text-xs">({{ number_format($cleaningFeeEur, 2, ',', ' ') }} EUR)</span>
+                                            @endif
+                                        @endif
+                                    </div>
                                 @else
                                     <div class="text-tealD italic">{{ __('Cleaning fee:') }} <span class="line-through text-muted text-xs mx-1">{{ number_format($cleaningFee, 0, ',', ' ') }}</span>+ 0 {{ __('CZK') }}</div>
                                 @endif
@@ -319,7 +428,16 @@
                         </div>
                         <div class="sm:text-right flex flex-col justify-end">
                             <span class="block text-xs font-bold text-muted uppercase">{{ __('Total price') }}</span>
-                            <span class="font-bold text-2xl text-primary">{{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}</span>
+                            @php $locale = app()->getLocale(); $showEurTotal = in_array($locale, ['en', 'de']) && $pricePerNightEur !== null; @endphp
+                            @if($showEurTotal)
+                                <span class="font-bold text-2xl text-primary">{{ number_format($this->totalEur(), 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                <span class="text-sm text-muted"> {{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}</span>
+                            @else
+                                <span class="font-bold text-2xl text-primary">{{ number_format($this->total(), 0, ',', ' ') }} {{ __('CZK') }}</span>
+                                @if($pricePerNightEur !== null)
+                                    <span class="text-sm text-muted"> {{ number_format($this->totalEur(), 2, ',', ' ') }} {{ __('EUR') }}</span>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>
