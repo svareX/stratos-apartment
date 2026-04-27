@@ -495,5 +495,18 @@
     "Price (EUR)": "Preis (EUR)",
     "Client": "Klient",
     "Next month": "Nächster Monat",
+    "Reservations Dashboard": "Reservierungs-Dashboard",
+    "Reservations — Last 30 days": "Reservierungen — letzte 30 Tage",
+    "Reservation Status": "Reservierungsstatus",
+    "Top Apartments": "Top-Apartments",
+    "Check-ins by Weekday": "Check-ins nach Wochentag",
+    "Check-ins": "Check-ins",
+    "Reservations / Revenue — :year": "Reservierungen / Umsatz — :year",
+    "Revenue (30d)": "Umsatz (30 T.)",
+    "Revenue (CZK)": "Umsatz (CZK)",
+    "Total": "Gesamt",
+    "Total Reservations": "Reservierungen gesamt",
+    "Last 30 days": "Letzte 30 Tage",
+    "Confirmed": "Bestätigt",
     "All": "Alle"
 }

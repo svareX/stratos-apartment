@@ -498,5 +498,18 @@
     "Price (EUR)": "Cena (EUR)",
     "Client": "Klient",
     "Next month": "Příští měsíc",
+    "Reservations Dashboard": "Dashboard rezervací",
+    "Reservations — Last 30 days": "Rezervace — posledních 30 dní",
+    "Reservation Status": "Stav rezervací",
+    "Top Apartments": "Top apartmány",
+    "Check-ins by Weekday": "Příjezdy podle dne v týdnu",
+    "Check-ins": "Příjezdy",
+    "Reservations / Revenue — :year": "Rezervace / Tržby — :year",
+    "Revenue (30d)": "Tržby (30 dní)",
+    "Revenue (CZK)": "Tržby (Kč)",
+    "Total": "Celkem",
+    "Total Reservations": "Celkem rezervací",
+    "Last 30 days": "Posledních 30 dní",
+    "Confirmed": "Potvrzené",
     "All": "Vše"
 }
