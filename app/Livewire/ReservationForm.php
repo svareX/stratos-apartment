@@ -10,13 +10,13 @@ use App\Models\ApartmentPackage;
 use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
 
 class ReservationForm extends Component
 {
@@ -52,11 +52,13 @@ class ReservationForm extends Component
     public $pets = false;
 
     public $pricePerNight = 0;
+
     public $pricePerNightEur = null;
 
     public $capacity = null;
 
     public $cleaningFee = 600;
+
     public $cleaningFeeEur = null;
 
     public $daysForCleaningFee = 3;
@@ -82,6 +84,7 @@ class ReservationForm extends Component
     public $availablePackages = [];
 
     public $packagePrice = 0;
+
     public $packagePriceEur = null;
 
     public $selectedPackageName = '';

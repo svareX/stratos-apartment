@@ -3,16 +3,15 @@
 namespace App\Filament\Resources\Reservations\Pages;
 
 use App\Filament\Resources\Reservations\ReservationResource;
+use Carbon\Carbon;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
-use Carbon\Carbon;
 
 class ListReservations extends ListRecords
 {
     protected static string $resource = ReservationResource::class;
-
 
     public function getTabs(): array
     {

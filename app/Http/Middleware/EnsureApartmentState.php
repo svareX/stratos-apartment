@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Models\Apartment;
+use Closure;
 use Illuminate\Http\Request;
 
 class EnsureApartmentState

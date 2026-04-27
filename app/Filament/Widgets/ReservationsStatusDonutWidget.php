@@ -71,4 +71,3 @@ class ReservationsStatusDonutWidget extends ApexChartWidget
         return __('Reservation Status');
     }
 }
-

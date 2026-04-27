@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Reservation;
 use App\Models\Apartment;
+use App\Models\Reservation;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class ReservationsPerApartmentWidget extends ApexChartWidget
@@ -30,7 +30,7 @@ class ReservationsPerApartmentWidget extends ApexChartWidget
         $data = [];
         foreach ($rows as $row) {
             $apt = Apartment::find($row->apartment_id);
-            $labels[] = $apt?->name ?? ('#' . $row->apartment_id);
+            $labels[] = $apt?->name ?? ('#'.$row->apartment_id);
             $data[] = (int) $row->total;
         }
 
@@ -67,4 +67,3 @@ class ReservationsPerApartmentWidget extends ApexChartWidget
         return __('Top Apartments');
     }
 }
-

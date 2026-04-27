@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Apartment;
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ApartmentUnavailableController extends Controller
 {
