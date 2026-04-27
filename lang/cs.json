@@ -495,5 +495,6 @@
     "Basic booking without extras": "Základní rezervace bez extra služeb",
     "Base price (EUR)": "Základní cena (EUR)",
     "Cleaning fee (EUR)": "Poplatek za úklid (EUR)",
-    "Price (EUR)": "Cena (EUR)"
+    "Price (EUR)": "Cena (EUR)",
+    "Client": "Klient"
 }

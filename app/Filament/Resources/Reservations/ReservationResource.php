@@ -11,6 +11,7 @@ use App\Models\Reservation;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use App\Filament\Resources\Reservations\RelationManagers\UserRelationManager;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
@@ -48,6 +49,7 @@ class ReservationResource extends Resource
     public static function getRelations(): array
     {
         return [
+            UserRelationManager::class,
         ];
     }
 

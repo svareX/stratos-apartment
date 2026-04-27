@@ -530,6 +530,15 @@ class ReservationForm extends Component
             ]
         );
 
+        $user->update([
+            'name' => trim($this->first_name.' '.$this->last_name),
+            'phone' => $this->phone,
+            'address' => $this->address,
+            'city' => $this->city,
+            'postal_code' => $this->postal_code,
+            'country' => $this->country,
+        ]);
+
         $apartment = Apartment::findOrFail($this->apartment_id);
 
         $reservation = Reservation::create([

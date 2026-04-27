@@ -492,5 +492,6 @@
     "Basic booking without extras": "Basisbuchung ohne Extras",
     "Base price (EUR)": "Basispreis (EUR)",
     "Cleaning fee (EUR)": "Reinigungsgebühr (EUR)",
-    "Price (EUR)": "Preis (EUR)"
+    "Price (EUR)": "Preis (EUR)",
+    "Client": "Klient"
 }
