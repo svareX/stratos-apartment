@@ -493,5 +493,7 @@
     "Base price (EUR)": "Basispreis (EUR)",
     "Cleaning fee (EUR)": "Reinigungsgebühr (EUR)",
     "Price (EUR)": "Preis (EUR)",
-    "Client": "Klient"
+    "Client": "Klient",
+    "Next month": "Nächster Monat",
+    "All": "Alle"
 }
