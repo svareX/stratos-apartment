@@ -271,7 +271,7 @@ class ReservationForm extends Component
         }
 
         $this->bookedDates = Reservation::where('apartment_id', $this->apartment_id)
-            ->whereIn('status', [ReservationStatus::Confirmed, ReservationStatus::Pending])
+            ->whereIn('status', [ReservationStatus::Confirmed->value, ReservationStatus::Pending->value])
             ->get()
             ->flatMap(function ($reservation) {
                 $dates = [];
@@ -540,6 +540,13 @@ class ReservationForm extends Component
         ]);
 
         $apartment = Apartment::findOrFail($this->apartment_id);
+
+        // Prevent creating reservations for apartments that are deactivated in admin
+        if (! $apartment->active) {
+            $this->addError('apartment_id', __('This apartment is temporarily unavailable for booking.'));
+
+            return;
+        }
 
         $reservation = Reservation::create([
             'apartment_id' => $apartment->id,

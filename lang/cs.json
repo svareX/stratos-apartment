@@ -511,5 +511,12 @@
     "Total Reservations": "Celkem rezervací",
     "Last 30 days": "Posledních 30 dní",
     "Confirmed": "Potvrzené",
-    "All": "Vše"
+    "All": "Vše",
+    "This apartment is temporarily unavailable for booking. Please check back later or contact us for more information.": "Tento apartmán je dočasně nedostupný pro rezervaci. Zkuste to prosím později nebo nás kontaktujte pro více informací.",
+    "Notice": "Upozornění",
+    "Back to home": "Zpět na domovskou stránku",
+    "Contact us": "Kontaktujte nás",
+    "If you believe this is an error or want to request reactivation, please reach out and we will help.": "Pokud se domníváte, že se jedná o chybu nebo chcete požádat o znovuaktivaci, kontaktujte nás a my vám pomůžeme.",
+    "Unavailable": "Nedostupné",
+    "Apartment temporarily unavailable": "Apartmán dočasně nedostupný"
 }

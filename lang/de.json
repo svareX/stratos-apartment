@@ -508,5 +508,12 @@
     "Total Reservations": "Reservierungen gesamt",
     "Last 30 days": "Letzte 30 Tage",
     "Confirmed": "Bestätigt",
-    "All": "Alle"
+    "All": "Alle",
+    "This apartment is temporarily unavailable for booking. Please check back later or contact us for more information.": "Dieses Apartment ist vorübergehend nicht buchbar. Bitte schauen Sie später noch einmal vorbei oder kontaktieren Sie uns für weitere Informationen.",
+    "Notice": "Hinweis",
+    "Back to home": "Zurück zur Startseite",
+    "Contact us": "Kontaktieren Sie uns",
+    "If you believe this is an error or want to request reactivation, please reach out and we will help.": "Wenn Sie glauben, dass dies ein Fehler ist oder eine Reaktivierung beantragen möchten, wenden Sie sich bitte an uns und wir helfen Ihnen.",
+    "Unavailable": "Nicht verfügbar",
+    "Apartment temporarily unavailable": "Apartment vorübergehend nicht verfügbar"
 }
