@@ -34,12 +34,12 @@
                 @else
                     <p style="margin-top: 15px; margin-bottom: 0; font-size: 16px; font-weight: bold; color: #0f172a;">{{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
                 @endif
-
-                <p style="margin-top:8px;margin-bottom:0;font-size:12px;color:#475569;"><em>* {{ 'For international transfers you may need to use SEPA (SCT) type of payment.' }}</em></p>
             </td>
         </tr>
     </table>
 </div>
+
+{{ 'For international transfers you may need to use SEPA (SCT) type of payment.' }}
 
 @if($reservation->apartmentPackage && count($reservation->apartmentPackage->translated_features ?? []))
 <x-mail::panel>
