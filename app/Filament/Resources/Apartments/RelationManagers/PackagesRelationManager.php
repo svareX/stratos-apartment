@@ -49,6 +49,13 @@ class PackagesRelationManager extends RelationManager
                     ->required()
                     ->columnSpan(1),
 
+                TextInput::make('price_eur')
+                    ->label(__('Price (EUR)'))
+                    ->placeholder(__('Enter price'))
+                    ->numeric()
+                    ->suffix(__('€'))
+                    ->columnSpan(1),
+
                 TextInput::make('icon')
                     ->label(__('Icon (Emoji / Text)'))
                     ->placeholder(__('Enter icon or emoji'))
@@ -97,7 +104,8 @@ class PackagesRelationManager extends RelationManager
                     ])
                     ->reorderable()
                     ->addActionLabel(__('Add Feature')),
-            ]);
+            ])
+            ->columns(3);
     }
 
     public function table(Table $table): Table
@@ -114,6 +122,11 @@ class PackagesRelationManager extends RelationManager
 
                 TextColumn::make('price')
                     ->label(__('Price'))
+                    ->numeric()
+                    ->sortable(),
+
+                TextColumn::make('price_eur')
+                    ->label(__('Price (EUR)'))
                     ->numeric()
                     ->sortable(),
             ])
