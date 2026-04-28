@@ -148,12 +148,12 @@ class ApartmentFormV2
 
                                 TextInput::make('ical_export_url')
                                     ->label(__('Our iCal export URL'))
-                                    ->hintAction(static fn(Get $get) => Action::make('Copy')->icon('heroicon-s-clipboard')
+                                    ->hintAction(static fn (Get $get) => Action::make('Copy')->icon('heroicon-s-clipboard')
                                         ->label(__('Copy'))
                                         ->color('primary')
                                         ->tooltip(__('Copy link'))
                                         ->action(static function ($livewire, $state) {
-                                            $livewire->js('window.navigator.clipboard.writeText("' . $state . '");');
+                                            $livewire->js('window.navigator.clipboard.writeText("'.$state.'");');
                                         }))
                                     ->disabled()
                                     ->readOnly()

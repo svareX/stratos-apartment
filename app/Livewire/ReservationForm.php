@@ -539,7 +539,7 @@ class ReservationForm extends Component
             ->whereIn('status', [ReservationStatus::Pending, ReservationStatus::Confirmed])
             ->where(function ($query) {
                 $query->where('check_in', '<', $this->end_date)
-                      ->where('check_out', '>', $this->start_date);
+                    ->where('check_out', '>', $this->start_date);
             })
             ->exists();
 

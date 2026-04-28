@@ -20,8 +20,6 @@ use App\Http\Controllers\TermsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::get('/password', function () {
     return view('website-password');
 })->name('password.form');

@@ -31,7 +31,7 @@ class IcalImportTest extends TestCase
             $events .= "END:VEVENT\r\n";
         }
 
-        return "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Test\r\n" . $events . "END:VCALENDAR\r\n";
+        return "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Test\r\n".$events."END:VCALENDAR\r\n";
     }
 
     public function test_import_creates_reservation_from_ics(): void
@@ -51,7 +51,7 @@ class IcalImportTest extends TestCase
 
         Http::fake(['https://example.test/feed.ics' => Http::response($ics, 200)]);
 
-        $service = new IcalImportService();
+        $service = new IcalImportService;
 
         $result = $service->syncApartment($apt);
 
@@ -112,7 +112,7 @@ class IcalImportTest extends TestCase
 
         Http::fake(['https://example.test/feed2.ics' => Http::response($ics, 200)]);
 
-        $service = new IcalImportService();
+        $service = new IcalImportService;
 
         $result = $service->syncApartment($apt);
 

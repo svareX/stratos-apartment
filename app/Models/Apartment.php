@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reservation[] $reservations
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosMain

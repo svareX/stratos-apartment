@@ -56,7 +56,7 @@ class ReservationsDashboard extends Dashboard
                 ->icon(Heroicon::ArrowPath)
                 ->color('primary')
                 ->action(function () {
-                    dispatch(new \App\Jobs\SyncKnowledgeBaseJob());
+                    dispatch(new \App\Jobs\SyncKnowledgeBaseJob);
                     Notification::make()->success()->title(__('Knowledge sync queued'))->send();
                 }),
 
@@ -65,7 +65,7 @@ class ReservationsDashboard extends Dashboard
                 ->icon(Heroicon::ArrowPath)
                 ->color('primary')
                 ->action(function () {
-                    dispatch(new \App\Jobs\SyncBookingJob());
+                    dispatch(new \App\Jobs\SyncBookingJob);
                     Notification::make()->success()->title(__('Booking sync queued'))->send();
                 }),
         ];

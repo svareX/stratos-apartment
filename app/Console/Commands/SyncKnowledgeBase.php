@@ -67,7 +67,7 @@ class SyncKnowledgeBase extends Command
                 $pkgText = "=== BALÍČEK APARTMÁNU ===\n";
                 $pkgText .= "NÁZEV: {$pkg->name_cs}\n";
                 $pkgText .= "CENA: {$pkg->price} Kč\n";
-                if (!empty($pkgDescription)) {
+                if (! empty($pkgDescription)) {
                     $pkgText .= "POPIS: {$pkgDescription}\n";
                 }
                 $pkgText .= "OBSAHUJE: {$features}\n";

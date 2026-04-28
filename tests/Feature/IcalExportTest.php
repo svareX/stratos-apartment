@@ -56,7 +56,7 @@ class IcalExportTest extends TestCase
             'price' => 220.00,
         ]);
 
-        $service = new IcalExportService();
+        $service = new IcalExportService;
 
         $calendar = $service->forApartment($apt);
 
@@ -91,7 +91,7 @@ class IcalExportTest extends TestCase
             'price' => 100.00,
         ]);
 
-        $service = new IcalExportService();
+        $service = new IcalExportService;
         $ics = $service->forApartment($apt);
 
         $this->assertStringContainsString('DTSTART;VALUE=DATE:20260514', $ics);
@@ -117,7 +117,7 @@ class IcalExportTest extends TestCase
             'price' => 300.00,
         ]);
 
-        $service = new IcalExportService();
+        $service = new IcalExportService;
         $ics = $service->forApartment($apt);
 
         $this->assertStringContainsString('DTSTART;VALUE=DATE:20260514', $ics);

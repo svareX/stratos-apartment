@@ -54,7 +54,6 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
     {
         $apt = $this->reservation->apartment()->first();
         /** @var \App\Models\Apartment|null $apt */
-
         $rate = Cache::remember('cnb_eur_rate', 3600, function () {
             $response = Http::get('https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt');
 
@@ -112,11 +111,11 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
         try {
             // Prefer Imagick backend when available
             if (extension_loaded('imagick') && class_exists(ImagickImageBackEnd::class)) {
-                $backend = new ImagickImageBackEnd();
+                $backend = new ImagickImageBackEnd;
             } elseif (class_exists(\BaconQrCode\Renderer\Image\SvgImageBackEnd::class)) {
-                $backend = new \BaconQrCode\Renderer\Image\SvgImageBackEnd();
+                $backend = new \BaconQrCode\Renderer\Image\SvgImageBackEnd;
             } elseif (class_exists(\BaconQrCode\Renderer\Image\GdImageBackEnd::class)) {
-                $backend = new \BaconQrCode\Renderer\Image\GdImageBackEnd();
+                $backend = new \BaconQrCode\Renderer\Image\GdImageBackEnd;
             } else {
                 // No suitable backend available, return empty string to avoid failing mail generation in tests
                 return '';

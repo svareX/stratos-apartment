@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 /**
  * @property-read \App\Models\Apartment|null $apartment
  * @property int $id

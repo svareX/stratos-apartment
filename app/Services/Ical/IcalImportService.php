@@ -54,7 +54,7 @@ class IcalImportService
                 ->first();
 
             if (! $reservation) {
-                $reservation = new Reservation();
+                $reservation = new Reservation;
                 $reservation->apartment_id = $apartment->id;
                 $reservation->booking_source = BookingSource::External->value;
                 $reservation->external_booking_id = $externalId;
@@ -139,4 +139,3 @@ class IcalImportService
         return [$checkIn, $checkOut];
     }
 }
-

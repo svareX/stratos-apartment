@@ -99,6 +99,7 @@ class SitemapGenerator
                         $sitemap->add($url);
                     } catch (\Throwable $e) {
                         Log::warning('SitemapGenerator: skipping apartment '.$apartment->id.': '.$e->getMessage());
+
                         continue;
                     }
                 }
@@ -137,6 +138,7 @@ class SitemapGenerator
                         $sitemap->add($url);
                     } catch (\Throwable $e) {
                         Log::warning('SitemapGenerator: skipping place '.$place->id.': '.$e->getMessage());
+
                         continue;
                     }
                 }
@@ -161,6 +163,7 @@ class SitemapGenerator
                         $sitemap->add($url);
                     } catch (\Throwable $e) {
                         Log::warning('SitemapGenerator: skipping hike '.$hike->id.': '.$e->getMessage());
+
                         continue;
                     }
                 }

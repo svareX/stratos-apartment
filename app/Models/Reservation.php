@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 /**
  * @property-read \App\Models\Apartment|null $apartment
  * @property-read \App\Models\User|null $user

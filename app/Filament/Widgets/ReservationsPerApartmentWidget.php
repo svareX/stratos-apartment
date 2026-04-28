@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Apartment;
-use App\Models\Reservation;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class ReservationsPerApartmentWidget extends ApexChartWidget

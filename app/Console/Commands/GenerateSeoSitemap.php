@@ -5,11 +5,11 @@ namespace App\Console\Commands;
 use App\Models\Apartment;
 use App\Models\Hike;
 use App\Models\Place;
+use App\Services\SitemapGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use App\Services\SitemapGenerator;
 
 class GenerateSeoSitemap extends Command
 {
