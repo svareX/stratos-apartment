@@ -71,4 +71,56 @@ class IcalExportTest extends TestCase
         $this->assertStringContainsString("reservation-{$r2->id}@stratos-apartment", $calendar);
         $this->assertStringNotContainsString("reservation-{$r3->id}@stratos-apartment", $calendar);
     }
+
+    public function test_export_one_night_reservation_has_correct_dtstart_and_dtend(): void
+    {
+        $apt = Apartment::create([
+            'name_en' => 'Export Apt OneNight',
+            'address' => 'Addr',
+            'capacity' => 2,
+            'base_price' => 100,
+            'active' => true,
+        ]);
+
+        $r = Reservation::create([
+            'apartment_id' => $apt->id,
+            'check_in' => '2026-05-14',
+            'check_out' => '2026-05-15',
+            'booking_source' => BookingSource::Local->value,
+            'status' => ReservationStatus::Confirmed,
+            'price' => 100.00,
+        ]);
+
+        $service = new IcalExportService();
+        $ics = $service->forApartment($apt);
+
+        $this->assertStringContainsString('DTSTART;VALUE=DATE:20260514', $ics);
+        $this->assertStringContainsString('DTEND;VALUE=DATE:20260515', $ics);
+    }
+
+    public function test_export_multi_night_reservation_has_correct_dtstart_and_dtend(): void
+    {
+        $apt = Apartment::create([
+            'name_en' => 'Export Apt Multi',
+            'address' => 'Addr',
+            'capacity' => 2,
+            'base_price' => 100,
+            'active' => true,
+        ]);
+
+        $r = Reservation::create([
+            'apartment_id' => $apt->id,
+            'check_in' => '2026-05-14',
+            'check_out' => '2026-05-17',
+            'booking_source' => BookingSource::Local->value,
+            'status' => ReservationStatus::Confirmed,
+            'price' => 300.00,
+        ]);
+
+        $service = new IcalExportService();
+        $ics = $service->forApartment($apt);
+
+        $this->assertStringContainsString('DTSTART;VALUE=DATE:20260514', $ics);
+        $this->assertStringContainsString('DTEND;VALUE=DATE:20260517', $ics);
+    }
 }

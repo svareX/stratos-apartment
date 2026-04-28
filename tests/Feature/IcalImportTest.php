@@ -66,7 +66,8 @@ class IcalImportTest extends TestCase
 
         $this->assertNotNull($res);
         $this->assertSame('2026-05-01', $res->check_in->toDateString());
-        $this->assertSame('2026-05-04', $res->check_out->toDateString());
+        // DTEND is exclusive; import should set check_out equal to DTEND value (first free day)
+        $this->assertSame('2026-05-05', $res->check_out->toDateString());
         $this->assertTrue($res->status === ReservationStatus::Confirmed);
         $this->assertNotNull($res->external_last_synced_at);
     }
@@ -123,7 +124,8 @@ class IcalImportTest extends TestCase
         $toCancel->refresh();
 
         $this->assertSame('2026-05-02', $existing->check_in->toDateString());
-        $this->assertSame('2026-05-05', $existing->check_out->toDateString());
+        // DTEND is exclusive; import should set check_out equal to DTEND value
+        $this->assertSame('2026-05-06', $existing->check_out->toDateString());
 
         $this->assertTrue($toCancel->status === ReservationStatus::Cancelled);
         $this->assertNotNull($toCancel->external_last_synced_at);
