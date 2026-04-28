@@ -52,7 +52,8 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
 
     private function calculateEurAmount()
     {
-        $apt = $this->reservation->apartment;
+        $apt = $this->reservation->apartment()->first();
+        /** @var \App\Models\Apartment|null $apt */
 
         $rate = Cache::remember('cnb_eur_rate', 3600, function () {
             $response = Http::get('https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt');
@@ -80,8 +81,10 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             $totalEur = $nights * $apt->base_price_eur;
 
             // package price: prefer package's explicit EUR value when available
-            if ($this->reservation->apartmentPackage && $this->reservation->apartmentPackage->price_eur !== null) {
-                $totalEur += $this->reservation->apartmentPackage->price_eur;
+            $pkg = $this->reservation->apartmentPackage()->first();
+            /** @var \App\Models\ApartmentPackage|null $pkg */
+            if ($pkg && $pkg->price_eur !== null) {
+                $totalEur += $pkg->price_eur;
             } elseif (! empty($this->reservation->package_price)) {
                 $totalEur += round($this->reservation->package_price / $rate, 2);
                 $usedConverted = true;
@@ -131,7 +134,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
 
     private function generateSpaydQrCode(): string
     {
-        $amount = number_format($this->reservation->price, 2, '.', '');
+        $amount = number_format((float) $this->reservation->price, 2, '.', '');
         $iban = config('services.bank.iban');
         $ref = 'RES'.$this->reservation->id;
 

@@ -1,11 +1,24 @@
 <?php
 
 namespace App\Models;
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reservation[] $reservations
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosMain
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosOther
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ApartmentPackage[] $packages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Place[] $places
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Hike[] $hikes
+ * @property string $slug
+ * @property float|null $base_price_eur
+ * @property float|null $cleaning_fee_eur
+ * @property int|null $days_for_cleaning_fee
+ */
 
 use App\Enums\ApartmentType;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\App as AppFacade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -63,37 +76,37 @@ class Apartment extends Model
 
     protected $appends = ['name', 'description', 'tags'];
 
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }
 
-    public function photos()
+    public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);
     }
 
-    public function photosMain()
+    public function photosMain(): HasMany
     {
         return $this->hasMany(Photo::class)->where('is_main', true)->orderBy('position');
     }
 
-    public function photosOther()
+    public function photosOther(): HasMany
     {
         return $this->hasMany(Photo::class)->where('is_main', false)->orderBy('position');
     }
 
-    public function packages()
+    public function packages(): HasMany
     {
         return $this->hasMany(ApartmentPackage::class);
     }
 
-    public function places()
+    public function places(): HasMany
     {
         return $this->hasMany(Place::class);
     }
 
-    public function hikes()
+    public function hikes(): HasMany
     {
         return $this->hasMany(Hike::class);
     }
@@ -126,13 +139,15 @@ class Apartment extends Model
 
     public function getDynamicSEOData(): SEOData
     {
-        $image = $this->photosMain()->first()?->path;
+        $photo = $this->photosMain()->first();
+        /** @var \App\Models\Photo|null $photo */
+        $image = $photo?->path;
 
         return new SEOData(
             title: $this->name,
             description: Str::of(strip_tags((string) $this->description))->trim()->limit(155),
             image: $image ? Storage::url($image) : route('og.image', ['type' => 'apartment', 'identifier' => $this->slug]),
-            url: route('apartments.show', ['locale' => app()->getLocale() ?? config('app.locale'), 'apartment' => $this->slug]),
+            url: route('apartments.show', ['locale' => (app()->getLocale() ?: config('app.locale')), 'apartment' => $this->slug]),
             type: 'apartment',
         );
     }

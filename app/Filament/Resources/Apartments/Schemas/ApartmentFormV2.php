@@ -159,7 +159,7 @@ class ApartmentFormV2
                                     ->readOnly()
                                     ->columnSpan(2)
                                     ->formatStateUsing(function ($record): string {
-                                        if (! $record?->slug || ! $record?->ical_export_token) {
+                                        if (! $record || ! $record->slug || ! $record->ical_export_token) {
                                             return __('Export URL will appear after the apartment is saved.');
                                         }
 
@@ -253,7 +253,7 @@ class ApartmentFormV2
                                 Repeater::make('photosMain')
                                     ->label(__('Main photos'))
                                     ->relationship('photosMain')
-                                    ->reorderable('position')
+                                    ->reorderable()
                                     ->schema([
                                         FileUpload::make('path')
                                             ->label(__('Photo'))
@@ -316,7 +316,7 @@ class ApartmentFormV2
                                 Repeater::make('photosOther')
                                     ->label(__('Other photos'))
                                     ->relationship('photosOther')
-                                    ->reorderable('position')
+                                    ->reorderable()
                                     ->columns([
                                         'sm' => 1,
                                         'md' => 2,

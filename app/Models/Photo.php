@@ -1,10 +1,21 @@
 <?php
 
 namespace App\Models;
+/**
+ * @property-read \App\Models\Apartment|null $apartment
+ * @property int $id
+ * @property string|null $path
+ * @property bool|null $is_new
+ * @property bool|null $is_main
+ * @property int|null $position
+ * @property string|null $title_en
+ * @property string|null $description_en
+ */
 
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\App as AppFacade;
 
 class Photo extends Model
@@ -24,7 +35,7 @@ class Photo extends Model
         'position' => 'integer',
     ];
 
-    public function apartment()
+    public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);
     }
@@ -35,7 +46,7 @@ class Photo extends Model
 
         // If current locale is English, prefer the English tag or legacy `tag` column.
         if ($locale === 'en') {
-            if (isset($this->attributes['tag_en']) && $this->attributes['tag_en'] !== null && (string) $this->attributes['tag_en'] !== '') {
+            if (! empty($this->attributes['tag_en'])) {
                 return $this->attributes['tag_en'];
             }
 
@@ -44,7 +55,7 @@ class Photo extends Model
 
         // For non-English locales, only return the localized column if it exists and is non-empty.
         $column = "tag_{$locale}";
-        if (isset($this->attributes[$column]) && $this->attributes[$column] !== null && (string) $this->attributes[$column] !== '') {
+        if (! empty($this->attributes[$column])) {
             return $this->attributes[$column];
         }
 

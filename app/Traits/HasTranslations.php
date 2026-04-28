@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\App;
 
-trait hasTranslations
+trait HasTranslations
 {
     protected function getTranslatedAttribute(string $attribute)
     {

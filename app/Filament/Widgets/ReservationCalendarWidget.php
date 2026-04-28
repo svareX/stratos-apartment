@@ -63,13 +63,22 @@ class ReservationCalendarWidget extends Widget
             $color = $this->apartmentColors[$reservation->apartment_id] ?? '#414CE8';
 
             while ($start->lte($end)) {
+                $guest = $reservation->user()->first();
+                /** @var \App\Models\User|null $guest */
+                $guestName = $guest ? ($guest->name ?? 'N/A') : 'N/A';
+
+                $apt = $reservation->apartment()->first();
+                /** @var \App\Models\Apartment|null $apt */
+                $apartmentName = $apt ? ($apt->name ?? 'N/A') : 'N/A';
+
                 $dates[] = [
                     'date' => $start->toDateString(),
                     'reservation_id' => $reservation->id,
-                    'guest_name' => $reservation->user ? $reservation->user->name : 'N/A',
-                    'apartment_name' => $reservation->apartment ? $reservation->apartment->name : 'N/A',
+                    'guest_name' => $guestName,
+                    'apartment_name' => $apartmentName,
                     'color' => $color,
                 ];
+
                 $start->addDay();
             }
         }

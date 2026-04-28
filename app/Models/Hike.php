@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Models;
+/**
+ * @property-read \App\Models\Apartment|null $apartment
+ */
 
 use App\Enums\HikeDifficulty;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
@@ -32,7 +36,7 @@ class Hike extends Model
 
     protected $appends = ['name', 'description', 'distance_tx'];
 
-    public function apartment()
+    public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);
     }
@@ -58,7 +62,10 @@ class Hike extends Model
 
         $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
 
-        $url = $this->apartment ? route('apartments.show', ['locale' => app()->getLocale() ?? config('app.locale'), 'apartment' => $this->apartment->slug]).'#hikes' : null;
+        $apt = $this->apartment;
+        /** @var \App\Models\Apartment|null $apt */
+        $locale = app()->getLocale() ?: config('app.locale');
+        $url = $apt ? route('apartments.show', ['locale' => $locale, 'apartment' => $apt->slug]).'#hikes' : null;
 
         return new SEOData(
             title: $title,

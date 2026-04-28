@@ -155,6 +155,7 @@ class HikesRelationManager extends RelationManager
                         HikeDifficulty::Medium => 'warning',
                         HikeDifficulty::Hard => 'danger',
                         HikeDifficulty::Extreme => 'danger',
+                        default => 'secondary',
                     })
                     ->sortable(),
 

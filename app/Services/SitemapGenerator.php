@@ -82,7 +82,7 @@ class SitemapGenerator
                                 }
                             }
                         } else {
-                            if (method_exists($apartment, 'getDynamicSEOData')) {
+                            try {
                                 $seo = $apartment->getDynamicSEOData();
                                 if (! empty($seo->image)) {
                                     try {
@@ -91,6 +91,8 @@ class SitemapGenerator
                                         // ignore image if Spatie expects different signature
                                     }
                                 }
+                            } catch (\Throwable $_) {
+                                // ignore
                             }
                         }
 
@@ -102,22 +104,24 @@ class SitemapGenerator
                 }
 
                 foreach (Place::all() as $place) {
-                    if (! $place->apartment) {
+                    $placeApartment = $place->apartment;
+                    /** @var \App\Models\Apartment|null $placeApartment */
+                    if (! $placeApartment) {
                         continue;
                     }
 
                     try {
                         try {
-                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $place->apartment->slug]).'#nearby';
+                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $placeApartment->slug]).'#nearby';
                         } catch (\Throwable $e) {
-                            $u = url($locale.'/apartments/'.$place->apartment->slug).'#nearby';
+                            $u = url($locale.'/apartments/'.$placeApartment->slug).'#nearby';
                         }
                         $url = SitemapUrl::create($u);
                         if ($place->updated_at) {
                             $url->setLastModificationDate($place->updated_at);
                         }
 
-                        if (method_exists($place, 'getDynamicSEOData')) {
+                        try {
                             $seo = $place->getDynamicSEOData();
                             if (! empty($seo->image)) {
                                 try {
@@ -126,6 +130,8 @@ class SitemapGenerator
                                     // ignore
                                 }
                             }
+                        } catch (\Throwable $_) {
+                            // ignore
                         }
 
                         $sitemap->add($url);
@@ -136,15 +142,17 @@ class SitemapGenerator
                 }
 
                 foreach (Hike::all() as $hike) {
-                    if (! $hike->apartment) {
+                    $hikeApartment = $hike->apartment;
+                    /** @var \App\Models\Apartment|null $hikeApartment */
+                    if (! $hikeApartment) {
                         continue;
                     }
 
                     try {
                         try {
-                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hike->apartment->slug]).'#hikes';
+                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hikeApartment->slug]).'#hikes';
                         } catch (\Throwable $e) {
-                            $u = url($locale.'/apartments/'.$hike->apartment->slug).'#hikes';
+                            $u = url($locale.'/apartments/'.$hikeApartment->slug).'#hikes';
                         }
                         $url = SitemapUrl::create($u);
                         if ($hike->updated_at) {

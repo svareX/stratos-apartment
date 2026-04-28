@@ -21,7 +21,8 @@ class IcalExportService
             ->where('booking_source', BookingSource::Local->value)
             ->get();
 
-        foreach ($reservations as $reservation) {
+            foreach ($reservations as $reservation) {
+                /** @var \App\Models\Reservation $reservation */
             $start = CarbonImmutable::parse($reservation->check_in)->startOfDay();
 
             $endExclusive = CarbonImmutable::parse($reservation->check_out)->startOfDay();

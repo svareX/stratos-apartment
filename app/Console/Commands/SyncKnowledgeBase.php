@@ -58,7 +58,8 @@ class SyncKnowledgeBase extends Command
             $tags = is_array($apt->tags) ? array_filter($apt->tags, 'is_scalar') : [];
             $aptText .= 'Tagy: '.implode(', ', $tags)."\n";
 
-            foreach ($apt->packages as $pkg) {
+            foreach ($apt->packages()->get() as $pkg) {
+                /** @var \App\Models\ApartmentPackage $pkg */
                 $features = is_array($pkg->translated_features) ? implode(', ', $pkg->translated_features) : (is_array($pkg->features) ? implode(', ', $pkg->features) : '');
                 $aptText .= "BALÍČEK: {$pkg->name_cs} — cena: {$pkg->price} Kč. Obsahuje: {$features}\n";
 
@@ -82,6 +83,7 @@ class SyncKnowledgeBase extends Command
             if ($res->isNotEmpty()) {
                 $occText = "TERMÍNY OBSAZENOSTI PRO {$apt->name}:\n";
                 foreach ($res as $r) {
+                    /** @var \App\Models\Reservation $r */
                     $occText .= "- Obsazeno: {$r->check_in->format('d.m.Y')} až {$r->check_out->format('d.m.Y')}\n";
                 }
                 $this->storeInKb($occText, 'occupancy', $apt->id);

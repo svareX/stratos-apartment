@@ -9,6 +9,7 @@ use App\Filament\Resources\InstagramPosts\Schemas\InstagramPostForm;
 use App\Filament\Resources\InstagramPosts\Tables\InstagramPostsTable;
 use App\Models\InstagramPost;
 use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;

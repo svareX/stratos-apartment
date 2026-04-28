@@ -18,15 +18,17 @@ class ApartmentDetailController extends Controller
 
         $locale = App::getLocale();
 
-        $slides = $apartment->photosMain->map(function ($photo) use ($locale) {
-            return [
+        $slides = [];
+        foreach ($apartment->photosMain as $photo) {
+            /** @var \App\Models\Photo $photo */
+            $slides[] = [
                 'image_url' => Storage::url($photo->path),
                 'is_new' => $photo->is_new,
                 'title' => $photo->{"title_{$locale}"} ?? $photo->title_en ?? '',
                 'highlighted_title' => $photo->{"highlighted_title_{$locale}"} ?? $photo->highlighted_title_en ?? '',
                 'description' => $photo->{"description_{$locale}"} ?? $photo->description_en ?? '',
             ];
-        })->toArray();
+        }
 
         if (empty($slides)) {
             $slides = [
@@ -48,7 +50,11 @@ class ApartmentDetailController extends Controller
         }
 
         $galleryPhotos = $apartment->photosOther;
-        $apartmentImages = $galleryPhotos->map(fn ($photo) => Storage::url($photo->path))->toArray();
+        $apartmentImages = [];
+        foreach ($galleryPhotos as $photo) {
+            /** @var \App\Models\Photo $photo */
+            $apartmentImages[] = Storage::url($photo->path);
+        }
 
         if (empty($apartmentImages)) {
             $apartmentImages = [

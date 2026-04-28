@@ -28,8 +28,21 @@ class ReservationsTable
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
-                    ->getStateUsing(fn ($record) => $record->status?->value ?? '')
-                    ->formatStateUsing(fn ($state) => ReservationStatus::from($state)->label() ?? '')
+                    ->getStateUsing(function ($record) {
+                        $state = $record->status;
+                        if (is_object($state) && isset($state->value)) {
+                            return $state->value;
+                        }
+
+                        return $state ?? '';
+                    })
+                    ->formatStateUsing(function ($state) {
+                        if ($state === null || $state === '') {
+                            return '';
+                        }
+
+                        return ReservationStatus::from($state)->label();
+                    })
                     ->color(fn ($state) => match ($state) {
                         ReservationStatus::Pending->value => 'warning',
                         ReservationStatus::Confirmed->value => 'info',
@@ -65,7 +78,13 @@ class ReservationsTable
 
                 TextColumn::make('booking_source')
                     ->label(__('Booking Source'))
-                    ->formatStateUsing(fn ($state) => BookingSource::from($state)->label() ?? '')
+                    ->formatStateUsing(function ($state) {
+                        if ($state === null || $state === '') {
+                            return '';
+                        }
+
+                        return BookingSource::from($state)->label();
+                    })
                     ->sortable(),
             ])
             ->filters([

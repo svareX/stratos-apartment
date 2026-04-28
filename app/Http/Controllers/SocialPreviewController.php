@@ -43,13 +43,10 @@ class SocialPreviewController extends BaseController
             abort(404);
         }
 
-        $seoData = null;
-        if (method_exists($model, 'getDynamicSEOData')) {
-            $seoData = $model->getDynamicSEOData();
-        }
+        $seoData = $model->getDynamicSEOData();
 
-        $title = $seoData?->title ?? ($model->name ?? $model->question ?? config('app.name'));
-        $subtitle = $seoData?->description ? str(__($seoData->description))->limit(120) : config('app.name');
+        $title = $seoData->title ?? ($model->name ?? $model->question ?? config('app.name'));
+        $subtitle = $seoData->description ? str(__($seoData->description))->limit(120) : config('app.name');
 
         $svg = $this->renderSvg((string) $title, (string) $subtitle);
 

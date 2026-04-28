@@ -226,8 +226,10 @@ class ReservationForm extends Component
             $this->daysForCleaningFee = $apt->days_for_cleaning_fee ?? 3;
             $this->capacity = $apt->capacity ?? null;
 
-            $this->availablePackages = $apt->packages->map(function ($p) {
-                return [
+            $packagesArr = [];
+            foreach ($apt->packages as $p) {
+                /** @var \App\Models\ApartmentPackage $p */
+                $packagesArr[] = [
                     'id' => $p->id,
                     'name' => $p->name,
                     'price' => $p->price,
@@ -235,7 +237,8 @@ class ReservationForm extends Component
                     'features' => $p->translated_features,
                     'icon' => $p->icon,
                 ];
-            })->toArray();
+            }
+            $this->availablePackages = $packagesArr;
         } else {
             $this->availablePackages = [];
         }
@@ -359,7 +362,7 @@ class ReservationForm extends Component
 
         $isBooked = in_array($date, $this->bookedDates);
 
-        if (! $this->start_date || ($this->start_date && $this->end_date)) {
+        if (empty($this->start_date) || $this->end_date) {
             if ($isBooked) {
                 return;
             }
