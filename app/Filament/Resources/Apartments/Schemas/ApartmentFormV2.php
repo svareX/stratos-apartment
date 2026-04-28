@@ -99,8 +99,9 @@ class ApartmentFormV2
                                 TimePicker::make('check_in_time')
                                     ->label(__('Check-in time'))
                                     ->placeholder(__('Select check-in time'))
+                                    ->default('15:00')
                                     ->seconds(false)
-                                    ->required(),
+                                    ->nullable(),
 
                                 TextInput::make('base_price_eur')
                                     ->label(__('Base price (EUR)'))
@@ -118,8 +119,9 @@ class ApartmentFormV2
                                 TimePicker::make('check_out_time')
                                     ->label(__('Check-out time'))
                                     ->placeholder(__('Select check-out time'))
+                                    ->default('10:00')
                                     ->seconds(false)
-                                    ->required(),
+                                    ->nullable(),
 
                                 TextInput::make('days_for_cleaning_fee')
                                     ->label(__('Days for cleaning fee'))

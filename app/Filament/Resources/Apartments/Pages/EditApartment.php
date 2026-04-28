@@ -45,6 +45,14 @@ class EditApartment extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        if (empty($data['check_in_time'])) {
+            $data['check_in_time'] = $this->record->check_in_time ?? '15:00:00';
+        }
+
+        if (empty($data['check_out_time'])) {
+            $data['check_out_time'] = $this->record->check_out_time ?? '10:00:00';
+        }
+
         if (isset($data['tags']) && is_array($data['tags'])) {
             $tags_en = [];
             $tags_cs = [];

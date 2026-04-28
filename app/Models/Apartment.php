@@ -53,6 +53,14 @@ class Apartment extends Model
         'check_out_time' => 'string',
     ];
 
+    /**
+     * Model attribute defaults to match DB migration defaults.
+     */
+    protected $attributes = [
+        'check_in_time' => '15:00:00',
+        'check_out_time' => '10:00:00',
+    ];
+
     protected $appends = ['name', 'description', 'tags'];
 
     public function reservations()
