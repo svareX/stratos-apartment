@@ -518,5 +518,10 @@
     "Contact us": "Kontaktujte nás",
     "If you believe this is an error or want to request reactivation, please reach out and we will help.": "Pokud se domníváte, že se jedná o chybu nebo chcete požádat o znovuaktivaci, kontaktujte nás a my vám pomůžeme.",
     "Unavailable": "Nedostupné",
-    "Apartment temporarily unavailable": "Apartmán dočasně nedostupný"
+    "Apartment temporarily unavailable": "Apartmán dočasně nedostupný",
+    "Sync knowledge base": "Synchronizovat znalostní bázi",
+    "Knowledge sync queued": "Synchronizace znalostí zařazena do fronty",
+    "Sync booking (iCal)": "Synchronizovat rezervace (iCal)",
+    "Booking sync queued": "Synchronizace rezervací zařazena do fronty"
+
 }

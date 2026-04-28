@@ -515,5 +515,9 @@
     "Contact us": "Kontaktieren Sie uns",
     "If you believe this is an error or want to request reactivation, please reach out and we will help.": "Wenn Sie glauben, dass dies ein Fehler ist oder eine Reaktivierung beantragen möchten, wenden Sie sich bitte an uns und wir helfen Ihnen.",
     "Unavailable": "Nicht verfügbar",
-    "Apartment temporarily unavailable": "Apartment vorübergehend nicht verfügbar"
+    "Apartment temporarily unavailable": "Apartment vorübergehend nicht verfügbar",
+    "Sync knowledge base": "Wissen synchronisieren",
+    "Knowledge sync queued": "Wissenssynchronisierung in die Warteschlange gestellt",
+    "Sync booking (iCal)": "Buchung synchronisieren (iCal)",
+    "Booking sync queued": "Buchungssynchronisierung in die Warteschlange gestellt"
 }
