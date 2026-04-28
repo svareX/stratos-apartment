@@ -22,14 +22,19 @@ class ApartmentsTable
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('address')
+                    ->label(__('Address'))
+                    ->sortable(),
+
                 IconColumn::make('active')
                     ->label(__('Active'))
                     ->boolean()
                     ->sortable(),
 
-                TextColumn::make('address')
-                    ->label(__('Address'))
-                    ->sortable(),
+                IconColumn::make('external_ical_url')
+                    ->label(__('iCal Connected'))
+                    ->boolean()
+                    ->getStateUsing(fn ($record) => filled($record->external_ical_url)),
 
                 TextColumn::make('capacity')
                     ->label(__('Capacity'))

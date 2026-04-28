@@ -1,16 +1,14 @@
 name: linter
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: write
 
 jobs:
-  quality:
+  php-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,8 +28,31 @@ jobs:
       - name: Run Pint
         run: php vendor/bin/pint
 
-      - name: Commit Changes
+      - name: Commit PHP Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "style: fix code style [skip ci]"
+          commit_message: "style: fix PHP code style [skip ci]"
+          commit_options: '--no-verify'
+
+  js-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run NPM Lint
+        run: npm run lint
+
+      - name: Commit JS/CSS Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: fix frontend code style [skip ci]"
           commit_options: '--no-verify'

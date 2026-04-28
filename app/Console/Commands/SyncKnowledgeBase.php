@@ -58,9 +58,24 @@ class SyncKnowledgeBase extends Command
             $tags = is_array($apt->tags) ? array_filter($apt->tags, 'is_scalar') : [];
             $aptText .= 'Tagy: '.implode(', ', $tags)."\n";
 
-            foreach ($apt->packages as $pkg) {
-                $aptText .= "BALÍČEK PRO {$apt->name}: {$pkg->name_cs} za {$pkg->price} Kč. Obsahuje: ".implode(', ', $pkg->translated_features ?? [])."\n";
+            foreach ($apt->packages()->get() as $pkg) {
+                /** @var \App\Models\ApartmentPackage $pkg */
+                $features = is_array($pkg->translated_features) ? implode(', ', $pkg->translated_features) : (is_array($pkg->features) ? implode(', ', $pkg->features) : '');
+                $aptText .= "BALÍČEK: {$pkg->name_cs} — cena: {$pkg->price} Kč. Obsahuje: {$features}\n";
+
+                $pkgDescription = $pkg->description_cs ?? $pkg->description ?? '';
+                $pkgText = "=== BALÍČEK APARTMÁNU ===\n";
+                $pkgText .= "NÁZEV: {$pkg->name_cs}\n";
+                $pkgText .= "CENA: {$pkg->price} Kč\n";
+                if (! empty($pkgDescription)) {
+                    $pkgText .= "POPIS: {$pkgDescription}\n";
+                }
+                $pkgText .= "OBSAHUJE: {$features}\n";
+                $pkgText .= "PATRÍ K APARTMÁNU: {$apt->name} (ID: {$apt->id})\n";
+
+                $this->storeInKb($pkgText, 'apartment_package', $pkg->id);
             }
+
             $this->storeInKb($aptText, 'apartment', $apt->id);
 
             // 3. OBSAZENOST (Kalendář pro AI)
@@ -68,6 +83,7 @@ class SyncKnowledgeBase extends Command
             if ($res->isNotEmpty()) {
                 $occText = "TERMÍNY OBSAZENOSTI PRO {$apt->name}:\n";
                 foreach ($res as $r) {
+                    /** @var \App\Models\Reservation $r */
                     $occText .= "- Obsazeno: {$r->check_in->format('d.m.Y')} až {$r->check_out->format('d.m.Y')}\n";
                 }
                 $this->storeInKb($occText, 'occupancy', $apt->id);

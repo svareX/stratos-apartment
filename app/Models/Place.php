@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+/**
+ * @property-read \App\Models\Apartment|null $apartment
+ */
+
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -28,7 +33,7 @@ class Place extends Model
 
     protected $appends = ['name', 'description', 'distance_text'];
 
-    public function apartment()
+    public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);
     }
@@ -56,7 +61,10 @@ class Place extends Model
 
         $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
 
-        $url = $this->url ?: ($this->apartment ? route('apartments.show', $this->apartment->slug).'#nearby' : null);
+        $apt = $this->apartment;
+        /** @var \App\Models\Apartment|null $apt */
+        $locale = app()->getLocale() ?: config('app.locale');
+        $url = $apt ? route('apartments.show', ['locale' => $locale, 'apartment' => $apt->slug]).'#nearby' : null;
 
         return new SEOData(
             title: $title,

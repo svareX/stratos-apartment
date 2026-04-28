@@ -1,8 +1,12 @@
 <x-app-layout>
-    <section class="flex flex-col px-8 md:px-14 py-12 md:pt-14 md:pb-12 bg-purpleGhost/50">
-        <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">{{ __('Pricing') }}</p>
-        <h1 class="text-4xl md:text-5xl text-navy font-serif mb-3">{{ __('Transparent pricing for every apartment.') }}</h1>
-        <p class="text-sm md:text-base text-muted max-w-3xl">
+    <section
+        class="bg-purpleGhost/50 flex flex-col px-8 py-12 md:px-14 md:pt-14 md:pb-12"
+    >
+        <p class="text-teal mb-2 text-xs font-bold tracking-[8%] uppercase">{{ __('Pricing') }}</p>
+        <h1 class="text-navy mb-3 font-serif text-4xl md:text-5xl">
+            {{ __('Transparent pricing for every apartment.') }}
+        </h1>
+        <p class="text-muted max-w-3xl text-sm md:text-base">
             {{ __('Prices are loaded directly from apartment settings. Short stays include cleaning, longer stays are charged without cleaning fee.') }}
         </p>
     </section>
@@ -18,61 +22,85 @@
             $longStayDays = $thresholdDays + 2;
             $longStayTotal = $basePrice * $longStayDays;
         @endphp
+        <section
+            class="border-border/70 flex flex-col border-t px-8 py-10 md:px-14 md:py-12"
+        >
+            <p class="text-teal mb-2 text-xs font-bold tracking-[8%] uppercase">{{ __($apartment->address) }}</p>
+            <h2 class="text-navy mb-5 font-serif text-3xl md:text-4xl">
+                {{ $apartment->name }}
+            </h2>
 
-        <section class="flex flex-col px-8 md:px-14 py-10 md:py-12 border-t border-border/70">
-            <p class="text-xs text-teal uppercase font-bold tracking-[8%] mb-2">{{ __($apartment->address) }}</p>
-            <h2 class="text-3xl md:text-4xl text-navy font-serif mb-5">{{ $apartment->name }}</h2>
-
-            <div class="max-w-5xl border border-border rounded-2xl bg-white overflow-hidden transition-all duration-300 hover:shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
-                    <p class="text-xs uppercase font-bold text-muted">{{ __('Base price / night') }}</p>
-                    <p class="text-lg font-bold text-navy">{{ number_format($basePrice, 0, ',', ' ') }} {{ __('CZK') }}</p>
+            <div
+                class="border-border max-w-5xl overflow-hidden rounded-2xl border bg-white transition-all duration-300 hover:shadow-md"
+            >
+                <div
+                    class="border-border/80 grid grid-cols-1 items-center gap-3 border-b px-5 py-4 md:grid-cols-[280px_1fr] md:px-6"
+                >
+                    <p class="text-muted text-xs font-bold uppercase">{{ __('Base price / night') }}</p>
+                    <p class="text-navy text-lg font-bold">{{ number_format($basePrice, 0, ',', ' ') }} {{ __('CZK') }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
-                    <p class="text-xs uppercase font-bold text-muted">{{ __('Cleaning fee') }}</p>
-                    <p class="text-lg font-bold text-navy">{{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</p>
+                <div
+                    class="border-border/80 grid grid-cols-1 items-center gap-3 border-b px-5 py-4 md:grid-cols-[280px_1fr] md:px-6"
+                >
+                    <p class="text-muted text-xs font-bold uppercase">{{ __('Cleaning fee') }}</p>
+                    <p class="text-navy text-lg font-bold">{{ number_format($cleaningFee, 0, ',', ' ') }} {{ __('CZK') }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
-                    <p class="text-xs uppercase font-bold text-muted">{{ __('Short stay rule') }}</p>
-                    <p class="text-sm text-navy">{{ __('Up to :days nights includes cleaning fee.', ['days' => $thresholdDays]) }}</p>
+                <div
+                    class="border-border/80 grid grid-cols-1 items-center gap-3 border-b px-5 py-4 md:grid-cols-[280px_1fr] md:px-6"
+                >
+                    <p class="text-muted text-xs font-bold uppercase">{{ __('Short stay rule') }}</p>
+                    <p class="text-navy text-sm">{{ __('Up to :days nights includes cleaning fee.', ['days' => $thresholdDays]) }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
-                    <p class="text-xs uppercase font-bold text-muted">{{ __('Long stay rule') }}</p>
-                    <p class="text-sm text-navy">{{ __('From :days nights, cleaning fee is not charged.', ['days' => $thresholdDays + 1]) }}</p>
+                <div
+                    class="border-border/80 grid grid-cols-1 items-center gap-3 border-b px-5 py-4 md:grid-cols-[280px_1fr] md:px-6"
+                >
+                    <p class="text-muted text-xs font-bold uppercase">{{ __('Long stay rule') }}</p>
+                    <p class="text-navy text-sm">{{ __('From :days nights, cleaning fee is not charged.', ['days' => $thresholdDays + 1]) }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4 border-b border-border/80">
-                    <p class="text-xs uppercase font-bold text-muted">{{ __('Effective short-stay price / night') }}</p>
-                    <p class="text-sm text-navy">
+                <div
+                    class="border-border/80 grid grid-cols-1 items-center gap-3 border-b px-5 py-4 md:grid-cols-[280px_1fr] md:px-6"
+                >
+                    <p class="text-muted text-xs font-bold uppercase">{{ __('Effective short-stay price / night') }}</p>
+                    <p class="text-navy text-sm">
                         {{ number_format($shortStayAvgPrice, 0, ',', ' ') }} {{ __('CZK') }}
-                        <span class="text-muted">({{ __(':days nights total :total CZK incl. cleaning', ['days' => $thresholdDays, 'total' => number_format($shortStayTotal, 0, ',', ' ')]) }})</span>
+                        <span class="text-muted"
+                            >({{ __(':days nights total :total CZK incl. cleaning', ['days' => $thresholdDays, 'total' => number_format($shortStayTotal, 0, ',', ' ')]) }})</span
+                        >
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] items-center gap-3 px-5 md:px-6 py-4">
-                    <p class="text-xs uppercase font-bold text-muted">{{ __('Long-stay example') }}</p>
-                    <p class="text-sm text-navy">
+                <div
+                    class="grid grid-cols-1 items-center gap-3 px-5 py-4 md:grid-cols-[280px_1fr] md:px-6"
+                >
+                    <p class="text-muted text-xs font-bold uppercase">{{ __('Long-stay example') }}</p>
+                    <p class="text-navy text-sm">
                         {{ __(':days nights total :total CZK (no cleaning fee)', ['days' => $longStayDays, 'total' => number_format($longStayTotal, 0, ',', ' ')]) }}
                     </p>
                 </div>
             </div>
 
             <div class="mt-6 flex flex-wrap gap-3">
-                <a href="{{ route('apartments.show', $apartment->slug) }}" class="bg-teal px-5 py-2 rounded-xl w-fit font-bold text-sm teal-shadow duration-300 transition-all hover:-translate-y-1 hover:bg-tealD">
+                <a
+                    href="{{ route('apartments.show', $apartment->slug) }}"
+                    class="bg-teal teal-shadow hover:bg-tealD w-fit rounded-xl px-5 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-1"
+                >
                     {{ __('Explore apartment') }}
                 </a>
-                <a href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}" class="px-5 py-2 rounded-xl border border-border text-navy font-bold text-sm duration-300 transition-all hover:-translate-y-1 hover:border-purple hover:bg-purpleGhost hover:text-purple">
+                <a
+                    href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}"
+                    class="border-border text-navy hover:border-purple hover:bg-purpleGhost hover:text-purple rounded-xl border px-5 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-1"
+                >
                     {{ __('Book') }}
                 </a>
             </div>
         </section>
     @endforeach
 
-    <section class="px-8 md:px-14 pb-12 md:pb-16 pt-24 md:pt-32">
+    <section class="px-8 pt-24 pb-12 md:px-14 md:pt-32 md:pb-16">
         <livewire:reservation-widget />
     </section>
 </x-app-layout>
-

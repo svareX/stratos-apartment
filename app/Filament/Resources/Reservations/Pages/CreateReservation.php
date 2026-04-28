@@ -13,10 +13,14 @@ class CreateReservation extends CreateRecord
 
     protected function afterCreate(): void
     {
+        /** @var \App\Models\Reservation $reservation */
         $reservation = $this->record;
 
-        if ($reservation->user && $reservation->user->email) {
-            Mail::to($reservation->user->email)->queue(new ReservationConfirmation($reservation));
+        $user = $reservation->user;
+        /** @var \App\Models\User|null $user */
+        $email = $user?->email;
+        if ($email) {
+            Mail::to($email)->queue(new ReservationConfirmation($reservation));
         }
     }
 }

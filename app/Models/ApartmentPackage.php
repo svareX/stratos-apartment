@@ -2,6 +2,16 @@
 
 namespace App\Models;
 
+/**
+ * @property-read \App\Models\Apartment|null $apartment
+ * @property int $id
+ * @property string|null $name_cs
+ * @property float|null $price
+ * @property float|null $price_eur
+ * @property array|null $features
+ * @property array|null $translated_features
+ */
+
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

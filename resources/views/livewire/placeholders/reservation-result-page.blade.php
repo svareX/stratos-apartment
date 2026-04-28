@@ -1,7 +1,9 @@
-<div class="bg-white rounded-2xl border border-border shadow-lg p-10 md:p-14 text-center">
-    <div class="flux-skeleton circle w-20 h-20 mx-auto mb-6"></div>
-    <div class="flux-skeleton rounded h-10 w-3/4 max-w-sm mx-auto mb-4"></div>
-    <div class="flux-skeleton rounded h-5 w-full max-w-lg mx-auto mb-2"></div>
-    <div class="flux-skeleton rounded h-5 w-4/5 max-w-md mx-auto mb-10"></div>
-    <div class="flux-skeleton rounded h-12 w-48 mx-auto"></div>
+<div
+    class="border-border rounded-2xl border bg-white p-10 text-center shadow-lg md:p-14"
+>
+    <div class="flux-skeleton circle mx-auto mb-6 h-20 w-20"></div>
+    <div class="flux-skeleton mx-auto mb-4 h-10 w-3/4 max-w-sm rounded"></div>
+    <div class="flux-skeleton mx-auto mb-2 h-5 w-full max-w-lg rounded"></div>
+    <div class="flux-skeleton mx-auto mb-10 h-5 w-4/5 max-w-md rounded"></div>
+    <div class="flux-skeleton mx-auto h-12 w-48 rounded"></div>
 </div>

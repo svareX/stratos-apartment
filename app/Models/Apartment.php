@@ -2,10 +2,24 @@
 
 namespace App\Models;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reservation[] $reservations
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosMain
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosOther
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ApartmentPackage[] $packages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Place[] $places
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Hike[] $hikes
+ * @property string $slug
+ * @property float|null $base_price_eur
+ * @property float|null $cleaning_fee_eur
+ * @property int|null $days_for_cleaning_fee
+ */
+
 use App\Enums\ApartmentType;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\App as AppFacade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -31,6 +45,10 @@ class Apartment extends Model
         'cleaning_fee_eur',
         'days_for_cleaning_fee',
         'active',
+        'external_ical_url',
+        'ical_export_token',
+        'check_in_time',
+        'check_out_time',
     ];
 
     protected $casts = [
@@ -45,41 +63,51 @@ class Apartment extends Model
         'cleaning_fee_eur' => 'decimal:2',
         'days_for_cleaning_fee' => 'integer',
         'type' => ApartmentType::class,
+        'check_in_time' => 'string',
+        'check_out_time' => 'string',
+    ];
+
+    /**
+     * Model attribute defaults to match DB migration defaults.
+     */
+    protected $attributes = [
+        'check_in_time' => '15:00:00',
+        'check_out_time' => '10:00:00',
     ];
 
     protected $appends = ['name', 'description', 'tags'];
 
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }
 
-    public function photos()
+    public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);
     }
 
-    public function photosMain()
+    public function photosMain(): HasMany
     {
         return $this->hasMany(Photo::class)->where('is_main', true)->orderBy('position');
     }
 
-    public function photosOther()
+    public function photosOther(): HasMany
     {
         return $this->hasMany(Photo::class)->where('is_main', false)->orderBy('position');
     }
 
-    public function packages()
+    public function packages(): HasMany
     {
         return $this->hasMany(ApartmentPackage::class);
     }
 
-    public function places()
+    public function places(): HasMany
     {
         return $this->hasMany(Place::class);
     }
 
-    public function hikes()
+    public function hikes(): HasMany
     {
         return $this->hasMany(Hike::class);
     }
@@ -93,6 +121,15 @@ class Apartment extends Model
                     $apartment->slug = Str::slug($name);
                 }
             }
+            if (blank($apartment->ical_export_token)) {
+                $apartment->ical_export_token = Str::random(48);
+            }
+        });
+
+        static::saving(function (Apartment $apartment): void {
+            if (blank($apartment->ical_export_token)) {
+                $apartment->ical_export_token = Str::random(48);
+            }
         });
     }
 
@@ -103,13 +140,15 @@ class Apartment extends Model
 
     public function getDynamicSEOData(): SEOData
     {
-        $image = $this->photosMain()->first()?->path;
+        $photo = $this->photosMain()->first();
+        /** @var \App\Models\Photo|null $photo */
+        $image = $photo?->path;
 
         return new SEOData(
             title: $this->name,
             description: Str::of(strip_tags((string) $this->description))->trim()->limit(155),
             image: $image ? Storage::url($image) : route('og.image', ['type' => 'apartment', 'identifier' => $this->slug]),
-            url: route('apartments.show', ['locale' => app()->getLocale() ?? config('app.locale'), 'apartment' => $this->slug]),
+            url: route('apartments.show', ['locale' => (app()->getLocale() ?: config('app.locale')), 'apartment' => $this->slug]),
             type: 'apartment',
         );
     }
@@ -152,5 +191,31 @@ class Apartment extends Model
         }
 
         return [];
+    }
+
+    public function getCheckInTimeFormattedAttribute()
+    {
+        if (empty($this->check_in_time)) {
+            return null;
+        }
+
+        try {
+            return \Carbon\Carbon::parse($this->check_in_time)->format('H:i');
+        } catch (\Exception $e) {
+            return $this->check_in_time;
+        }
+    }
+
+    public function getCheckOutTimeFormattedAttribute()
+    {
+        if (empty($this->check_out_time)) {
+            return null;
+        }
+
+        try {
+            return \Carbon\Carbon::parse($this->check_out_time)->format('H:i');
+        } catch (\Exception $e) {
+            return $this->check_out_time;
+        }
     }
 }

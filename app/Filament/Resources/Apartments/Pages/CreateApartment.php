@@ -11,6 +11,14 @@ class CreateApartment extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        if (empty($data['check_in_time'])) {
+            $data['check_in_time'] = '15:00:00';
+        }
+
+        if (empty($data['check_out_time'])) {
+            $data['check_out_time'] = '10:00:00';
+        }
+
         if (isset($data['tags']) && is_array($data['tags'])) {
             $tags_en = [];
             $tags_cs = [];

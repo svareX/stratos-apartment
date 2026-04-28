@@ -1,3 +1,3 @@
 <x-app-layout>
-    <livewire:terms-page lazy/>
+    <livewire:terms-page lazy />
 </x-app-layout>

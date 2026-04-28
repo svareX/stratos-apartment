@@ -17,7 +17,7 @@ class ReservationsMonthlyChartWidget extends ApexChartWidget
         return __('Reservations / Revenue — :year', ['year' => Carbon::now()->year]);
     }
 
-    protected static ?int $contentHeight = 300;
+    protected static ?int $contentHeight = 200;
 
     protected int|string|array $columnSpan = 'full';
 
@@ -42,7 +42,7 @@ class ReservationsMonthlyChartWidget extends ApexChartWidget
         return [
             'chart' => [
                 'type' => 'line',
-                'height' => 300,
+                'height' => 200,
                 'toolbar' => ['show' => false],
             ],
             'series' => [

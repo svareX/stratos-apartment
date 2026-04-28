@@ -11,9 +11,12 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class ApartmentFormV2
@@ -93,6 +96,13 @@ class ApartmentFormV2
                                     ->numeric()
                                     ->required(),
 
+                                TimePicker::make('check_in_time')
+                                    ->label(__('Check-in time'))
+                                    ->placeholder(__('Select check-in time'))
+                                    ->default('15:00')
+                                    ->seconds(false)
+                                    ->nullable(),
+
                                 TextInput::make('base_price_eur')
                                     ->label(__('Base price (EUR)'))
                                     ->placeholder(__('Enter base price per night'))
@@ -105,6 +115,13 @@ class ApartmentFormV2
                                     ->placeholder(__('Enter cleaning fee (one-time charge)'))
                                     ->suffix(__('€'))
                                     ->numeric(),
+
+                                TimePicker::make('check_out_time')
+                                    ->label(__('Check-out time'))
+                                    ->placeholder(__('Select check-out time'))
+                                    ->default('10:00')
+                                    ->seconds(false)
+                                    ->nullable(),
 
                                 TextInput::make('days_for_cleaning_fee')
                                     ->label(__('Days for cleaning fee'))
@@ -123,6 +140,36 @@ class ApartmentFormV2
                                     ->default(true)
                                     ->label(__('Active')),
 
+                                TextInput::make('external_ical_url')
+                                    ->label(__('External iCal URL (Booking import)'))
+                                    ->url()
+                                    ->maxLength(2048)
+                                    ->placeholder(__('Paste the private iCal URL from Booking.com')),
+
+                                TextInput::make('ical_export_url')
+                                    ->label(__('Our iCal export URL'))
+                                    ->hintAction(static fn (Get $get) => Action::make('Copy')->icon('heroicon-s-clipboard')
+                                        ->label(__('Copy'))
+                                        ->color('primary')
+                                        ->tooltip(__('Copy link'))
+                                        ->action(static function ($livewire, $state) {
+                                            $livewire->js('window.navigator.clipboard.writeText("'.$state.'");');
+                                        }))
+                                    ->disabled()
+                                    ->readOnly()
+                                    ->columnSpan(2)
+                                    ->formatStateUsing(function ($record): string {
+                                        if (! $record || ! $record->slug || ! $record->ical_export_token) {
+                                            return __('Export URL will appear after the apartment is saved.');
+                                        }
+
+                                        return route('ical.apartment.export', ['apartment' => $record->slug, 'token' => $record->ical_export_token]);
+                                    }),
+                            ]),
+
+                        Tab::make('Description')
+                            ->label(__('Description'))
+                            ->schema([
                                 Tabs::make('Description')
                                     ->columnSpan('full')
                                     ->tabs([
@@ -153,12 +200,27 @@ class ApartmentFormV2
                                             ]),
                                     ]),
                                 Hidden::make('description'),
+                            ]),
+
+                        Tab::make('Amenities')
+                            ->label(__('Amenities'))
+                            ->schema([
+
+                                // Booking.com extra information notice (read-only text)
+                                TextEntry::make('booking_com_info')
+                                    ->label(__('Extra information'))
+                                    ->state(__('This information is being used to feed the SupportBot so that it has more information about the apartments and can help the potential clients more.'))
+                                    ->columnSpan('full'),
 
                                 KeyValue::make('amenities')
                                     ->label(__('Amenities (key-value)'))
                                     ->nullable()
                                     ->columnSpan('full'),
+                            ]),
 
+                        Tab::make('Tags')
+                            ->label(__('Tags'))
+                            ->schema([
                                 Repeater::make('tags')
                                     ->label(__('Tags'))
                                     ->schema([
@@ -191,7 +253,7 @@ class ApartmentFormV2
                                 Repeater::make('photosMain')
                                     ->label(__('Main photos'))
                                     ->relationship('photosMain')
-                                    ->reorderable('position')
+                                    ->reorderable()
                                     ->schema([
                                         FileUpload::make('path')
                                             ->label(__('Photo'))
@@ -254,7 +316,7 @@ class ApartmentFormV2
                                 Repeater::make('photosOther')
                                     ->label(__('Other photos'))
                                     ->relationship('photosOther')
-                                    ->reorderable('position')
+                                    ->reorderable()
                                     ->columns([
                                         'sm' => 1,
                                         'md' => 2,

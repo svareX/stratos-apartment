@@ -1,3 +1,3 @@
 <x-app-layout>
-    <livewire:cookies-page lazy/>
+    <livewire:cookies-page lazy />
 </x-app-layout>

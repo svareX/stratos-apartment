@@ -12,7 +12,7 @@ class ReservationsStatusDonutWidget extends ApexChartWidget
 
     protected static ?string $heading = null;
 
-    protected static ?int $contentHeight = 240;
+    protected static ?int $contentHeight = 300;
 
     protected int|string|array $columnSpan = [
         'xl' => 4,
@@ -34,7 +34,7 @@ class ReservationsStatusDonutWidget extends ApexChartWidget
         return [
             'chart' => [
                 'type' => 'donut',
-                'height' => 240,
+                'height' => 300,
                 'toolbar' => ['show' => false],
             ],
             'series' => $series,

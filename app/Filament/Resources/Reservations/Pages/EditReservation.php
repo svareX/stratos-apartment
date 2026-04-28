@@ -21,10 +21,14 @@ class EditReservation extends EditRecord
 
     protected function afterSave(): void
     {
+        /** @var \App\Models\Reservation $reservation */
         $reservation = $this->record;
 
-        if ($reservation->wasChanged('status') && $reservation->user && $reservation->user->email) {
-            Mail::to($reservation->user->email)->queue(new ReservationStatusChanged($reservation));
+        $user = $reservation->user;
+        /** @var \App\Models\User|null $user */
+        $email = $user?->email;
+        if ($reservation->wasChanged('status') && $email) {
+            Mail::to($email)->queue(new ReservationStatusChanged($reservation));
         }
     }
 }

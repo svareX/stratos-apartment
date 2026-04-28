@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\ActivitiesController;
 use App\Http\Controllers\Apartment\ApartmentDetailController;
+use App\Http\Controllers\Apartment\ApartmentUnavailableController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IcalExportController;
 use App\Http\Controllers\ImageProxyController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PackagesController;
@@ -38,6 +40,8 @@ Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 Route::get('/robots.txt', RobotsController::class)->name('robots');
 
+Route::get('/ical/apartments/{apartment}/reservations.ics', IcalExportController::class)->name('ical.apartment.export');
+
 Route::get('/og-image/{type}/{identifier}.svg', SocialPreviewController::class)->name('og.image');
 
 Route::get('/img', [ImageProxyController::class, 'proxy'])->name('image.proxy');
@@ -57,7 +61,7 @@ Route::group([
 
     Route::get('/', HomeController::class)->name('home');
 
-    Route::get('/apartments/{apartment:slug}/unavailable', \App\Http\Controllers\Apartment\ApartmentUnavailableController::class)
+    Route::get('/apartments/{apartment:slug}/unavailable', ApartmentUnavailableController::class)
         ->name('apartments.unavailable')
         ->middleware(\App\Http\Middleware\EnsureApartmentState::class.':inactive');
 
