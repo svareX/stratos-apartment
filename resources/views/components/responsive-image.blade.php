@@ -1,4 +1,4 @@
-@props([
+@props ([
     'path',
     'alt' => '',
     'widths' => [400, 800, 1200],
@@ -15,10 +15,12 @@
     $srcset = collect($widths)->map(fn($w) => $base . '?path=' . urlencode($path) . '&w=' . $w . ' ' . $w . 'w')->join(', ');
 @endphp
 
-<img src="{{ $src }}"
-     srcset="{{ $srcset }}"
-     sizes="{{ $sizes }}"
-     alt="{{ $alt }}"
-     loading="{{ $loading }}"
-     decoding="async"
-     {{ $attributes }} />
+<img
+    src="{{ $src }}"
+    srcset="{{ $srcset }}"
+    sizes="{{ $sizes }}"
+    alt="{{ $alt }}"
+    loading="{{ $loading }}"
+    decoding="async"
+    {{ $attributes }}
+/>

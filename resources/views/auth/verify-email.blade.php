@@ -9,7 +9,9 @@
         </div>
 
         @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+            <div
+                class="mb-4 text-sm font-medium text-green-600 dark:text-green-400"
+            >
                 {{ __('A new verification link has been sent to the email address you provided in your profile settings.') }}
             </div>
         @endif
@@ -28,14 +30,22 @@
             <div>
                 <a
                     href="{{ route('profile.show') }}"
-                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                 >
-                    {{ __('Edit Profile') }}</a>
+                    {{ __('Edit Profile') }}</a
+                >
 
-                <form method="POST" action="{{ route('logout') }}" class="inline">
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="inline"
+                >
                     @csrf
 
-                    <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 ms-2">
+                    <button
+                        type="submit"
+                        class="ms-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                    >
                         {{ __('Log Out') }}
                     </button>
                 </form>

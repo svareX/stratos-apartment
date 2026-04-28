@@ -30,7 +30,9 @@
                         </div>
 
                         <div class="ms-3">
-                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                            <div
+                                class="text-sm text-gray-600 dark:text-gray-400"
+                            >
                                 {{ $session->agent->platform() ? $session->agent->platform() : __('Unknown') }} - {{ $session->agent->browser() ? $session->agent->browser() : __('Unknown') }}
                             </div>
 
@@ -39,7 +41,10 @@
                                     {{ $session->ip_address }},
 
                                     @if ($session->is_current_device)
-                                        <span class="text-green-500 font-semibold">{{ __('This device') }}</span>
+                                        <span
+                                            class="font-semibold text-green-500"
+                                            >{{ __('This device') }}</span
+                                        >
                                     @else
                                         {{ __('Last active') }} {{ $session->last_active }}
                                     @endif
@@ -51,7 +56,7 @@
             </div>
         @endif
 
-        <div class="flex items-center mt-5">
+        <div class="mt-5 flex items-center">
             <x-button wire:click="confirmLogout" wire:loading.attr="disabled">
                 {{ __('Log Out Other Browser Sessions') }}
             </x-button>
@@ -70,26 +75,40 @@
             <x-slot name="content">
                 {{ __('Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.') }}
 
-                <div class="mt-4" x-data="{}" x-on:confirming-logout-other-browser-sessions.window="setTimeout(() => $refs.password.focus(), 250)">
-                    <x-input type="password" class="mt-1 block w-3/4"
-                                autocomplete="current-password"
-                                placeholder="{{ __('Password') }}"
-                                x-ref="password"
-                                wire:model="password"
-                                wire:keydown.enter="logoutOtherBrowserSessions" />
+                <div
+                    class="mt-4"
+                    x-data="{}"
+                    x-on:confirming-logout-other-browser-sessions.window="
+                        setTimeout(() => $refs.password.focus(), 250)
+                    "
+                >
+                    <x-input
+                        type="password"
+                        class="mt-1 block w-3/4"
+                        autocomplete="current-password"
+                        placeholder="{{ __('Password') }}"
+                        x-ref="password"
+                        wire:model="password"
+                        wire:keydown.enter="logoutOtherBrowserSessions"
+                    />
 
                     <x-input-error for="password" class="mt-2" />
                 </div>
             </x-slot>
 
             <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingLogout')" wire:loading.attr="disabled">
+                <x-secondary-button
+                    wire:click="$toggle('confirmingLogout')"
+                    wire:loading.attr="disabled"
+                >
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-button class="ms-3"
-                            wire:click="logoutOtherBrowserSessions"
-                            wire:loading.attr="disabled">
+                <x-button
+                    class="ms-3"
+                    wire:click="logoutOtherBrowserSessions"
+                    wire:loading.attr="disabled"
+                >
                     {{ __('Log Out Other Browser Sessions') }}
                 </x-button>
             </x-slot>

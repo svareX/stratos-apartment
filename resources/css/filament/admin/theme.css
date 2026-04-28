@@ -6,7 +6,12 @@
 
 @layer components {
     .sa-summary-card {
-        background: linear-gradient(130deg, #111827 0%, #0f172a 50%, #111827 100%);
+        background: linear-gradient(
+            130deg,
+            #111827 0%,
+            #0f172a 50%,
+            #111827 100%
+        );
         border: 1px solid #243041;
         box-shadow: 0 14px 34px -26px rgba(15, 23, 42, 0.95);
     }
