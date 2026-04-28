@@ -112,12 +112,14 @@
                                             $isEnd = $end_date === $date;
                                             $isInRange = $start_date && $end_date && $date > $start_date && $date < $end_date;
                                             $isSelected = $isStart || $isEnd;
+                                            $isClickableCheckout = $isBooked && $start_date && !$end_date && $date > $start_date;
+                                            $isDisabled = $isBooked && !$isClickableCheckout;
                                         @endphp
                                         <button
                                             wire:click="selectDate('{{ $date }}')"
-                                            @if($isBooked) disabled @endif
+                                            @if($isDisabled) disabled @endif
                                             class="h-14 relative flex flex-col items-center justify-center rounded-md transition-all text-sm hover:cursor-pointer hover:text-purple!
-                                            {{ $isBooked ? 'bg-purpleGhost text-muted opacity-50 cursor-not-allowed' : 'hover:bg-purplePale text-purple' }}
+                                            {{ $isDisabled ? 'bg-purpleGhost text-muted opacity-50 cursor-not-allowed' : 'hover:bg-purplePale text-purple' }}
                                             {{ $isSelected ? 'bg-purple text-white shadow-md z-10 scale-105' : '' }}
                                             {{ $isInRange ? 'bg-purplePale text-purple' : '' }}
                                             {{ $isStart ? 'rounded-l-lg text-white!' : '' }}
@@ -125,7 +127,7 @@
                                             "
                                         >
                                             <span class="font-bold relative z-20">{{ \Carbon\Carbon::parse($date)->day }}</span>
-                                            @if($isBooked) <span class="text-[10px] uppercase font-bold opacity-50">{{ __('Booked') }}</span> @endif
+                                            @if($isBooked && !$isEnd) <span class="text-[10px] uppercase font-bold opacity-50">{{ __('Booked') }}</span> @endif
                                         </button>
                                     @endif
                                 @endforeach

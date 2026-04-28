@@ -23,13 +23,15 @@ class IcalExportService
 
         foreach ($reservations as $reservation) {
             $start = CarbonImmutable::parse($reservation->check_in)->startOfDay();
-            $endExclusive = CarbonImmutable::parse($reservation->check_out)->addDay()->startOfDay();
+
+            $endExclusive = CarbonImmutable::parse($reservation->check_out)->startOfDay();
 
             $calendar->event(
                 Event::create('Reserved')
                     ->uniqueIdentifier("reservation-{$reservation->id}@stratos-apartment")
-                    ->startsAt($start)
-                    ->endsAt($endExclusive)
+                    ->startsAt($start, false)
+                    ->endsAt($endExclusive, false)
+                    ->fullDay()
             );
         }
 

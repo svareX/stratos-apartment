@@ -129,7 +129,7 @@ class IcalImportService
             return null;
         }
 
-        $checkOut = $end->subDay()->startOfDay();
+        $checkOut = $end->startOfDay();
         $checkIn = $start->startOfDay();
 
         if ($checkOut->lessThan($checkIn)) {
