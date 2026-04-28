@@ -7,12 +7,13 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\KeyValue;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
@@ -95,6 +96,12 @@ class ApartmentFormV2
                                     ->numeric()
                                     ->required(),
 
+                                TimePicker::make('check_in_time')
+                                    ->label(__('Check-in time'))
+                                    ->placeholder(__('Select check-in time'))
+                                    ->seconds(false)
+                                    ->required(),
+
                                 TextInput::make('base_price_eur')
                                     ->label(__('Base price (EUR)'))
                                     ->placeholder(__('Enter base price per night'))
@@ -107,6 +114,12 @@ class ApartmentFormV2
                                     ->placeholder(__('Enter cleaning fee (one-time charge)'))
                                     ->suffix(__('€'))
                                     ->numeric(),
+
+                                TimePicker::make('check_out_time')
+                                    ->label(__('Check-out time'))
+                                    ->placeholder(__('Select check-out time'))
+                                    ->seconds(false)
+                                    ->required(),
 
                                 TextInput::make('days_for_cleaning_fee')
                                     ->label(__('Days for cleaning fee'))
@@ -150,7 +163,11 @@ class ApartmentFormV2
 
                                         return route('ical.apartment.export', ['apartment' => $record->slug, 'token' => $record->ical_export_token]);
                                     }),
+                            ]),
 
+                        Tab::make('Description')
+                            ->label(__('Description'))
+                            ->schema([
                                 Tabs::make('Description')
                                     ->columnSpan('full')
                                     ->tabs([
@@ -181,12 +198,27 @@ class ApartmentFormV2
                                             ]),
                                     ]),
                                 Hidden::make('description'),
+                            ]),
+
+                        Tab::make('Amenities')
+                            ->label(__('Amenities'))
+                            ->schema([
+
+                                // Booking.com extra information notice (read-only text)
+                                TextEntry::make('booking_com_info')
+                                    ->label(__('Extra information'))
+                                    ->state(__('This information is being used to feed the SupportBot so that it has more information about the apartments and can help the potential clients more.'))
+                                    ->columnSpan('full'),
 
                                 KeyValue::make('amenities')
                                     ->label(__('Amenities (key-value)'))
                                     ->nullable()
                                     ->columnSpan('full'),
+                            ]),
 
+                        Tab::make('Tags')
+                            ->label(__('Tags'))
+                            ->schema([
                                 Repeater::make('tags')
                                     ->label(__('Tags'))
                                     ->schema([

@@ -33,6 +33,8 @@ class Apartment extends Model
         'active',
         'external_ical_url',
         'ical_export_token',
+        'check_in_time',
+        'check_out_time',
     ];
 
     protected $casts = [
@@ -47,6 +49,8 @@ class Apartment extends Model
         'cleaning_fee_eur' => 'decimal:2',
         'days_for_cleaning_fee' => 'integer',
         'type' => ApartmentType::class,
+        'check_in_time' => 'string',
+        'check_out_time' => 'string',
     ];
 
     protected $appends = ['name', 'description', 'tags'];
@@ -163,5 +167,31 @@ class Apartment extends Model
         }
 
         return [];
+    }
+
+    public function getCheckInTimeFormattedAttribute()
+    {
+        if (empty($this->check_in_time)) {
+            return null;
+        }
+
+        try {
+            return \Carbon\Carbon::parse($this->check_in_time)->format('H:i');
+        } catch (\Exception $e) {
+            return $this->check_in_time;
+        }
+    }
+
+    public function getCheckOutTimeFormattedAttribute()
+    {
+        if (empty($this->check_out_time)) {
+            return null;
+        }
+
+        try {
+            return \Carbon\Carbon::parse($this->check_out_time)->format('H:i');
+        } catch (\Exception $e) {
+            return $this->check_out_time;
+        }
     }
 }

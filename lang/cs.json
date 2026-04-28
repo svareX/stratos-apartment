@@ -528,5 +528,12 @@
     "Our iCal export URL": "Náš iCal export URL",
     "Export URL will appear after the apartment is saved.": "Export URL se zobrazí po uložení apartmánu.",
     "Copy": "Kopírovat",
-    "Copy link": "Kopírovat odkaz"
+    "Copy link": "Kopírovat odkaz",
+    "Amenities": "Vybavení",
+    "Check-in time": "Čas příjezdu",
+    "Check-out time": "Čas odjezdu",
+    "Select check-in time": "Vyberte čas příjezdu",
+    "Select check-out time": "Vyberte čas odjezdu",
+    "Extra information": "Další informace",
+    "This information is being used to feed the SupportBot so that it has more information about the apartments and can help the potential clients more.": "Tyto informace se používají k napájení SupportBotu, aby měl více informací o apartmánech a mohl lépe pomáhat potenciálním klientům."
 }

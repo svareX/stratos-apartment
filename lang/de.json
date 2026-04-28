@@ -525,5 +525,12 @@
     "Our iCal export URL": "Unsere iCal-Export-URL",
     "Export URL will appear after the apartment is saved.": "Die Export-URL erscheint, nachdem das Apartment gespeichert wurde.",
     "Copy": "Kopieren",
-    "Copy link": "Link kopieren"
+    "Copy link": "Link kopieren",
+    "Amenities": "Ausstattung",
+    "Check-in time": "Check-in-Zeit",
+    "Check-out time": "Check-out-Zeit",
+    "Select check-in time": "Check-in-Zeit auswählen",
+    "Select check-out time": "Check-out-Zeit auswählen",
+    "Extra information": "Zusätzliche Informationen",
+    "This information is being used to feed the SupportBot so that it has more information about the apartments and can help the potential clients more.": "Diese Informationen werden verwendet, um den SupportBot mit mehr Informationen über die Apartments zu versorgen, damit er potenziellen Kunden besser helfen kann."
 }
