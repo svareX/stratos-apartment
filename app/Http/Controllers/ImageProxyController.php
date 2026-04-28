@@ -63,7 +63,11 @@ class ImageProxyController extends Controller
             return response()->file($cacheFile, ['Content-Type' => $this->mime($ext)]);
         }
 
-        [$origW, $origH] = getimagesize($original);
+        $size = getimagesize($original);
+        if ($size === false) {
+            abort(404);
+        }
+        [$origW, $origH] = $size;
         if (! $origW || ! $origH) {
             abort(404);
         }
