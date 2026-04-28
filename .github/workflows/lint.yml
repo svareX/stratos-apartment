@@ -29,7 +29,7 @@ jobs:
         run: php vendor/bin/pint
 
       - name: Commit PHP Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "style: fix PHP code style [skip ci]"
           commit_options: '--no-verify'
@@ -52,7 +52,7 @@ jobs:
         run: npm run lint
 
       - name: Commit JS/CSS Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "style: fix frontend code style [skip ci]"
           commit_options: '--no-verify'
