@@ -58,7 +58,7 @@ class Hike extends Model
 
         $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
 
-        $url = $this->apartment ? route('apartments.show', $this->apartment->slug).'#hikes' : null;
+        $url = $this->apartment ? route('apartments.show', ['locale' => app()->getLocale() ?? config('app.locale'), 'apartment' => $this->apartment->slug]).'#hikes' : null;
 
         return new SEOData(
             title: $title,

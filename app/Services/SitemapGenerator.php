@@ -56,39 +56,57 @@ class SitemapGenerator
 
                 foreach (Apartment::where('active', true)->get() as $apartment) {
                     try {
-                        $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
+                        try {
+                            $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
+                        } catch (\Throwable $e) {
+                            $url = SitemapUrl::create(url($locale.'/apartments/'.$apartment->slug));
+                        }
+
+                        if ($apartment->updated_at) {
+                            $url->setLastModificationDate($apartment->updated_at);
+                        }
+
+                        $photos = $apartment->photos()->orderBy('position')->get();
+                        if ($photos->isNotEmpty()) {
+                            foreach ($photos as $photo) {
+                                if (! empty($photo->path)) {
+                                    $imageUrl = Storage::url($photo->path);
+                                    $title = $photo->title_en ?? $photo->title ?? '';
+                                    $caption = $photo->description_en ?? $photo->description ?? '';
+                                    try {
+                                        $url->addImage($imageUrl, $title, $caption);
+                                    } catch (\TypeError $te) {
+                                        // Defensive: ensure strings are passed to addImage
+                                        $url->addImage($imageUrl, (string) $title, (string) $caption);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (method_exists($apartment, 'getDynamicSEOData')) {
+                                $seo = $apartment->getDynamicSEOData();
+                                if (! empty($seo->image)) {
+                                    try {
+                                        $url->addImage($seo->image);
+                                    } catch (\TypeError $te) {
+                                        // ignore image if Spatie expects different signature
+                                    }
+                                }
+                            }
+                        }
+
+                        $sitemap->add($url);
                     } catch (\Throwable $e) {
-                        $url = SitemapUrl::create(url($locale.'/apartments/'.$apartment->slug));
+                        Log::warning('SitemapGenerator: skipping apartment '.$apartment->id.': '.$e->getMessage());
+                        continue;
                     }
-
-                    if ($apartment->updated_at) {
-                        $url->setLastModificationDate($apartment->updated_at);
-                    }
-
-                    $photos = $apartment->photos()->orderBy('position')->get();
-                    if ($photos->isNotEmpty()) {
-                        foreach ($photos as $photo) {
-                            if (! empty($photo->path)) {
-                                $imageUrl = Storage::url($photo->path);
-                                $title = $photo->title_en ?? $photo->title ?? null;
-                                $caption = $photo->description_en ?? $photo->description ?? null;
-                                $url->addImage($imageUrl, $title, $caption);
-                            }
-                        }
-                    } else {
-                        if (method_exists($apartment, 'getDynamicSEOData')) {
-                            $seo = $apartment->getDynamicSEOData();
-                            if (! empty($seo->image)) {
-                                $url->addImage($seo->image);
-                            }
-                        }
-                    }
-
-                    $sitemap->add($url);
                 }
 
                 foreach (Place::all() as $place) {
-                    if ($place->apartment) {
+                    if (! $place->apartment) {
+                        continue;
+                    }
+
+                    try {
                         try {
                             $u = route('apartments.show', ['locale' => $locale, 'apartment' => $place->apartment->slug]).'#nearby';
                         } catch (\Throwable $e) {
@@ -102,16 +120,27 @@ class SitemapGenerator
                         if (method_exists($place, 'getDynamicSEOData')) {
                             $seo = $place->getDynamicSEOData();
                             if (! empty($seo->image)) {
-                                $url->addImage($seo->image);
+                                try {
+                                    $url->addImage($seo->image);
+                                } catch (\TypeError $te) {
+                                    // ignore
+                                }
                             }
                         }
 
                         $sitemap->add($url);
+                    } catch (\Throwable $e) {
+                        Log::warning('SitemapGenerator: skipping place '.$place->id.': '.$e->getMessage());
+                        continue;
                     }
                 }
 
                 foreach (Hike::all() as $hike) {
-                    if ($hike->apartment) {
+                    if (! $hike->apartment) {
+                        continue;
+                    }
+
+                    try {
                         try {
                             $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hike->apartment->slug]).'#hikes';
                         } catch (\Throwable $e) {
@@ -122,6 +151,9 @@ class SitemapGenerator
                             $url->setLastModificationDate($hike->updated_at);
                         }
                         $sitemap->add($url);
+                    } catch (\Throwable $e) {
+                        Log::warning('SitemapGenerator: skipping hike '.$hike->id.': '.$e->getMessage());
+                        continue;
                     }
                 }
 

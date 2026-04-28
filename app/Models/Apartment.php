@@ -31,6 +31,8 @@ class Apartment extends Model
         'cleaning_fee_eur',
         'days_for_cleaning_fee',
         'active',
+        'external_ical_url',
+        'ical_export_token',
     ];
 
     protected $casts = [
@@ -92,6 +94,15 @@ class Apartment extends Model
                 if (! empty($name)) {
                     $apartment->slug = Str::slug($name);
                 }
+            }
+            if (blank($apartment->ical_export_token)) {
+                $apartment->ical_export_token = Str::random(48);
+            }
+        });
+
+        static::saving(function (Apartment $apartment): void {
+            if (blank($apartment->ical_export_token)) {
+                $apartment->ical_export_token = Str::random(48);
             }
         });
     }

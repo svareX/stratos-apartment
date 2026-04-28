@@ -51,6 +51,9 @@ class RequireWebsitePasswordTest extends TestCase
             'active' => true,
         ]);
 
+        // ensure runtime config is cleared as well (other tests may set it)
+        config(['app.website_password' => '']);
+
         $res = $this->get('/en/');
 
         $res->assertStatus(200);

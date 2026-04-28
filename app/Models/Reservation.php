@@ -20,6 +20,7 @@ class Reservation extends Model
         'external_booking_id',
         'apartment_package_id',
         'package_price',
+        'external_last_synced_at',
     ];
 
     protected $casts = [
@@ -28,6 +29,7 @@ class Reservation extends Model
         'price' => 'decimal:2',
         'status' => \App\Enums\ReservationStatus::class,
         'package_price' => 'decimal:2',
+        'external_last_synced_at' => 'datetime',
     ];
 
     public function apartment()
