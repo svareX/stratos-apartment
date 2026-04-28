@@ -19,7 +19,7 @@ class HomeController extends Controller
         $apartments = Apartment::where('active', true)->get();
 
         $settings = HomepageSettings::first();
-        $heroSlides = $settings?->hero_slides ?? [];
+        $heroSlides = $settings ? ($settings->hero_slides ?? []) : [];
         $locale = App::getLocale();
 
         $heroSlides = array_map(function ($slide) use ($locale) {

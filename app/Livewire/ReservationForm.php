@@ -138,7 +138,6 @@ class ReservationForm extends Component
 
     public function mount()
     {
-        // eager-load packages so initial selection can access them without extra reloads
         $this->apartments = Apartment::where('active', true)->with('packages')->get();
         $now = Carbon::now();
 
@@ -156,16 +155,13 @@ class ReservationForm extends Component
             $this->displayYear = $now->year;
         }
 
-        // default package values — set before attempting to load apartment-specific packages
         $this->apartment_package_id = '';
         $this->availablePackages = [];
         $this->packagePrice = 0;
         $this->selectedPackageName = '';
 
-        // Support incoming apartment value from either `apartment` (slug) or `apartment_id` (id)
         $incoming = $this->apartment ?? $this->apartment_id;
         if ($incoming) {
-            // attempt to resolve slug or id to a numeric apartment id
             $query = Apartment::where('active', true);
             $query->where(function ($q) use ($incoming) {
                 if (is_numeric($incoming)) {
@@ -205,7 +201,6 @@ class ReservationForm extends Component
 
     public function updateApartmentDetails()
     {
-        // If no apartment selected, clear packages and return early to avoid invalid DB queries
         if (empty($this->apartment_id)) {
             $this->availablePackages = [];
             $this->pricePerNight = 0;
@@ -215,7 +210,6 @@ class ReservationForm extends Component
             $this->daysForCleaningFee = 3;
             $this->capacity = null;
 
-            // reset package selection
             $this->apartment_package_id = '';
             $this->packagePrice = 0;
             $this->selectedPackageName = '';
@@ -223,7 +217,6 @@ class ReservationForm extends Component
             return;
         }
 
-        // Ensure we load a fresh Apartment model with packages to avoid hydration/serialization issues
         $apt = Apartment::with('packages')->find($this->apartment_id);
         if ($apt) {
             $this->pricePerNight = $apt->base_price ?? 0;
@@ -233,9 +226,10 @@ class ReservationForm extends Component
             $this->daysForCleaningFee = $apt->days_for_cleaning_fee ?? 3;
             $this->capacity = $apt->capacity ?? null;
 
-            // include features and icon so the frontend can render rich package cards
-            $this->availablePackages = $apt->packages->map(function ($p) {
-                return [
+            $packagesArr = [];
+            foreach ($apt->packages as $p) {
+                /** @var \App\Models\ApartmentPackage $p */
+                $packagesArr[] = [
                     'id' => $p->id,
                     'name' => $p->name,
                     'price' => $p->price,
@@ -243,12 +237,12 @@ class ReservationForm extends Component
                     'features' => $p->translated_features,
                     'icon' => $p->icon,
                 ];
-            })->toArray();
+            }
+            $this->availablePackages = $packagesArr;
         } else {
             $this->availablePackages = [];
         }
 
-        // reset package selection when apartment changes
         $this->apartment_package_id = '';
         $this->packagePrice = 0;
         $this->selectedPackageName = '';
@@ -274,14 +268,14 @@ class ReservationForm extends Component
         }
 
         $this->bookedDates = Reservation::where('apartment_id', $this->apartment_id)
-            ->whereIn('status', [ReservationStatus::Confirmed->value, ReservationStatus::Pending->value])
+            ->whereIn('status', [ReservationStatus::Confirmed, ReservationStatus::Pending])
             ->get()
             ->flatMap(function ($reservation) {
                 $dates = [];
                 $start = Carbon::parse($reservation->check_in);
                 $end = Carbon::parse($reservation->check_out);
 
-                while ($start->lte($end)) {
+                while ($start->lt($end)) {
                     $dates[] = $start->toDateString();
                     $start->addDay();
                 }
@@ -366,11 +360,13 @@ class ReservationForm extends Component
             return;
         }
 
-        if (in_array($date, $this->bookedDates)) {
-            return;
-        }
+        $isBooked = in_array($date, $this->bookedDates);
 
-        if (! $this->start_date || ($this->start_date && $this->end_date)) {
+        if (empty($this->start_date) || $this->end_date) {
+            if ($isBooked) {
+                return;
+            }
+
             $this->start_date = $date;
             $this->end_date = null;
         } else {
@@ -378,11 +374,20 @@ class ReservationForm extends Component
             $selected = Carbon::parse($date);
 
             if ($selected->lt($start)) {
+                if ($isBooked) {
+                    return;
+                }
+
                 $this->start_date = $date;
             } else {
                 $tempDate = $start->copy();
-                while ($tempDate->lte($selected)) {
+
+                while ($tempDate->lt($selected)) {
                     if (in_array($tempDate->toDateString(), $this->bookedDates)) {
+                        if ($isBooked) {
+                            return;
+                        }
+
                         $this->start_date = $date;
                         $this->end_date = null;
 
@@ -390,6 +395,7 @@ class ReservationForm extends Component
                     }
                     $tempDate->addDay();
                 }
+
                 $this->end_date = $date;
             }
         }
@@ -417,7 +423,7 @@ class ReservationForm extends Component
         if ($n === 0) {
             return 0;
         }
-        // package price is a flat fee (not per-night)
+
         $total = $n * $this->pricePerNight;
         $total += $this->packagePrice ?? 0;
 
@@ -445,7 +451,6 @@ class ReservationForm extends Component
                     }
                 }
             } catch (\Throwable $e) {
-                // ignore and fallback
             }
 
             return 25.00;
@@ -459,11 +464,9 @@ class ReservationForm extends Component
             return 0;
         }
 
-        // If apartment has explicit EUR base price, calculate in EUR using provided EUR fields
         if ($this->pricePerNightEur !== null) {
             $total = $n * $this->pricePerNightEur;
 
-            // package: prefer explicit EUR package price when available, otherwise convert stored CZK package price
             if ($this->packagePriceEur !== null) {
                 $total += $this->packagePriceEur;
             } elseif (! empty($this->packagePrice)) {
@@ -481,7 +484,6 @@ class ReservationForm extends Component
             return round($total, 2);
         }
 
-        // Fallback: convert CZK total to EUR using exchange rate
         $rate = $this->getEurRate();
 
         return round($this->total() / $rate, 2);
@@ -525,6 +527,30 @@ class ReservationForm extends Component
     {
         $this->validate();
 
+        $apartment = Apartment::findOrFail($this->apartment_id);
+
+        if (! $apartment->active) {
+            $this->addError('apartment_id', __('This apartment is temporarily unavailable for booking.'));
+
+            return;
+        }
+
+        $exists = Reservation::where('apartment_id', $apartment->id)
+            ->whereIn('status', [ReservationStatus::Pending, ReservationStatus::Confirmed])
+            ->where(function ($query) {
+                $query->where('check_in', '<', $this->end_date)
+                    ->where('check_out', '>', $this->start_date);
+            })
+            ->exists();
+
+        if ($exists) {
+            $this->addError('dates', __('Tento termín byl v mezidobí obsazen. Vyberte si prosím jiný.'));
+            $this->step = 1;
+            $this->loadBookedDates();
+
+            return;
+        }
+
         $user = User::firstOrCreate(
             ['email' => $this->email],
             [
@@ -541,15 +567,6 @@ class ReservationForm extends Component
             'postal_code' => $this->postal_code,
             'country' => $this->country,
         ]);
-
-        $apartment = Apartment::findOrFail($this->apartment_id);
-
-        // Prevent creating reservations for apartments that are deactivated in admin
-        if (! $apartment->active) {
-            $this->addError('apartment_id', __('This apartment is temporarily unavailable for booking.'));
-
-            return;
-        }
 
         $reservation = Reservation::create([
             'apartment_id' => $apartment->id,

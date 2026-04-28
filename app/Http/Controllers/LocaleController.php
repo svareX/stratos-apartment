@@ -27,7 +27,7 @@ class LocaleController extends BaseController
         $path = parse_url($previous, PHP_URL_PATH) ?: '/';
         $segments = explode('/', trim($path, '/'));
 
-        if (isset($segments[0]) && in_array($segments[0], $available, true)) {
+        if ($segments[0] !== '' && in_array($segments[0], $available, true)) {
             $segments[0] = $locale;
             $newPath = '/'.implode('/', $segments);
         } else {

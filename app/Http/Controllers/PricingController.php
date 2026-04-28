@@ -12,7 +12,7 @@ class PricingController extends Controller
     {
         // Order by the locale-specific name column (e.g. name_en, name_cs, name_de).
         // Fall back to `name_en` or `id` if the expected column doesn't exist.
-        $locale = app()->getLocale() ?? config('app.locale', 'en');
+        $locale = app()->getLocale() ?: config('app.locale', 'en');
         $col = 'name_'.$locale;
 
         if (! Schema::hasColumn('apartments', $col)) {

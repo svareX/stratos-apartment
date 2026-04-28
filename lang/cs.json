@@ -518,5 +518,22 @@
     "Contact us": "Kontaktujte nás",
     "If you believe this is an error or want to request reactivation, please reach out and we will help.": "Pokud se domníváte, že se jedná o chybu nebo chcete požádat o znovuaktivaci, kontaktujte nás a my vám pomůžeme.",
     "Unavailable": "Nedostupné",
-    "Apartment temporarily unavailable": "Apartmán dočasně nedostupný"
+    "Apartment temporarily unavailable": "Apartmán dočasně nedostupný",
+    "Sync knowledge base": "Synchronizovat znalostní bázi",
+    "Knowledge sync queued": "Synchronizace znalostí zařazena do fronty",
+    "Sync booking (iCal)": "Synchronizovat rezervace (iCal)",
+    "Booking sync queued": "Synchronizace rezervací zařazena do fronty",
+    "External iCal URL (Booking import)": "Externí iCal URL (import rezervací)",
+    "Paste the private iCal URL from Booking.com": "Vložte soukromou iCal URL z Booking.com",
+    "Our iCal export URL": "Náš iCal export URL",
+    "Export URL will appear after the apartment is saved.": "Export URL se zobrazí po uložení apartmánu.",
+    "Copy": "Kopírovat",
+    "Copy link": "Kopírovat odkaz",
+    "Amenities": "Vybavení",
+    "Check-in time": "Čas příjezdu",
+    "Check-out time": "Čas odjezdu",
+    "Select check-in time": "Vyberte čas příjezdu",
+    "Select check-out time": "Vyberte čas odjezdu",
+    "Extra information": "Další informace",
+    "This information is being used to feed the SupportBot so that it has more information about the apartments and can help the potential clients more.": "Tyto informace se používají k napájení SupportBotu, aby měl více informací o apartmánech a mohl lépe pomáhat potenciálním klientům."
 }

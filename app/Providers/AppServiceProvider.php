@@ -120,22 +120,27 @@ class AppServiceProvider extends ServiceProvider
                     $siteUrl = config('app.url');
                     $siteName = $SEOData->site_name ?? config('seo.site_name') ?? config('app.name');
 
-                    $schemas = SchemaCollection::initialize() ?? new SchemaCollection;
+                    $schemas = SchemaCollection::initialize();
 
                     $schemas->push(function (SEOData $data) use ($contact, $siteName, $siteUrl) {
+                        $telephone = $contact ? ($contact->phone ?? null) : null;
+                        $email = $contact ? ($contact->email ?? null) : null;
+                        $address = $contact ? ($contact->address ? Str::of($contact->address)->trim()->toString() : null) : null;
+                        $socials = $contact ? ($contact->socials ?? []) : [];
+
                         return [
                             '@context' => 'https://schema.org',
                             '@type' => 'LodgingBusiness',
                             'name' => $siteName,
                             'url' => $data->url ?? $siteUrl,
-                            'telephone' => $contact?->phone ?? null,
-                            'email' => $contact?->email ?? null,
+                            'telephone' => $telephone,
+                            'email' => $email,
                             'address' => [
                                 '@type' => 'PostalAddress',
-                                'streetAddress' => $contact?->address ? Str::of($contact->address)->trim()->toString() : null,
+                                'streetAddress' => $address,
                             ],
                             'image' => $data->image ?? null,
-                            'sameAs' => collect($contact?->socials ?? [])->map(fn ($s) => $s['url'] ?? null)->filter()->values()->all(),
+                            'sameAs' => collect($socials)->map(fn ($s) => $s['url'] ?? null)->filter()->values()->all(),
                         ];
                     });
 
@@ -328,7 +333,7 @@ class AppServiceProvider extends ServiceProvider
                         } else {
                             $path = request()->path();
                             $parts = explode('/', trim($path, '/'));
-                            if (isset($parts[0]) && in_array($parts[0], $locales)) {
+                            if ($parts[0] !== '' && in_array($parts[0], $locales)) {
                                 $parts[0] = $l;
                                 $alternateUrl = url('/'.implode('/', $parts));
                             } else {

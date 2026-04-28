@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Apartment;
 use App\Models\Hike;
 use App\Models\Place;
+use App\Services\SitemapGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
 use Spatie\Sitemap\Sitemap;
@@ -45,26 +46,32 @@ class GenerateSeoSitemap extends Command
             $url = route('apartments.show', $apartment->slug);
             $tag = Url::create($url)->setLastModificationDate($apartment->updated_at);
 
-            if (method_exists($apartment, 'getDynamicSEOData')) {
+            try {
                 $seo = $apartment->getDynamicSEOData();
                 if (! empty($seo->image)) {
                     $tag->addImage($seo->image);
                 }
+            } catch (\Throwable $_) {
+                // ignore apartments without dynamic SEO data
             }
 
             $sitemap->add($tag);
         }
 
         foreach (Place::all() as $place) {
-            if ($place->apartment) {
-                $url = route('apartments.show', $place->apartment->slug).'#nearby';
+            $placeApartment = $place->apartment;
+            /** @var \App\Models\Apartment|null $placeApartment */
+            if ($placeApartment) {
+                $url = route('apartments.show', $placeApartment->slug).'#nearby';
                 $tag = Url::create($url)->setLastModificationDate($place->updated_at ?: now());
 
-                if (method_exists($place, 'getDynamicSEOData')) {
+                try {
                     $seo = $place->getDynamicSEOData();
                     if (! empty($seo->image)) {
                         $tag->addImage($seo->image);
                     }
+                } catch (\Throwable $_) {
+                    // ignore
                 }
 
                 $sitemap->add($tag);
@@ -72,8 +79,10 @@ class GenerateSeoSitemap extends Command
         }
 
         foreach (Hike::all() as $hike) {
-            if ($hike->apartment) {
-                $url = route('apartments.show', $hike->apartment->slug).'#hikes';
+            $hikeApartment = $hike->apartment;
+            /** @var \App\Models\Apartment|null $hikeApartment */
+            if ($hikeApartment) {
+                $url = route('apartments.show', $hikeApartment->slug).'#hikes';
                 $tag = Url::create($url)->setLastModificationDate($hike->updated_at ?: now());
                 $sitemap->add($tag);
             }

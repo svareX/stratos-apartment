@@ -83,7 +83,6 @@ class Chatbot extends Component
             $contextData = KnowledgeBase::query()
                 ->whereVectorSimilarTo('embedding', $embeddingResponse->embeddings[0])
                 ->limit(10)
-                ->get()
                 ->pluck('content')
                 ->implode("\n---\n");
 

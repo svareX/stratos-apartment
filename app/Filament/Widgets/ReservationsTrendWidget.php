@@ -4,27 +4,24 @@ namespace App\Filament\Widgets;
 
 use App\Models\Reservation;
 use Carbon\Carbon;
-use Filament\Widgets\ChartWidget;
+use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
-class ReservationsTrendWidget extends ChartWidget
+class ReservationsTrendWidget extends ApexChartWidget
 {
-    protected ?string $heading = null;
+    protected static ?string $chartId = 'reservationsTrendChart';
+
+    protected static ?int $contentHeight = 300;
 
     protected int|string|array $columnSpan = [
         'xl' => 8,
     ];
-
-    protected function getType(): string
-    {
-        return 'line';
-    }
 
     public function getHeading(): ?string
     {
         return __('Reservations — Last 30 days');
     }
 
-    protected function getData(): array
+    protected function getOptions(): array
     {
         $labels = [];
         $data = [];
@@ -36,43 +33,39 @@ class ReservationsTrendWidget extends ChartWidget
         }
 
         return [
-            'datasets' => [
+            'chart' => [
+                'type' => 'line',
+                'height' => 300,
+            ],
+            'series' => [
                 [
-                    'label' => __('Reservations'),
+                    'name' => __('Reservations'),
                     'data' => $data,
-                    'borderColor' => '#f59e0b',
-                    'backgroundColor' => 'rgba(245, 158, 11, 0.18)',
-                    'fill' => true,
-                    'tension' => 0.35,
-                    'pointRadius' => 0,
                 ],
             ],
-            'labels' => $labels,
-        ];
-    }
-
-    protected function getOptions(): array
-    {
-        return [
-            'plugins' => [
-                'legend' => [
-                    'display' => false,
-                ],
-            ],
-            'scales' => [
-                'x' => [
-                    'ticks' => [
-                        'color' => '#94a3b8',
-                        'maxTicksLimit' => 10,
-                        'autoSkip' => true,
-                        'maxRotation' => 0,
+            'xaxis' => [
+                'categories' => $labels,
+                'labels' => [
+                    'style' => [
+                        'colors' => array_fill(0, count($labels), '#cbd5e1'),
+                        'fontFamily' => 'inherit',
                     ],
-                    'grid' => ['display' => false],
                 ],
-                'y' => [
-                    'ticks' => ['color' => '#94a3b8'],
-                    'grid' => ['color' => 'rgba(148, 163, 184, 0.14)'],
+            ],
+            'yaxis' => [
+                'labels' => [
+                    'style' => [
+                        'fontFamily' => 'inherit',
+                    ],
                 ],
+            ],
+            'stroke' => [
+                'curve' => 'smooth',
+                'width' => 3,
+            ],
+            'colors' => ['#f59e0b'],
+            'tooltip' => [
+                'theme' => 'dark',
             ],
         ];
     }

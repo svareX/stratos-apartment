@@ -88,7 +88,7 @@ class ReservationWidget extends Component
 
     public function selectDate($date)
     {
-        if (! $this->dateStart || ($this->dateStart && $this->dateEnd)) {
+        if (empty($this->dateStart) || $this->dateEnd) {
             $this->dateStart = $date;
             $this->dateEnd = null;
         } else {

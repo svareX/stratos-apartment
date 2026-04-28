@@ -40,8 +40,70 @@ class ReservationFormBookedDatesTest extends TestCase
 
         $instance = $test->instance();
 
+        // DTEND is exclusive: check_out (2026-05-03) should NOT be booked
+        $this->assertContains('2026-05-01', $instance->bookedDates);
+        $this->assertContains('2026-05-02', $instance->bookedDates);
+        $this->assertNotContains('2026-05-03', $instance->bookedDates);
+    }
+
+    public function test_load_booked_dates_for_one_night_reservation(): void
+    {
+        $apt = Apartment::create([
+            'name_en' => 'OneNight Apt',
+            'address' => 'Addr',
+            'capacity' => 2,
+            'base_price' => 1000,
+            'active' => true,
+        ]);
+
+        $reservation = Reservation::create([
+            'apartment_id' => $apt->id,
+            'check_in' => '2026-05-01',
+            'check_out' => '2026-05-02',
+            'price' => 100.00,
+            'status' => ReservationStatus::Confirmed->value,
+        ]);
+
+        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+            ->set('apartment_id', $apt->id)
+            ->call('updateApartmentDetails')
+            ->call('loadBookedDates');
+
+        $instance = $test->instance();
+
+        $this->assertContains('2026-05-01', $instance->bookedDates);
+        $this->assertNotContains('2026-05-02', $instance->bookedDates);
+    }
+
+    public function test_load_booked_dates_for_multi_night_reservation(): void
+    {
+        $apt = Apartment::create([
+            'name_en' => 'MultiNight Apt',
+            'address' => 'Addr',
+            'capacity' => 2,
+            'base_price' => 1000,
+            'active' => true,
+        ]);
+
+        $reservation = Reservation::create([
+            'apartment_id' => $apt->id,
+            'check_in' => '2026-05-01',
+            'check_out' => '2026-05-05',
+            'price' => 400.00,
+            'status' => ReservationStatus::Confirmed->value,
+        ]);
+
+        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+            ->set('apartment_id', $apt->id)
+            ->call('updateApartmentDetails')
+            ->call('loadBookedDates');
+
+        $instance = $test->instance();
+
         $this->assertContains('2026-05-01', $instance->bookedDates);
         $this->assertContains('2026-05-02', $instance->bookedDates);
         $this->assertContains('2026-05-03', $instance->bookedDates);
+        $this->assertContains('2026-05-04', $instance->bookedDates);
+        $this->assertNotContains('2026-05-05', $instance->bookedDates);
     }
 }
