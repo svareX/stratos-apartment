@@ -522,6 +522,11 @@
     "Sync knowledge base": "Synchronizovat znalostní bázi",
     "Knowledge sync queued": "Synchronizace znalostí zařazena do fronty",
     "Sync booking (iCal)": "Synchronizovat rezervace (iCal)",
-    "Booking sync queued": "Synchronizace rezervací zařazena do fronty"
-
+    "Booking sync queued": "Synchronizace rezervací zařazena do fronty",
+    "External iCal URL (Booking import)": "Externí iCal URL (import rezervací)",
+    "Paste the private iCal URL from Booking.com": "Vložte soukromou iCal URL z Booking.com",
+    "Our iCal export URL": "Náš iCal export URL",
+    "Export URL will appear after the apartment is saved.": "Export URL se zobrazí po uložení apartmánu.",
+    "Copy": "Kopírovat",
+    "Copy link": "Kopírovat odkaz"
 }

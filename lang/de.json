@@ -519,5 +519,11 @@
     "Sync knowledge base": "Wissen synchronisieren",
     "Knowledge sync queued": "Wissenssynchronisierung in die Warteschlange gestellt",
     "Sync booking (iCal)": "Buchung synchronisieren (iCal)",
-    "Booking sync queued": "Buchungssynchronisierung in die Warteschlange gestellt"
+    "Booking sync queued": "Buchungssynchronisierung in die Warteschlange gestellt",
+    "External iCal URL (Booking import)": "Externe iCal-URL (Booking-Import)",
+    "Paste the private iCal URL from Booking.com": "Fügen Sie die private iCal-URL von Booking.com ein",
+    "Our iCal export URL": "Unsere iCal-Export-URL",
+    "Export URL will appear after the apartment is saved.": "Die Export-URL erscheint, nachdem das Apartment gespeichert wurde.",
+    "Copy": "Kopieren",
+    "Copy link": "Link kopieren"
 }

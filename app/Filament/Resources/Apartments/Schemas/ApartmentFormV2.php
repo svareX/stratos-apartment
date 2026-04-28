@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class ApartmentFormV2
@@ -128,11 +129,19 @@ class ApartmentFormV2
                                     ->label(__('External iCal URL (Booking import)'))
                                     ->url()
                                     ->maxLength(2048)
-                                    ->helperText(__('Paste the private iCal URL from Booking.com for this apartment.')),
+                                    ->placeholder(__('Paste the private iCal URL from Booking.com')),
 
                                 TextInput::make('ical_export_url')
                                     ->label(__('Our iCal export URL'))
+                                    ->hintAction(static fn(Get $get) => Action::make('Copy')->icon('heroicon-s-clipboard')
+                                        ->label(__('Copy'))
+                                        ->color('primary')
+                                        ->tooltip(__('Copy link'))
+                                        ->action(static function ($livewire, $state) {
+                                            $livewire->js('window.navigator.clipboard.writeText("' . $state . '");');
+                                        }))
                                     ->disabled()
+                                    ->readOnly()
                                     ->columnSpan(2)
                                     ->formatStateUsing(function ($record): string {
                                         if (! $record?->slug || ! $record?->ical_export_token) {
