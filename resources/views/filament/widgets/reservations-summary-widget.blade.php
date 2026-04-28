@@ -11,11 +11,9 @@
         <h3 style="margin: 0; color: #fff; font-size: 16px; font-weight: 700">
             Reservation Snapshot
         </h3>
-        <p style="
-                margin: 6px 0 0;
-                color: #94a3b8;
-                font-size: 12px;
-            ">Key indicators for the current booking flow.</p>
+        <p
+            style="margin: 6px 0 0; color: #94a3b8; font-size: 12px"
+        >Key indicators for the current booking flow.</p>
     </div>
 
     <div
@@ -33,12 +31,14 @@
                 padding: 14px 15px;
             "
         >
-            <p style="
+            <p
+                style="
                     margin: 0;
                     color: #94a3b8;
                     font-size: 12px;
                     font-weight: 600;
-                ">Total Reservations</p>
+                "
+            >Total Reservations</p>
             <strong
                 style="
                     margin-top: 4px;
@@ -60,12 +60,14 @@
                 padding: 14px 15px;
             "
         >
-            <p style="
+            <p
+                style="
                     margin: 0;
                     color: #94a3b8;
                     font-size: 12px;
                     font-weight: 600;
-                ">Last 30 days</p>
+                "
+            >Last 30 days</p>
             <strong
                 style="
                     margin-top: 4px;
@@ -87,12 +89,14 @@
                 padding: 14px 15px;
             "
         >
-            <p style="
+            <p
+                style="
                     margin: 0;
                     color: #94a3b8;
                     font-size: 12px;
                     font-weight: 600;
-                ">Revenue (30d)</p>
+                "
+            >Revenue (30d)</p>
             <strong
                 style="
                     margin-top: 4px;
@@ -114,12 +118,14 @@
                 padding: 14px 15px;
             "
         >
-            <p style="
+            <p
+                style="
                     margin: 0;
                     color: #94a3b8;
                     font-size: 12px;
                     font-weight: 600;
-                ">Confirmed</p>
+                "
+            >Confirmed</p>
             <strong
                 style="
                     margin-top: 4px;

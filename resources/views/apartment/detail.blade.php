@@ -41,9 +41,10 @@
                                     </template>
                                 </h1>
 
-                                <p class="mb-6 max-w-xl text-white/80" x-text="
-                                        slide.description
-                                    "></p>
+                                <p
+                                    class="mb-6 max-w-xl text-white/80"
+                                    x-text="slide.description"
+                                ></p>
 
                                 <div class="flex gap-3">
                                     <a

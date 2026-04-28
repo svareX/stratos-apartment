@@ -45,12 +45,14 @@
                         border-right: 1px solid #e2e8f0;
                     "
                 >
-                    <p style="
+                    <p
+                        style="
                             margin-top: 0;
                             margin-bottom: 15px;
                             font-size: 15px;
                             color: #475569;
-                        "><strong>Payment in CZK</strong></p>
+                        "
+                    ><strong>Payment in CZK</strong></p>
                     <img
                         src="{{ $message->embedData($qrCodeCzk, 'qrcode-czk.png', 'image/png') }}"
                         alt="QR CZK"
@@ -63,15 +65,23 @@
                             background-color: #ffffff;
                         "
                     />
-                    <p style="margin-top: 15px; margin-bottom: 0; font-size: 16px; font-weight: bold; color: #0f172a">{{ number_format($reservation->price, 2, ',', ' ') }} CZK</p>
+                    <p style="
+                            margin-top: 15px;
+                            margin-bottom: 0;
+                            font-size: 16px;
+                            font-weight: bold;
+                            color: #0f172a;
+                        ">{{ number_format($reservation->price, 2, ',', ' ') }} CZK</p>
                 </td>
                 <td style="width: 50%; vertical-align: top; padding: 10px">
-                    <p style="
+                    <p
+                        style="
                             margin-top: 0;
                             margin-bottom: 15px;
                             font-size: 15px;
                             color: #475569;
-                        "><strong>Payment in EUR</strong></p>
+                        "
+                    ><strong>Payment in EUR</strong></p>
                     <img
                         src="{{ $message->embedData($qrCodeEur, 'qrcode-eur.png', 'image/png') }}"
                         alt="QR EUR"
@@ -85,21 +95,25 @@
                         "
                     />
                     @if (isset($eurIsConverted) && $eurIsConverted)
-                        <p style="
+                        <p
+                            style="
                                 margin-top: 15px;
                                 margin-bottom: 0;
                                 font-size: 16px;
                                 font-weight: bold;
                                 color: #0f172a;
-                            ">~ {{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
+                            "
+                        >~ {{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
                     @else
-                        <p style="
+                        <p
+                            style="
                                 margin-top: 15px;
                                 margin-bottom: 0;
                                 font-size: 16px;
                                 font-weight: bold;
                                 color: #0f172a;
-                            ">{{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
+                            "
+                        >{{ number_format($eurAmount, 2, ',', ' ') }} EUR</p>
                     @endif
                 </td>
             </tr>
