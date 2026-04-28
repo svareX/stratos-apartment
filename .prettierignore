@@ -1,0 +1,7 @@
+/public
+/vendor
+/node_modules
+/storage
+/bootstrap/cache
+*.min.js
+*.min.css
