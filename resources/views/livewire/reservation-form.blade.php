@@ -119,7 +119,7 @@
                                             wire:click="selectDate('{{ $date }}')"
                                             @if($isDisabled) disabled @endif
                                             class="h-14 relative flex flex-col items-center justify-center rounded-md transition-all text-sm hover:cursor-pointer hover:text-purple!
-                                            {{ $isDisabled ? 'bg-purpleGhost text-muted opacity-50 cursor-not-allowed' : 'hover:bg-purplePale text-purple' }}
+                                            {{ $isDisabled && !$isSelected ? 'bg-purpleGhost text-muted opacity-50 cursor-not-allowed' : 'hover:bg-purplePale text-purple' }}
                                             {{ $isSelected ? 'bg-purple text-white shadow-md z-10 scale-105' : '' }}
                                             {{ $isInRange ? 'bg-purplePale text-purple' : '' }}
                                             {{ $isStart ? 'rounded-l-lg text-white!' : '' }}
@@ -374,6 +374,9 @@
                         <div>
                             <span class="block text-xs font-bold text-muted uppercase">{{ __('Date') }}</span>
                             <span class="font-medium text-navy">{{ \Carbon\Carbon::parse($start_date)->format('d. m. Y') }} – {{ \Carbon\Carbon::parse($end_date)->format('d. m. Y') }}</span>
+                            <p>
+                                <span class="font-medium text-navy">{{ $apartments->firstWhere('id', $apartment_id)?->check_in_time_formatted ?? '15:00' }} – {{ $apartments->firstWhere('id', $apartment_id)?->check_out_time_formatted ?? '10:00' }}</span>
+                            </p>
                         </div>
                         <div>
                             <span class="block text-xs font-bold text-muted uppercase">{{ __('Guest') }}</span>
