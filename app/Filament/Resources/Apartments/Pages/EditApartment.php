@@ -19,12 +19,15 @@ class EditApartment extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        // build unified tags array from tags_en/tags_cs/tags_de so the repeater shows matching rows
         $en = $this->record->tags_en ?? ($this->record->tags ?? []);
         $cs = $this->record->tags_cs ?? [];
         $de = $this->record->tags_de ?? [];
 
-        $max = max(count($en ?? []), count($cs ?? []), count($de ?? []));
+        $max = max(
+            is_countable($en) ? count($en) : 0,
+            is_countable($cs) ? count($cs) : 0,
+            is_countable($de) ? count($de) : 0
+        );
         $tags = [];
 
         for ($i = 0; $i < $max; $i++) {

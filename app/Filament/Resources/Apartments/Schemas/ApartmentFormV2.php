@@ -7,6 +7,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -122,6 +123,24 @@ class ApartmentFormV2
                                 Toggle::make('active')
                                     ->default(true)
                                     ->label(__('Active')),
+
+                                TextInput::make('external_ical_url')
+                                    ->label(__('External iCal URL (Booking import)'))
+                                    ->url()
+                                    ->maxLength(2048)
+                                    ->helperText(__('Paste the private iCal URL from Booking.com for this apartment.')),
+
+                                TextInput::make('ical_export_url')
+                                    ->label(__('Our iCal export URL'))
+                                    ->disabled()
+                                    ->columnSpan(2)
+                                    ->formatStateUsing(function ($record): string {
+                                        if (! $record?->slug || ! $record?->ical_export_token) {
+                                            return __('Export URL will appear after the apartment is saved.');
+                                        }
+
+                                        return route('ical.apartment.export', ['apartment' => $record->slug, 'token' => $record->ical_export_token]);
+                                    }),
 
                                 Tabs::make('Description')
                                     ->columnSpan('full')
