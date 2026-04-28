@@ -1,5 +1,5 @@
 <nav x-data="{ mobileMenuOpen: false }" class="flex items-center justify-between sticky top-0 z-50 bg-white border-b border-border px-8 md:px-14 h-16 shadow-sm">
-    
+
     @php
         $apartments = \App\Models\Apartment::where('active', true)->get();
         $currentRoute = Route::currentRouteName();
@@ -11,8 +11,11 @@
             $targetSlug = is_object($routeParam) ? $routeParam->slug : $routeParam;
         }
         $targetSlug = $targetSlug ?? $apartments->first()?->slug;
-        
-        $hashPrefix = $currentRoute === 'apartments.show' ? '' : route('apartments.show', $targetSlug);
+
+        $hashPrefix = '';
+        if ($currentRoute !== 'apartments.show' && $targetSlug) {
+            $hashPrefix = route('apartments.show', $targetSlug);
+        }
     @endphp
 
     <a class="flex items-center gap-3 relative z-50" href="{{ route('home') }}">
@@ -113,7 +116,7 @@
         </button>
     </div>
 
-    <div x-show="mobileMenuOpen" 
+    <div x-show="mobileMenuOpen"
          x-transition:enter="transition ease-out duration-200"
          x-transition:enter-start="opacity-0 -translate-y-4"
          x-transition:enter-end="opacity-100 translate-y-0"
@@ -122,7 +125,7 @@
          x-transition:leave-end="opacity-0 -translate-y-4"
          x-cloak
          class="absolute top-16 left-0 w-full bg-white border-b border-border shadow-xl lg:hidden flex flex-col px-8 py-8 z-40 max-h-[calc(100vh-4rem)] overflow-y-auto">
-        
+
         <div class="flex flex-col gap-6">
             @if ($currentRoute === 'home')
                 <div class="flex flex-col gap-3">
@@ -159,7 +162,7 @@
                             @endforeach
                         </div>
                     </div>
-                    
+
                     <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#packages' : route('packages') }}" @click="mobileMenuOpen = false" class="transition-colors {{ $packagesActive ? 'text-purple' : 'hover:text-purple' }}">{{ __('Packages') }}</a>
                     <a href="{{ $currentRoute === 'apartments.show' ? $hashPrefix . '#nearby' : route('activities') }}" @click="mobileMenuOpen = false" class="transition-colors {{ $activitiesActive ? 'text-purple' : 'hover:text-purple' }}">{{ __('Activities') }}</a>
                     <a href="{{ $hashPrefix }}#reservation" @click="mobileMenuOpen = false" class="transition-colors {{ $pricingActive ? 'text-purple' : 'hover:text-purple' }}">{{ __('Pricing') }}</a>
