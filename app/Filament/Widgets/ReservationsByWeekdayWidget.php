@@ -12,7 +12,7 @@ class ReservationsByWeekdayWidget extends ApexChartWidget
 
     protected static ?string $heading = null;
 
-    protected static ?int $contentHeight = 300;
+    protected static ?int $contentHeight = 200;
 
     protected int|string|array $columnSpan = [
         'xl' => 6,
@@ -37,7 +37,7 @@ class ReservationsByWeekdayWidget extends ApexChartWidget
         return [
             'chart' => [
                 'type' => 'bar',
-                'height' => 300,
+                'height' => 200,
                 'toolbar' => ['show' => false],
             ],
             'series' => [

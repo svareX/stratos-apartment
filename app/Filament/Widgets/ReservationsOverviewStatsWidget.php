@@ -25,7 +25,7 @@ class ReservationsOverviewStatsWidget extends StatsOverviewWidget
         return [
             Stat::make(__('Total Reservations'), number_format($total)),
             Stat::make(__('Last 30 days'), number_format($last30)),
-            Stat::make(__('Revenue (30d)'), '$'.number_format((float) $revenue30, 2)),
+            Stat::make(__('Revenue (30d)'), number_format((float) $revenue30, 2) . ' ' . __('CZK')),
             Stat::make(__('Confirmed'), number_format($confirmed)),
         ];
     }
