@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             Localization::class,
+            \App\Http\Middleware\GlobalRateLimiter::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
