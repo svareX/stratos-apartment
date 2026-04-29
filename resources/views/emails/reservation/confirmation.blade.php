@@ -65,13 +65,15 @@
                             background-color: #ffffff;
                         "
                     />
-                    <p style="
+                    <p
+                        style="
                             margin-top: 15px;
                             margin-bottom: 0;
                             font-size: 16px;
                             font-weight: bold;
                             color: #0f172a;
-                        ">{{ number_format($reservation->price, 2, ',', ' ') }} CZK</p>
+                        "
+                    >{{ number_format($reservation->price, 2, ',', ' ') }} CZK</p>
                 </td>
                 <td style="width: 50%; vertical-align: top; padding: 10px">
                     <p
