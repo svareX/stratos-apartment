@@ -26,9 +26,9 @@ class IcalImportService
         }
 
         $vcalendar = Reader::read($response->body());
+
+        $rows = [];
         $seenExternalIds = [];
-        $created = 0;
-        $updated = 0;
 
         foreach ($vcalendar->select('VEVENT') as $event) {
             $dates = $this->extractDateRange($event);
@@ -47,28 +47,43 @@ class IcalImportService
 
             $seenExternalIds[] = $externalId;
 
-            $reservation = Reservation::query()
+            $rows[$externalId] = [
+                'apartment_id' => $apartment->id,
+                'booking_source' => BookingSource::External->value,
+                'external_booking_id' => $externalId,
+                'price' => 0,
+                'status' => ReservationStatus::Confirmed->value,
+                'check_in' => $checkIn->toDateString(),
+                'check_out' => $checkOut->toDateString(),
+                'external_last_synced_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        $created = 0;
+        $updated = 0;
+
+        if (! empty($rows)) {
+            $externalIds = array_keys($rows);
+
+            $existing = Reservation::query()
                 ->where('apartment_id', $apartment->id)
                 ->where('booking_source', BookingSource::External->value)
-                ->where('external_booking_id', $externalId)
-                ->first();
+                ->whereIn('external_booking_id', $externalIds)
+                ->get()
+                ->keyBy('external_booking_id');
 
-            if (! $reservation) {
-                $reservation = new Reservation;
-                $reservation->apartment_id = $apartment->id;
-                $reservation->booking_source = BookingSource::External->value;
-                $reservation->external_booking_id = $externalId;
-                $reservation->price = 0;
-                $created++;
-            } else {
-                $updated++;
-            }
+            $updated = $existing->count();
+            $created = max(0, count($rows) - $updated);
 
-            $reservation->status = ReservationStatus::Confirmed;
-            $reservation->check_in = $checkIn->toDateString();
-            $reservation->check_out = $checkOut->toDateString();
-            $reservation->external_last_synced_at = now();
-            $reservation->save();
+            $values = array_values($rows);
+
+            Reservation::upsert(
+                $values,
+                ['external_booking_id', 'apartment_id'],
+                ['status', 'check_in', 'check_out', 'external_last_synced_at', 'updated_at']
+            );
         }
 
         $cancelled = 0;
