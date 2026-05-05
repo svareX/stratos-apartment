@@ -838,6 +838,7 @@
     </section>
 
     <!-- Review Section -->
+    @if(isset($reviews) && $reviews->isNotEmpty())
     <section class="bg-review w-full" id="reviews">
         <div class="flex flex-col px-8 py-12 md:px-14 md:pt-14 md:pb-16">
             <p class="text-teal mb-1 text-xs font-bold tracking-[8%] uppercase md:mb-3">{{ __('Guest reviews') }}</p>
@@ -853,83 +854,40 @@
             <div
                 class="mt-10 grid grid-cols-1 gap-6 text-[rgba(255,255,255,0.72)] sm:grid-cols-2 md:grid-cols-3"
             >
-                <div
-                    class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
-                >
-                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
-                    <p class="text-[15px] italic">„{{ __('Perfect ski base. We were on the slope in 3 minutes. Warm apartment and wine in the evening.') }}”</p>
-                    <div class="flex gap-3">
-                        <div
-                            class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                        >
-                            K
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
+                @foreach($reviews as $review)
+                    <div
+                        class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
+                    >
+                        @php
+                            $stars = min(5, max(0, (int) round($review->score / 2)));
+                            $starsStr = str_repeat('⭐', $stars);
+                        @endphp
+                        <p class="text-xxs">{{ $starsStr }}</p>
+                        <p class="text-[15px] italic">„{{ $review->content }}”</p>
+                        <div class="flex gap-3">
                             <div
-                                class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
+                                class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
                             >
-                                <span> Brno </span>
-                                <span> · </span>
-                                <span> Booking.com </span>
-                                <span> · ⭐ 9.8 </span>
+                                {{ strtoupper(substr($review->author_name ?? 'G', 0, 1)) }}
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-[rgba(255,255,255,0.85)]">{{ $review->author_name }}</p>
+                                <div
+                                    class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
+                                >
+                                    <span>{{ $review->locale ?? '' }}</span>
+                                    <span> · </span>
+                                    <span>{{ $review->source->label() ?? '' }}</span>
+                                    <span> · ⭐ {{ $review->score }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div
-                    class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
-                >
-                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
-                    <p class="text-[15px] italic">„{{ __('Perfect ski base. We were on the slope in 3 minutes. Warm apartment and wine in the evening.') }}”</p>
-                    <div class="flex gap-3">
-                        <div
-                            class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                        >
-                            K
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
-                            <div
-                                class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
-                            >
-                                <span> Brno </span>
-                                <span> · </span>
-                                <span> Booking.com </span>
-                                <span> · ⭐ 9.8 </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
-                >
-                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
-                    <p class="text-[15px] italic">„{{ __('Perfect ski base. We were on the slope in 3 minutes. Warm apartment and wine in the evening.') }}”</p>
-                    <div class="flex gap-3">
-                        <div
-                            class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                        >
-                            K
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
-                            <div
-                                class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
-                            >
-                                <span> Brno </span>
-                                <span> · </span>
-                                <span> Booking.com </span>
-                                <span> · ⭐ 9.8 </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Instagram Section -->
     <section
