@@ -561,5 +561,6 @@
     "Enter author name": "Geben Sie den Namen des Autors ein",
     "Enter score": "Geben Sie die Bewertung ein",
     "Sync reviews": "Bewertungen synchronisieren",
-    "Reviews sync queued": "Bewertungssynchronisierung in die Warteschlange gestellt"
+    "Reviews sync queued": "Bewertungssynchronisierung in die Warteschlange gestellt",
+    "Hello, how can I help you?": "Hallo, wie kann ich Ihnen helfen?"
 }

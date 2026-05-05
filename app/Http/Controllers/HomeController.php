@@ -69,11 +69,10 @@ class HomeController extends Controller
 
         $instagramPosts = InstagramPost::orderBy('posted_at', 'desc')->take(6)->get();
 
-        // Top 4 reviews by score across all apartments (score is 0-10)
         $reviews = Review::whereNotNull('score')
             ->orderByDesc('score')
             ->orderByDesc('created_at')
-            ->take(4)
+            ->take(3)
             ->get();
 
         return view('home')->with([

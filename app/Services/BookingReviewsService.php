@@ -35,7 +35,6 @@ class BookingReviewsService
         if ($response->successful()) {
             $data = $response->json();
 
-            // Try a few common places the API might return reviews
             $items = data_get($data, 'result.reviews', data_get($data, 'reviews', data_get($data, 'result', [])));
 
             foreach ($items as $item) {
@@ -48,15 +47,12 @@ class BookingReviewsService
 
                 $title = data_get($item, 'title') ?? data_get($item, 'review_title') ?? data_get($item, 'review.title');
 
-                // Determine language for this item (prefer item's language if present)
                 $languageFromItem = data_get($item, 'languagecode') ?? data_get($item, 'language') ?? $locale;
                 $languageShort = substr((string) $languageFromItem, 0, 2);
 
-                // Only support these locales for per-locale columns; otherwise default to English
                 $supported = ['en', 'cs', 'de'];
                 $targetLocaleShort = in_array($languageShort, $supported, true) ? $languageShort : 'en';
 
-                // Try multiple common paths for review text returned by different API shapes
                 $content = data_get($item, 'review_text')
                     ?? data_get($item, 'review.review')
                     ?? data_get($item, 'review.text')
@@ -67,7 +63,6 @@ class BookingReviewsService
                     ?? data_get($item, 'review_content')
                     ?? null;
 
-                // If there's no long-form review text, try composing from pros/cons
                 if (empty($content)) {
                     $pros = data_get($item, 'pros') ?? data_get($item, 'pros_translated');
                     $cons = data_get($item, 'cons') ?? data_get($item, 'cons_translated');
@@ -81,7 +76,6 @@ class BookingReviewsService
                     $content = count($parts) ? implode("\n\n", $parts) : null;
                 }
 
-                // If we still don't have content but we do have a title, copy title into content
                 if (empty($content) && ! empty($title)) {
                     $content = $title;
                 }
@@ -95,7 +89,6 @@ class BookingReviewsService
                 $language = data_get($item, 'language') ?? $locale;
                 $reviewedAt = data_get($item, 'review_date') ?? data_get($item, 'created_at') ?? null;
 
-                // Use firstOrNew so we can check existing English fields and avoid overwriting them
                 $review = Review::firstOrNew([
                     'external_id' => $externalId,
                     'source' => ReviewSource::External,
@@ -109,13 +102,11 @@ class BookingReviewsService
                 $review->score = $average ? (int) round($average / 4 * 10) : null;
                 $review->meta = $item;
 
-                // store title/content into the most appropriate locale column (fallback to en)
                 $titleKey = "title_{$targetLocaleShort}";
                 $contentKey = "content_{$targetLocaleShort}";
                 $review->{$titleKey} = $title;
                 $review->{$contentKey} = $content;
 
-                // If the imported language is not English, and English columns are empty, copy into English
                 if ($targetLocaleShort !== 'en') {
                     if (empty($review->title_en) && ! empty($title)) {
                         $review->title_en = $title;

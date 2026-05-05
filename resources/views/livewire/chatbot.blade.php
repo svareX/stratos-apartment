@@ -6,6 +6,7 @@
         animateBubble: true,
         userInput: '',
         messageCount: @entangle('messageCount'),
+        hasPlayedOpenSound: false,
         siteKey: '{{ config('services.recaptcha.site_key') }}',
         isSubmitting: false,
 
@@ -19,6 +20,26 @@
         closeBubbleInstantly() {
             this.animateBubble = false;
             this.$nextTick(() => { this.showBubble = false; });
+        },
+
+        playOpenSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioCtx();
+                const o = ctx.createOscillator();
+                const g = ctx.createGain();
+                o.type = 'sine';
+                o.frequency.value = 740;
+                g.gain.value = 0.0001;
+                o.connect(g);
+                g.connect(ctx.destination);
+                o.start();
+                g.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.01);
+                g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
+                setTimeout(() => { try { o.stop(); ctx.close(); } catch(e) {} }, 300);
+            } catch (e) {
+                // ignore if WebAudio not available or blocked
+            }
         },
 
         async submitMessage() {
@@ -105,6 +126,11 @@
 
             this.$watch('open', value => {
                 if (value) {
+                    // play a short beep once when opening the chat for the first time and there are no messages
+                    if (!this.hasPlayedOpenSound && this.messageCount === 0) {
+                        this.playOpenSound();
+                        this.hasPlayedOpenSound = true;
+                    }
                     this.closeBubbleInstantly();
                     this.scrollToBottom();
                     this.$nextTick(() => {
@@ -217,6 +243,17 @@
             x-effect="scrollToBottom()"
             class="flex flex-1 flex-col gap-3 overflow-y-auto bg-[#F5F3FA] p-4"
         >
+            @if (empty($messages))
+                <div class="flex justify-start">
+                    <div class="px-4 py-2 rounded-2xl max-w-[85%] text-sm shadow-sm bg-white border border-[#E2DCF5] text-[#1C1530] rounded-bl-none">
+                        <div
+                            class="chat-markdown break-words"
+                            x-data="{ text: @js(__('Hello, how can I help you?')) }"
+                            x-html="typeof marked !== 'undefined' ? marked.parse(text) : text"
+                        ></div>
+                    </div>
+                </div>
+            @endif
             @foreach ($messages as $index => $msg)
                 <div
                     class="flex {{ $msg['role'] === 'user' ? 'justify-end' : 'justify-start' }}"
