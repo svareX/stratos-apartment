@@ -103,8 +103,9 @@
                         x-transition.origin.top.scale
                         class="border-border absolute left-0 z-50 mt-2 w-56 rounded-lg border bg-white shadow-lg"
                     >
-                        <ul class="py-1">
-                            @foreach ($apartments as $apartment)
+                        @if (!empty($apartments) && $apartments->count())
+                            <ul class="py-1">
+                                @foreach ($apartments as $apartment)
                                 <li>
                                     @php
                                         $isActive = url()->current() === route('apartments.show', $apartment->slug)
@@ -119,8 +120,9 @@
                                         >{{ $apartment->name }}</a
                                     >
                                 </li>
-                            @endforeach
-                        </ul>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 </div>
 
@@ -238,7 +240,8 @@
                         <div
                             class="border-border flex flex-col gap-3 border-l-2 pl-3"
                         >
-                            @foreach ($apartments as $apartment)
+                            @if (!empty($apartments) && $apartments->count())
+                                @foreach ($apartments as $apartment)
                                 @php
                                     $isActive = url()->current() === route('apartments.show', $apartment->slug)
                                         || ($currentRoute === 'apartments.show' && (
@@ -251,7 +254,8 @@
                                     class="{{ $isActive ? 'text-purple' : 'text-muted hover:text-purple' }} transition-colors"
                                     >{{ $apartment->name }}</a
                                 >
-                            @endforeach
+                                @endforeach
+                            @endif
                         </div>
                     </div>
 

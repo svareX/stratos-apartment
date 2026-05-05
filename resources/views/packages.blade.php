@@ -11,7 +11,8 @@
         </p>
     </section>
 
-    @foreach ($apartments as $apartment)
+    @if (!empty($apartments) && $apartments->count())
+        @foreach ($apartments as $apartment)
         <section
             class="border-border/70 flex flex-col border-t px-8 py-10 md:px-14 md:py-12"
         >
@@ -94,5 +95,6 @@
                 </a>
             </div>
         </section>
-    @endforeach
+        @endforeach
+    @endif
 </x-app-layout>

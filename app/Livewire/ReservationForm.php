@@ -51,6 +51,9 @@ class ReservationForm extends Component
     #[Url]
     public $pets = false;
 
+    #[Url]
+    public $package;
+
     public $pricePerNight = 0;
 
     public $pricePerNightEur = null;
@@ -179,6 +182,12 @@ class ReservationForm extends Component
             }
         }
 
+
+        // If the URL provided a `package` query param, apply it to the form
+        if (! empty($this->package)) {
+            $this->apartment_package_id = $this->package;
+            $this->updatedApartmentPackageId();
+        }
         $this->adults = $this->adults ? (int) $this->adults : 1;
         $this->children = $this->children ? (int) $this->children : 0;
         $this->pets = filter_var($this->pets, FILTER_VALIDATE_BOOLEAN);

@@ -43,27 +43,29 @@
                 >
                     {{ __('Apartments') }}
                 </h4>
-                <ul class="space-y-1">
-                    @php
-                        $apartments = \App\Models\Apartment::where('active', true)->get();
-                    @endphp
-                    @foreach ($apartments as $apartment)
+                @php
+                    $apartments = \App\Models\Apartment::where('active', true)->get();
+                @endphp
+                @if (!empty($apartments) && $apartments->count())
+                    <ul class="space-y-1">
+                        @foreach ($apartments as $apartment)
+                            <li>
+                                <a
+                                    href="{{ route('apartments.show', $apartment->slug) }}"
+                                    class="text-white/70 hover:text-white"
+                                    >{{ $apartment->name }}</a
+                                >
+                            </li>
+                        @endforeach
                         <li>
                             <a
-                                href="{{ route('apartments.show', $apartment->slug) }}"
+                                href="{{ route('home').'#gallery' }}"
                                 class="text-white/70 hover:text-white"
-                                >{{ $apartment->name }}</a
+                                >{{ __('Gallery') }}</a
                             >
                         </li>
-                    @endforeach
-                    <li>
-                        <a
-                            href="{{ route('home').'#gallery' }}"
-                            class="text-white/70 hover:text-white"
-                            >{{ __('Gallery') }}</a
-                        >
-                    </li>
-                </ul>
+                    </ul>
+                @endif
             </div>
 
             <div class="text-xxs">

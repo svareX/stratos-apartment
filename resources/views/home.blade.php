@@ -176,7 +176,8 @@
         <div
             class="mt-2 grid grid-cols-1 gap-6 md:mt-5 md:grid-cols-2 md:gap-10"
         >
-            @foreach ($apartments as $apartment)
+            @if (!empty($apartments) && $apartments->count())
+                @foreach ($apartments as $apartment)
                 <div
                     class="border-border card-shadow h-full w-full rounded-2xl border-[1.5px] bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
                 >
@@ -277,7 +278,8 @@
                         </a>
                     </div>
                 </div>
-            @endforeach
+                @endforeach
+            @endif
         </div>
     </section>
 
