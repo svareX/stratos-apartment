@@ -21,11 +21,11 @@
     @endphp
 
     <a class="relative z-50 flex items-center gap-3" href="{{ route('home') }}">
-        <div
-            class="bg-purple flex h-9 w-9 items-center justify-center rounded-full text-white"
-        >
-            S
-        </div>
+        <img
+            src="{{ asset('images/logo/icon.png') }}"
+            alt="{{ __('Apartment Stratos') }}"
+            class="h-9 w-9 rounded-full object-cover"
+        />
         <div class="text-text text-sm font-bold">
             {{ __('Apartment Stratos') }}
         </div>

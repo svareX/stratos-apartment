@@ -5,11 +5,11 @@
         >
             <div class="col-span-1 md:col-span-2">
                 <div class="mb-4 flex items-center gap-3">
-                    <div
-                        class="bg-purple flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                    >
-                        S
-                    </div>
+                    <img
+                        src="{{ asset('images/logo/icon.png') }}"
+                        alt="{{ __('Apartment Stratos') }}"
+                        class="h-9 w-9 rounded-full object-cover"
+                    />
                     <div class="font-bold md:text-lg">
                         {{ __('Apartment Stratos') }}
                     </div>
