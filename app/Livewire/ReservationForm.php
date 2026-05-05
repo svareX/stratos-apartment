@@ -182,8 +182,6 @@ class ReservationForm extends Component
             }
         }
 
-
-        // If the URL provided a `package` query param, apply it to the form
         if (! empty($this->package)) {
             $this->apartment_package_id = $this->package;
             $this->updatedApartmentPackageId();
