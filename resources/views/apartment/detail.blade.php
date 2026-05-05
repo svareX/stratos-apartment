@@ -507,7 +507,7 @@
         </section>
     @endif
 
-    @if ($apartment?->type != null && $apartment->type === \App\Enums\ApartmentType::Vineyard)
+    @if ($apartment->packages->isNotEmpty() && (($apartment->hikes && $apartment->hikes->isNotEmpty()) || ($apartment->places && $apartment->places->isNotEmpty()) || (!empty($apartment->tags) && count($apartment->tags))))
         <section class="bg-spa w-full" id="spa">
             <div class="flex flex-col px-8 py-12 md:px-14 md:pt-14 md:pb-16">
                 <p class="text-teal mb-1 text-xs font-bold tracking-[8%] uppercase md:mb-3">{{ __('Therme Laa') }}</p>
@@ -518,41 +518,46 @@
                     {{ __('Thermals are 5 minutes away.') }}
                 </h6>
                 <p class="flex flex-col gap-1 text-sm text-[rgba(255,255,255,0.5)] md:text-base">
-                    <span
-                        class="text-purple bg-purplePale border-border flex flex-col justify-center rounded-xl border px-3 py-1 text-xs"
-                    >
-                        {{ $apartment->tags[0]['value'] ?? '' }}
-                    </span>
                     {{ __('Swimming pools, saunas, relaxation zones and more!') }}
                 </p>
 
-                <div
-                    class="mt-10 grid max-w-6xl grid-cols-1 gap-6 text-[rgba(255,255,255,0.72)]"
-                >
+                @php
+                    $package = $apartment->packages->first();
+                @endphp
+
+                @if ($package)
                     <div
-                        class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(0,201,167,.2)] p-6 md:flex-row"
+                        class="mt-10 grid max-w-6xl grid-cols-1 gap-6 text-[rgba(255,255,255,0.72)]"
                     >
-                        <span class="text-8xl"> 🛁 </span>
-                        <div class="flex flex-col gap-2">
-                            <div class="flex flex-col">
-                                <p class="text-xl text-[rgba(255,255,255,0.85)]">
-                                    {{ __('Spa & Stay package') }}
-                                </p>
-                                <span
-                                    class="mb-3 text-sm text-[rgba(255,255,255,0.6)]"
-                                >
-                                    {{ __('2 nights + 2 admissions to Therme Laa + welcome set (vine, candles, towels). Ideal for couples\' getaway') }}
-                                </span>
-                                <a
-                                    href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug]) }}"
-                                    class="btn-teal teal-shadow flex w-fit flex-col justify-center rounded-xl px-8 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-1"
-                                >
-                                    {{ __('Book') }}
-                                </a>
+                        <div
+                            class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(0,201,167,.2)] p-6 md:flex-row"
+                        >
+                            <span class="text-8xl"> {!! $package->icon ?? '🛁' !!} </span>
+                            <div class="flex flex-col gap-2">
+                                <div class="flex flex-col">
+                                    <p class="text-xl text-[rgba(255,255,255,0.85)]">
+                                        {{ $package->name }}
+                                    </p>
+                                    <span class="mb-3 text-sm text-[rgba(255,255,255,0.6)]">
+                                        @if (!empty($package->short_description))
+                                            {{ $package->short_description }}
+                                        @elseif (!empty($package->translated_features) && is_array($package->translated_features))
+                                            {{ implode(' • ', $package->translated_features) }}
+                                        @else
+                                            {{ __('Package available for this apartment.') }}
+                                        @endif
+                                    </span>
+                                    <a
+                                        href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug, 'apartment_id' => $apartment->id, 'package' => $package->id]) }}"
+                                        class="btn-teal teal-shadow flex w-fit flex-col justify-center rounded-xl px-8 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-1"
+                                    >
+                                        {{ __('Book') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </section>
         <section class="flex flex-col px-8 py-10 pb-12 md:px-14" id="about">
@@ -1192,7 +1197,8 @@
                         });
                     </script>
 
-                    @foreach ($apartment->places as $place)
+                    @if (!empty($apartment->places) && $apartment->places->count())
+                        @foreach ($apartment->places as $place)
                         <a
                             href="{{ $place->url ?? '#' }}"
                             {{ $place->url ? 'target="_blank" rel="noopener noreferrer"' : '' }}
@@ -1222,7 +1228,8 @@
                                 @endif
                             </div>
                         </a>
-                    @endforeach
+                        @endforeach
+                    @endif
                 </div>
 
                 <div
@@ -1285,7 +1292,7 @@
                             {{ __('from') }} {{ number_format($package->price, 0, ',', ' ') }} {{ __('CZK per night') }}
                         </span>
                         <a
-                            href="#"
+                            href="{{ route('reservation', ['locale' => app()->getLocale(), 'apartment' => $apartment->slug, 'apartment_id' => $apartment->id, 'package' => $package->id]) }}"
                             class="text-teal mt-2 text-sm font-bold hover:underline"
                         >
                             {{ __('Book now') }}
