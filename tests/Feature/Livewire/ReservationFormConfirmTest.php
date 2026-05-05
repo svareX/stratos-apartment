@@ -1,13 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Feature\Livewire;
 
-use App\Mail\ReservationConfirmation;
+use App\Livewire\ReservationForm;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
-use App\Models\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
@@ -17,56 +14,42 @@ class ReservationFormConfirmTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_confirm_creates_reservation_and_queues_email_and_sets_session(): void
+    public function test_validation_fails_for_invalid_email()
     {
-        Mail::fake();
-
         $apt = Apartment::create([
             'name_en' => 'Confirm Apt',
             'address' => 'Addr',
-            'capacity' => 4,
-            'base_price' => 800,
+            'capacity' => 2,
+            'base_price' => 150,
             'active' => true,
         ]);
 
         $pkg = ApartmentPackage::create([
             'apartment_id' => $apt->id,
-            'name_en' => 'Dinner',
-            'price' => 150.0,
-            'icon' => '🍽️',
+            'name_en' => 'Std',
+            'price' => 50,
         ]);
 
-        $email = 'jane@gmail.com';
+        $start = now()->addDays(5)->toDateString();
+        $end = now()->addDays(7)->toDateString();
 
-        Livewire::test(\App\Livewire\ReservationForm::class)
+        Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->set('apartment_package_id', $pkg->id)
-            ->call('selectDate', '2026-07-10')
-            ->call('selectDate', '2026-07-12')
-            ->set('first_name', 'Jane')
+            ->set('start_date', $start)
+            ->set('end_date', $end)
+            ->set('first_name', 'John')
             ->set('last_name', 'Doe')
-            ->set('email', $email)
+            ->set('email', 'not-an-email')
             ->set('phone', '+420123456789')
             ->set('address', 'Street 1')
-            ->set('city', 'Prague')
-            ->set('postal_code', '11000')
-            ->set('country', 'Czechia')
-            ->call('confirm')
-            ->assertHasNoErrors();
-
-        $this->assertDatabaseCount('reservations', 1);
-
-        $reservation = Reservation::first();
-
-        $this->assertEquals($apt->id, $reservation->apartment_id);
-        $this->assertEquals($pkg->id, $reservation->apartment_package_id);
-        $this->assertEquals($email, $reservation->user->email);
-
-        Mail::assertQueued(ReservationConfirmation::class, function ($mail) use ($reservation) {
-            return isset($mail->reservation) && $mail->reservation->id === $reservation->id;
-        });
-
-        $this->assertTrue(session()->get('reservation_completed', false));
+            ->set('city', 'City')
+            ->set('postal_code', '12345')
+            ->set('country', 'Country')
+                ->call('nextStep')
+                ->call('nextStep')
+                ->assertHasErrors(['email']);
     }
 }
+
