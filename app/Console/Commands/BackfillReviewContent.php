@@ -34,9 +34,15 @@ class BackfillReviewContent extends Command
 
         $processed = 0;
 
-        $query->limit($limit)->chunk(100, function ($reviews) use (&$processed) {
+        $stopped = false;
+
+        $query->chunkById(100, function ($reviews) use (&$processed, $limit, &$stopped) {
             /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews */
             foreach ($reviews as $review) {
+                if ($processed >= $limit) {
+                    $stopped = true;
+                    return false;
+                }
                 /** @var \App\Models\Review $review */
                 $meta = $review->meta ?? [];
 
@@ -83,7 +89,14 @@ class BackfillReviewContent extends Command
                     $review->save();
                     $this->line("Backfilled review {$review->id} (external_id: {$review->external_id})");
                     $processed++;
+                    if ($processed >= $limit) {
+                        $stopped = true;
+                        return false;
+                    }
                 }
+            }
+            if ($stopped) {
+                return false;
             }
         });
 

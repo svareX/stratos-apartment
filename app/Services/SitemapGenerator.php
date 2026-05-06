@@ -178,7 +178,24 @@ class SitemapGenerator
 
                 FrequentlyAskedQuestion::where('is_active', true)->chunkById(100, function ($faqs) use ($sitemap, $locale) {
                     foreach ($faqs as $faq) {
-                        $sitemap->add(SitemapUrl::create(url($locale.'/'))->setLastModificationDate(now()));
+                        try {
+                            if (! empty($faq->slug)) {
+                                try {
+                                    $u = route('faq.show', ['locale' => $locale, 'faq' => $faq->slug]);
+                                } catch (\Throwable $e) {
+                                    $u = url($locale.'/faq/'.$faq->slug);
+                                }
+
+                                $url = SitemapUrl::create($u);
+                                if (! empty($faq->updated_at)) {
+                                    $url->setLastModificationDate($faq->updated_at);
+                                }
+                                $sitemap->add($url);
+                            }
+                        } catch (\Throwable $e) {
+                            Log::warning('SitemapGenerator: skipping faq '.($faq->id ?? 'n/a').': '.$e->getMessage());
+                            continue;
+                        }
                     }
                 });
             }

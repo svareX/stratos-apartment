@@ -132,6 +132,21 @@ class Apartment extends Model
                 $apartment->ical_export_token = Str::random(48);
             }
         });
+
+        // Invalidate cached SEO data for this apartment when saved or deleted.
+        static::saved(function (Apartment $apartment): void {
+            $locales = config('app.locales', ['cs', 'en', 'de']);
+            foreach ($locales as $locale) {
+                Cache::forget('apartment_seo_'.$apartment->id.'_'.$locale);
+            }
+        });
+
+        static::deleted(function (Apartment $apartment): void {
+            $locales = config('app.locales', ['cs', 'en', 'de']);
+            foreach ($locales as $locale) {
+                Cache::forget('apartment_seo_'.$apartment->id.'_'.$locale);
+            }
+        });
     }
 
     public function getRouteKeyName()
@@ -141,7 +156,8 @@ class Apartment extends Model
 
     public function getDynamicSEOData(): SEOData
     {
-        $cacheKey = 'apartment_seo_'.$this->id;
+        $locale = AppFacade::getLocale() ?: config('app.locale');
+        $cacheKey = 'apartment_seo_'.$this->id.'_'.$locale;
 
         $data = Cache::remember($cacheKey, 3600, function () {
             if ($this->relationLoaded('photosMain')) {

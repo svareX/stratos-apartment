@@ -37,7 +37,6 @@ class BookingReviewsService
 
             $items = data_get($data, 'result.reviews', data_get($data, 'reviews', data_get($data, 'result', [])));
 
-            // Prefetch existing reviews to avoid repeated queries inside loop
             $externalIds = [];
             foreach ($items as $it) {
                 $externalId = data_get($it, 'review_id') ?: data_get($it, 'id') ?: data_get($it, 'review.id');
@@ -49,7 +48,7 @@ class BookingReviewsService
             $existing = [];
             if (count($externalIds)) {
                 $existing = Review::whereIn('external_id', $externalIds)
-                    ->where('source', ReviewSource::External)
+                    ->where('source', ReviewSource::External->value)
                     ->get()
                     ->keyBy('external_id')
                     ->all();

@@ -36,7 +36,6 @@ class SitemapImageTypeErrorTest extends TestCase
 
         Storage::disk('public')->put('photos/typeerr.jpg', $jpeg);
 
-        // intentionally set a non-string title to try to trigger TypeError in addImage
         $apt->photos()->create([
             'path' => 'photos/typeerr.jpg',
             'is_main' => true,

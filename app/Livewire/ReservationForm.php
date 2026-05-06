@@ -183,8 +183,29 @@ class ReservationForm extends Component
         }
 
         if (! empty($this->package)) {
-            $this->apartment_package_id = $this->package;
-            $this->updatedApartmentPackageId();
+            $valid = false;
+            if ($this->package === 'standard') {
+                $valid = true;
+            } elseif (is_numeric($this->package) && ! empty($this->apartment_id)) {
+                try {
+                    $exists = ApartmentPackage::where('apartment_id', $this->apartment_id)
+                        ->where('id', (int) $this->package)
+                        ->exists();
+                    if ($exists) {
+                        $valid = true;
+                    }
+                } catch (\Throwable $_) {
+                }
+            }
+
+            if ($valid) {
+                $this->apartment_package_id = $this->package;
+                $this->updatedApartmentPackageId();
+            } else {
+                $this->apartment_package_id = '';
+                $this->packagePrice = 0;
+                $this->selectedPackageName = '';
+            }
         }
         $this->adults = $this->adults ? (int) $this->adults : 1;
         $this->children = $this->children ? (int) $this->children : 0;

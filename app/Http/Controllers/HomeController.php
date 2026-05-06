@@ -23,8 +23,14 @@ class HomeController extends Controller
                 'cleaning_fee', 'cleaning_fee_eur', 'days_for_cleaning_fee', 'address', 'capacity', 'updated_at',
             ])
             ->with([
-                'photosOther' => fn ($q) => $q->select('id', 'apartment_id', 'path', 'position', 'is_main'),
-                'photosMain' => fn ($q) => $q->where('is_main', true)->select('id', 'apartment_id', 'path', 'position', 'is_main'),
+                'photosOther' => fn ($q) => $q->select(
+                    'id', 'apartment_id', 'path', 'position', 'is_main',
+                    'tag_en', 'tag_cs', 'tag_de'
+                ),
+                'photosMain' => fn ($q) => $q->where('is_main', true)->select(
+                    'id', 'apartment_id', 'path', 'position', 'is_main',
+                    'tag_en', 'tag_cs', 'tag_de'
+                ),
             ])
             ->get();
 

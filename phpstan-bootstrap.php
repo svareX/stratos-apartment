@@ -1,6 +1,5 @@
 <?php
 
-// Polyfill mb_split for static analysis environments that may not have ext-mbstring.
 if (! function_exists('mb_split')) {
     /**
      * Split multibyte string by regular expression using preg_split fallback.
