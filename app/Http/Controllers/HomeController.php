@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Apartment;
 use App\Models\HomepageSettings;
 use App\Models\InstagramPost;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,22 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $apartments = Apartment::where('active', true)->get();
+        $apartments = Apartment::where('active', true)
+            ->select([
+                'id', 'slug', 'name_en', 'name_cs', 'name_de', 'base_price', 'base_price_eur',
+                'cleaning_fee', 'cleaning_fee_eur', 'days_for_cleaning_fee', 'address', 'capacity', 'updated_at',
+            ])
+            ->with([
+                'photosOther' => fn ($q) => $q->select(
+                    'id', 'apartment_id', 'path', 'position', 'is_main',
+                    'tag_en', 'tag_cs', 'tag_de'
+                ),
+                'photosMain' => fn ($q) => $q->where('is_main', true)->select(
+                    'id', 'apartment_id', 'path', 'position', 'is_main',
+                    'tag_en', 'tag_cs', 'tag_de'
+                ),
+            ])
+            ->get();
 
         $settings = HomepageSettings::first();
         $heroSlides = $settings ? ($settings->hero_slides ?? []) : [];
@@ -68,12 +84,19 @@ class HomeController extends Controller
 
         $instagramPosts = InstagramPost::orderBy('posted_at', 'desc')->take(6)->get();
 
+        $reviews = Review::whereNotNull('score')
+            ->orderByDesc('score')
+            ->orderByDesc('created_at')
+            ->take(3)
+            ->get();
+
         return view('home')->with([
             'apartments' => $apartments,
             'heroSlides' => $heroSlides,
             'apartmentImages' => $apartmentImages,
             'galleryImages' => $galleryImages,
             'instagramPosts' => $instagramPosts,
+            'reviews' => $reviews,
         ]);
     }
 }
