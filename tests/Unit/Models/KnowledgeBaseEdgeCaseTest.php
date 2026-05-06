@@ -19,7 +19,7 @@ class KnowledgeBaseEdgeCaseTest extends TestCase
             $embedding = array_fill(0, 768, 0.1);
         } else {
             // other drivers store embedding as text/JSON
-            $embedding = json_encode([0.1, 0.2]);
+            $embedding = [0.1, 0.2];
         }
 
         $kb = KnowledgeBase::create([
