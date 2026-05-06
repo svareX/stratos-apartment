@@ -44,6 +44,11 @@ return [
         'rapidapi_key' => env('RAPIDAPI_KEY'),
     ],
 
+    'booking' => [
+        'rapidapi_key' => env('RAPIDAPI_KEY'),
+        'hotel_ids' => env('BOOKING_HOTEL_IDS') ? explode(',', env('BOOKING_HOTEL_IDS')) : null,
+    ],
+
     'recaptcha' => [
         'site_key' => env('RECAPTCHA_SITE_KEY'),
         'secret_key' => env('RECAPTCHA_SECRET_KEY'),

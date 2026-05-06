@@ -68,6 +68,15 @@ class ReservationsDashboard extends Dashboard
                     dispatch(new \App\Jobs\SyncBookingJob);
                     Notification::make()->success()->title(__('Booking sync queued'))->send();
                 }),
+
+            Action::make('syncReviews')
+                ->label(__('Sync reviews'))
+                ->icon(Heroicon::ArrowPath)
+                ->color('primary')
+                ->action(function () {
+                    dispatch(new \App\Jobs\SyncReviewsJob);
+                    Notification::make()->success()->title(__('Reviews sync queued'))->send();
+                }),
         ];
     }
 

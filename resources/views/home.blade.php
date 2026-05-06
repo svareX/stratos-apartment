@@ -176,108 +176,115 @@
         <div
             class="mt-2 grid grid-cols-1 gap-6 md:mt-5 md:grid-cols-2 md:gap-10"
         >
-            @foreach ($apartments as $apartment)
-                <div
-                    class="border-border card-shadow h-full w-full rounded-2xl border-[1.5px] bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-                >
+            @if (!empty($apartments) && $apartments->count())
+                @foreach ($apartments as $apartment)
                     <div
-                        x-data="{ idx: 0, count: {{ $apartment->photosMain->count() }} }"
-                        class="relative flex h-60 w-full flex-col justify-end overflow-hidden rounded-t-2xl"
+                        class="border-border card-shadow h-full w-full rounded-2xl border-[1.5px] bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
                     >
                         <div
-                            class="apt-slides flex h-full transition-transform duration-700"
-                            :style="`transform:translateX(-${idx * 100}%);`"
+                            x-data="{ idx: 0, count: {{ $apartment->photosMain->count() }} }"
+                            class="relative flex h-60 w-full flex-col justify-end overflow-hidden rounded-t-2xl"
                         >
-                            @foreach ($apartment->photosMain as $photo)
-                                <div
-                                    class="apt-slide relative h-full min-w-full"
-                                >
-                                    <x-responsive-image
-                                        :path="$photo->path"
-                                        :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
-                                        class="h-full w-full object-cover"
-                                    />
+                            <div
+                                class="apt-slides flex h-full transition-transform duration-700"
+                                :style="`transform:translateX(-${idx * 100}%);`"
+                            >
+                                @foreach ($apartment->photosMain as $photo)
+                                    <div
+                                        class="apt-slide relative h-full min-w-full"
+                                    >
+                                        <x-responsive-image
+                                            :path="$photo->path"
+                                            :alt="$photo->tag ?: $apartment->name ?: __('Apartment view')"
+                                            class="h-full w-full object-cover"
+                                        />
 
-                                    @if ($photo->tag)
-                                        <div
-                                            class="absolute bottom-0 left-0 mb-3 ml-4 w-fit rounded-xl border-[1px] border-[rgba(255,255,255,0.15)] bg-[rgba(0,0,0,0.3)] px-3 text-sm font-bold tracking-[8%] text-[rgba(255,255,255,0.6)] uppercase backdrop-blur"
-                                        >
-                                            {{ $photo->tag }}
-                                        </div>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
+                                        @if ($photo->tag)
+                                            <div
+                                                class="absolute bottom-0 left-0 mb-3 ml-4 w-fit rounded-xl border-[1px] border-[rgba(255,255,255,0.15)] bg-[rgba(0,0,0,0.3)] px-3 text-sm font-bold tracking-[8%] text-[rgba(255,255,255,0.6)] uppercase backdrop-blur"
+                                            >
+                                                {{ $photo->tag }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
 
-                        <div class="absolute right-4 bottom-3 z-20 flex gap-1">
-                            @foreach ($apartment->photosMain as $index => $photo)
-                                <div
-                                    :class="[
+                            <div
+                                class="absolute right-4 bottom-3 z-20 flex gap-1"
+                            >
+                                @foreach ($apartment->photosMain as $index => $photo)
+                                    <div
+                                        :class="[
                                                     'transition-all duration-300 cursor-pointer',
                                                     idx === {{ $index }}
                                                         ? 'bg-teal w-6 h-2 rounded-full'
                                                         : 'bg-teal/60 w-2 h-2 rounded-full opacity-60'
                                                 ]"
-                                    @click="idx = {{ $index }}"
-                                ></div>
-                            @endforeach
-                        </div>
-
-                        <div
-                            class="c-arrow prev absolute top-1/2 left-4 z-20 flex h-3.5 w-3.5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-base text-white transition-all duration-300 hover:bg-white/20"
-                            @click="
-                                idx = count > 0 ? (idx - 1 + count) % count : 0
-                            "
-                        >
-                            ‹
-                        </div>
-                        <div
-                            class="c-arrow next absolute top-1/2 right-4 z-20 flex h-3.5 w-3.5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-base text-white transition-all duration-300 hover:bg-white/20"
-                            @click="idx = count > 0 ? (idx + 1) % count : 0"
-                        >
-                            ›
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-2 px-5 py-6">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="bg-purple flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                            >
-                                S
+                                        @click="idx = {{ $index }}"
+                                    ></div>
+                                @endforeach
                             </div>
-                            <div class="flex flex-col">
-                                <div class="flex gap-2">
-                                    <div
-                                        class="text-teal text-xs font-bold uppercase"
-                                    >
-                                        {{ __($apartment->address) }}
+
+                            <div
+                                class="c-arrow prev absolute top-1/2 left-4 z-20 flex h-3.5 w-3.5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-base text-white transition-all duration-300 hover:bg-white/20"
+                                @click="
+                                    idx =
+                                        count > 0
+                                            ? (idx - 1 + count) % count
+                                            : 0
+                                "
+                            >
+                                ‹
+                            </div>
+                            <div
+                                class="c-arrow next absolute top-1/2 right-4 z-20 flex h-3.5 w-3.5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-base text-white transition-all duration-300 hover:bg-white/20"
+                                @click="idx = count > 0 ? (idx + 1) % count : 0"
+                            >
+                                ›
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2 px-5 py-6">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="bg-purple flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
+                                >
+                                    S
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex gap-2">
+                                        <div
+                                            class="text-teal text-xs font-bold uppercase"
+                                        >
+                                            {{ __($apartment->address) }}
+                                        </div>
+                                    </div>
+                                    <div class="text-navy font-serif text-lg">
+                                        {{ $apartment->name }}
                                     </div>
                                 </div>
-                                <div class="text-navy font-serif text-lg">
-                                    {{ $apartment->name }}
-                                </div>
                             </div>
+                            <p class="text-muted px-1 text-sm">{{ $apartment->description }}</p>
+                            <div class="mt-1 mb-2 flex gap-2 px-2">
+                                @foreach ($apartment->tags as $tag)
+                                    <span
+                                        class="text-purple bg-purplePale border-border flex flex-col justify-center rounded-xl border px-3 py-1 text-xs"
+                                    >
+                                        {{ $tag['value'] }}
+                                    </span>
+                                @endforeach
+                            </div>
+                            <a
+                                href="{{ route('apartments.show', $apartment->slug) }}"
+                                class="btn-teal teal-shadow ml-2 w-fit rounded-xl px-4 py-1.5 text-sm font-bold transition-all duration-200 hover:translate-x-1"
+                            >
+                                {{ __('Explore apartment') }}
+                            </a>
                         </div>
-                        <p class="text-muted px-1 text-sm">{{ $apartment->description }}</p>
-                        <div class="mt-1 mb-2 flex gap-2 px-2">
-                            @foreach ($apartment->tags as $tag)
-                                <span
-                                    class="text-purple bg-purplePale border-border flex flex-col justify-center rounded-xl border px-3 py-1 text-xs"
-                                >
-                                    {{ $tag['value'] }}
-                                </span>
-                            @endforeach
-                        </div>
-                        <a
-                            href="{{ route('apartments.show', $apartment->slug) }}"
-                            class="btn-teal teal-shadow ml-2 w-fit rounded-xl px-4 py-1.5 text-sm font-bold transition-all duration-200 hover:translate-x-1"
-                        >
-                            {{ __('Explore apartment') }}
-                        </a>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            @endif
         </div>
     </section>
 
@@ -838,98 +845,58 @@
     </section>
 
     <!-- Review Section -->
-    <section class="bg-review w-full" id="reviews">
-        <div class="flex flex-col px-8 py-12 md:px-14 md:pt-14 md:pb-16">
-            <p class="text-teal mb-1 text-xs font-bold tracking-[8%] uppercase md:mb-3">{{ __('Guest reviews') }}</p>
-            <h6 class="mb-2 font-serif text-4xl text-white md:text-5xl">
-                {{ __('What guests say.') }}
-            </h6>
-            <p class="flex gap-2 text-sm text-[rgba(255,255,255,0.5)] md:text-base">
-                <span> {{ __('Over 9.8 on Booking.com') }} </span>
-                <span> · </span>
-                <span> {{ __('Over 150 reviews') }} </span>
-            </p>
-
-            <div
-                class="mt-10 grid grid-cols-1 gap-6 text-[rgba(255,255,255,0.72)] sm:grid-cols-2 md:grid-cols-3"
-            >
-                <div
-                    class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
-                >
-                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
-                    <p class="text-[15px] italic">„{{ __('Perfect ski base. We were on the slope in 3 minutes. Warm apartment and wine in the evening.') }}”</p>
-                    <div class="flex gap-3">
-                        <div
-                            class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                        >
-                            K
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
-                            <div
-                                class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
-                            >
-                                <span> Brno </span>
-                                <span> · </span>
-                                <span> Booking.com </span>
-                                <span> · ⭐ 9.8 </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    @if (isset($reviews) && $reviews->isNotEmpty())
+        <section class="bg-review w-full" id="reviews">
+            <div class="flex flex-col px-8 py-12 md:px-14 md:pt-14 md:pb-16">
+                <p class="text-teal mb-1 text-xs font-bold tracking-[8%] uppercase md:mb-3">{{ __('Guest reviews') }}</p>
+                <h6 class="mb-2 font-serif text-4xl text-white md:text-5xl">
+                    {{ __('What guests say.') }}
+                </h6>
+                <p class="flex gap-2 text-sm text-[rgba(255,255,255,0.5)] md:text-base">
+                    <span> {{ __('Over 9.8 on Booking.com') }} </span>
+                    <span> · </span>
+                    <span> {{ __('Over 150 reviews') }} </span>
+                </p>
 
                 <div
-                    class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
+                    class="mt-10 grid grid-cols-1 gap-6 text-[rgba(255,255,255,0.72)] sm:grid-cols-2 md:grid-cols-3"
                 >
-                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
-                    <p class="text-[15px] italic">„{{ __('Perfect ski base. We were on the slope in 3 minutes. Warm apartment and wine in the evening.') }}”</p>
-                    <div class="flex gap-3">
+                    @foreach ($reviews as $review)
                         <div
-                            class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
+                            class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
                         >
-                            K
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
-                            <div
-                                class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
-                            >
-                                <span> Brno </span>
-                                <span> · </span>
-                                <span> Booking.com </span>
-                                <span> · ⭐ 9.8 </span>
+                            @php
+                            $stars = min(5, max(0, (int) round($review->score / 2)));
+                            $starsStr = str_repeat('⭐', $stars);
+                        @endphp
+                            <p class="text-xxs">{{ $starsStr }}</p>
+                            <p class="text-[15px] italic">„{{ $review->content }}”</p>
+                            <div class="flex gap-3">
+                                <div
+                                    class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
+                                >
+                                    {{ strtoupper(substr($review->author_name ?? 'G', 0, 1)) }}
+                                </div>
+                                <div class="flex flex-col">
+                                    <p class="text-[rgba(255,255,255,0.85)]">{{ $review->author_name }}</p>
+                                    <div
+                                        class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
+                                    >
+                                        <span>{{ $review->locale ?? '' }}</span>
+                                        <span> · </span>
+                                        <span
+                                            >{{ $review->source->label() ?? '' }}</span
+                                        >
+                                        <span> · ⭐ {{ $review->score }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(255,255,255,0.1)] p-6"
-                >
-                    <p class="text-xxs">⭐⭐⭐⭐⭐</p>
-                    <p class="text-[15px] italic">„{{ __('Perfect ski base. We were on the slope in 3 minutes. Warm apartment and wine in the evening.') }}”</p>
-                    <div class="flex gap-3">
-                        <div
-                            class="bg-teal my-auto flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                        >
-                            K
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-[rgba(255,255,255,0.85)]">Kateřina M.</p>
-                            <div
-                                class="flex gap-1 text-xs text-[rgba(255,255,255,0.35)]"
-                            >
-                                <span> Brno </span>
-                                <span> · </span>
-                                <span> Booking.com </span>
-                                <span> · ⭐ 9.8 </span>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
     <!-- Instagram Section -->
     <section

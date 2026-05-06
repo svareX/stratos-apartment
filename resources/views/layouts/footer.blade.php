@@ -5,11 +5,11 @@
         >
             <div class="col-span-1 md:col-span-2">
                 <div class="mb-4 flex items-center gap-3">
-                    <div
-                        class="bg-purple flex h-9 w-9 items-center justify-center rounded-full font-bold text-white"
-                    >
-                        S
-                    </div>
+                    <img
+                        src="{{ asset('images/logo/icon.png') }}"
+                        alt="{{ __('Apartment Stratos') }}"
+                        class="h-9 w-9 rounded-full object-cover"
+                    />
                     <div class="font-bold md:text-lg">
                         {{ __('Apartment Stratos') }}
                     </div>
@@ -43,27 +43,29 @@
                 >
                     {{ __('Apartments') }}
                 </h4>
-                <ul class="space-y-1">
-                    @php
-                        $apartments = \App\Models\Apartment::where('active', true)->get();
-                    @endphp
-                    @foreach ($apartments as $apartment)
+                @php
+                    $apartments = \App\Models\Apartment::where('active', true)->get();
+                @endphp
+                @if (!empty($apartments) && $apartments->count())
+                    <ul class="space-y-1">
+                        @foreach ($apartments as $apartment)
+                            <li>
+                                <a
+                                    href="{{ route('apartments.show', $apartment->slug) }}"
+                                    class="text-white/70 hover:text-white"
+                                    >{{ $apartment->name }}</a
+                                >
+                            </li>
+                        @endforeach
                         <li>
                             <a
-                                href="{{ route('apartments.show', $apartment->slug) }}"
+                                href="{{ route('home').'#gallery' }}"
                                 class="text-white/70 hover:text-white"
-                                >{{ $apartment->name }}</a
+                                >{{ __('Gallery') }}</a
                             >
                         </li>
-                    @endforeach
-                    <li>
-                        <a
-                            href="{{ route('home').'#gallery' }}"
-                            class="text-white/70 hover:text-white"
-                            >{{ __('Gallery') }}</a
-                        >
-                    </li>
-                </ul>
+                    </ul>
+                @endif
             </div>
 
             <div class="text-xxs">

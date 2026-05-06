@@ -45,7 +45,6 @@ class Photo extends Model
     {
         $locale = AppFacade::getLocale();
 
-        // If current locale is English, prefer the English tag or legacy `tag` column.
         if ($locale === 'en') {
             if (! empty($this->attributes['tag_en'])) {
                 return $this->attributes['tag_en'];
@@ -54,13 +53,11 @@ class Photo extends Model
             return $this->attributes['tag'] ?? '';
         }
 
-        // For non-English locales, only return the localized column if it exists and is non-empty.
         $column = "tag_{$locale}";
         if (! empty($this->attributes[$column])) {
             return $this->attributes[$column];
         }
 
-        // Otherwise return empty string (do not fall back to English)
         return '';
     }
 }

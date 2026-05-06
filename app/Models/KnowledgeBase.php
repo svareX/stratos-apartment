@@ -8,10 +8,12 @@ class KnowledgeBase extends Model
 {
     protected $guarded = [];
 
-    protected function casts(): array
-    {
-        return [
-            'embedding' => 'array',
-        ];
-    }
+    /**
+     * The attribute casting definitions.
+     *
+     * @var array<string,string>
+     */
+    protected $casts = [
+        'embedding' => 'array',
+    ];
 }

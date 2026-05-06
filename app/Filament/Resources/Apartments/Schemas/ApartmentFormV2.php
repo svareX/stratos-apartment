@@ -206,7 +206,6 @@ class ApartmentFormV2
                             ->label(__('Amenities'))
                             ->schema([
 
-                                // Booking.com extra information notice (read-only text)
                                 TextEntry::make('booking_com_info')
                                     ->label(__('Extra information'))
                                     ->state(__('This information is being used to feed the SupportBot so that it has more information about the apartments and can help the potential clients more.'))

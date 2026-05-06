@@ -21,11 +21,11 @@
     @endphp
 
     <a class="relative z-50 flex items-center gap-3" href="{{ route('home') }}">
-        <div
-            class="bg-purple flex h-9 w-9 items-center justify-center rounded-full text-white"
-        >
-            S
-        </div>
+        <img
+            src="{{ asset('images/logo/icon.png') }}"
+            alt="{{ __('Apartment Stratos') }}"
+            class="h-9 w-9 rounded-full object-cover"
+        />
         <div class="text-text text-sm font-bold">
             {{ __('Apartment Stratos') }}
         </div>
@@ -103,24 +103,26 @@
                         x-transition.origin.top.scale
                         class="border-border absolute left-0 z-50 mt-2 w-56 rounded-lg border bg-white shadow-lg"
                     >
-                        <ul class="py-1">
-                            @foreach ($apartments as $apartment)
-                                <li>
-                                    @php
+                        @if (!empty($apartments) && $apartments->count())
+                            <ul class="py-1">
+                                @foreach ($apartments as $apartment)
+                                    <li>
+                                        @php
                                         $isActive = url()->current() === route('apartments.show', $apartment->slug)
                                             || ($currentRoute === 'apartments.show' && (
                                                 request()->route('apartment') == $apartment->slug
                                                 || (is_object(request()->route('apartment')) && optional(request()->route('apartment'))->slug == $apartment->slug)
                                             ));
                                     @endphp
-                                    <a
-                                        href="{{ route('apartments.show', $apartment->slug) }}"
-                                        class="block px-4 py-2 text-sm transition-colors duration-150 {{ $isActive ? 'font-bold text-purple bg-purplePale' : 'text-text hover:bg-purplePale hover:text-purple' }}"
-                                        >{{ $apartment->name }}</a
-                                    >
-                                </li>
-                            @endforeach
-                        </ul>
+                                        <a
+                                            href="{{ route('apartments.show', $apartment->slug) }}"
+                                            class="block px-4 py-2 text-sm transition-colors duration-150 {{ $isActive ? 'font-bold text-purple bg-purplePale' : 'text-text hover:bg-purplePale hover:text-purple' }}"
+                                            >{{ $apartment->name }}</a
+                                        >
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 </div>
 
@@ -238,20 +240,22 @@
                         <div
                             class="border-border flex flex-col gap-3 border-l-2 pl-3"
                         >
-                            @foreach ($apartments as $apartment)
-                                @php
+                            @if (!empty($apartments) && $apartments->count())
+                                @foreach ($apartments as $apartment)
+                                    @php
                                     $isActive = url()->current() === route('apartments.show', $apartment->slug)
                                         || ($currentRoute === 'apartments.show' && (
                                             request()->route('apartment') == $apartment->slug
                                             || (is_object(request()->route('apartment')) && optional(request()->route('apartment'))->slug == $apartment->slug)
                                         ));
                                 @endphp
-                                <a
-                                    href="{{ route('apartments.show', $apartment->slug) }}"
-                                    class="{{ $isActive ? 'text-purple' : 'text-muted hover:text-purple' }} transition-colors"
-                                    >{{ $apartment->name }}</a
-                                >
-                            @endforeach
+                                    <a
+                                        href="{{ route('apartments.show', $apartment->slug) }}"
+                                        class="{{ $isActive ? 'text-purple' : 'text-muted hover:text-purple' }} transition-colors"
+                                        >{{ $apartment->name }}</a
+                                    >
+                                @endforeach
+                            @endif
                         </div>
                     </div>
 

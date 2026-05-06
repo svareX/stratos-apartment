@@ -22,17 +22,19 @@ class InstagramSyncService
         ]);
 
         if ($response->failed()) {
-            dd($response->status(), $response->json());
+            logger()->error('Failed to fetch Instagram posts from API', [
+                'user_id' => $userId,
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
+
+            return;
         }
 
         if ($response->successful()) {
             $data = $response->json();
 
             $items = data_get($data, 'data.user.edge_owner_to_timeline_media.edges', []);
-
-            if (empty($items)) {
-                dd('No items found in response', $data);
-            }
 
             foreach ($items as $item) {
                 $node = $item['node'] ?? [];
