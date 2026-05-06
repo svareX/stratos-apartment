@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ae14df4973d7b276f0e2318302ff01f",
+    "content-hash": "cda3ad9703ed58bd9518f4a3f0ce61d3",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3710,27 +3710,28 @@
         },
         {
             "name": "leandrocfe/filament-apex-charts",
-            "version": "4.0.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leandrocfe/filament-apex-charts.git",
-                "reference": "c9912bcee08ce324892f20f32ea1351da1639a95"
+                "reference": "20f08492ff72216e329c70c5096c966649fc8350"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leandrocfe/filament-apex-charts/zipball/c9912bcee08ce324892f20f32ea1351da1639a95",
-                "reference": "c9912bcee08ce324892f20f32ea1351da1639a95",
+                "url": "https://api.github.com/repos/leandrocfe/filament-apex-charts/zipball/20f08492ff72216e329c70c5096c966649fc8350",
+                "reference": "20f08492ff72216e329c70c5096c966649fc8350",
                 "shasum": ""
             },
             "require": {
-                "filament/schemas": "^v4.0.0",
-                "filament/widgets": "^v4.0.0",
-                "illuminate/contracts": "^11.0|^12.0",
-                "livewire/livewire": "^3.0",
+                "filament/schemas": "^v4.0.0|^v5.0.0",
+                "filament/widgets": "^v4.0.0|^v5.0.0",
+                "illuminate/contracts": "^11.0|^12.0|^13.0",
+                "livewire/livewire": "^3.0|^4.0",
                 "php": "^8.2",
                 "spatie/laravel-package-tools": "^1.13.0"
             },
             "require-dev": {
+                "filament/filament": "^4.0|^5.0",
                 "larastan/larastan": "^3.0.1",
                 "laravel/pint": "^1.0",
                 "nunomaduro/collision": "^8.0",
@@ -3779,9 +3780,9 @@
             ],
             "support": {
                 "issues": "https://github.com/leandrocfe/filament-apex-charts/issues",
-                "source": "https://github.com/leandrocfe/filament-apex-charts/tree/4.0.0"
+                "source": "https://github.com/leandrocfe/filament-apex-charts/tree/5.1.0"
             },
-            "time": "2025-10-02T14:31:50+00:00"
+            "time": "2026-03-26T18:38:39+00:00"
         },
         {
             "name": "livewire/flux",
