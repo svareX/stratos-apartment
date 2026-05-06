@@ -532,13 +532,17 @@
                         <div
                             class="bg-[rgba(255,255,255,0.06);] flex flex-col gap-y-4 rounded-2xl border-[1px] border-[rgba(0,201,167,.2)] p-6 md:flex-row"
                         >
-                            <span class="text-8xl"> {!! $package->icon ?? '🛁' !!} </span>
+                            <span class="text-8xl">
+                                {!! $package->icon ?? '🛁' !!}
+                            </span>
                             <div class="flex flex-col gap-2">
                                 <div class="flex flex-col">
                                     <p class="text-xl text-[rgba(255,255,255,0.85)]">
                                         {{ $package->name }}
                                     </p>
-                                    <span class="mb-3 text-sm text-[rgba(255,255,255,0.6)]">
+                                    <span
+                                        class="mb-3 text-sm text-[rgba(255,255,255,0.6)]"
+                                    >
                                         @if (!empty($package->short_description))
                                             {{ $package->short_description }}
                                         @elseif (!empty($package->translated_features) && is_array($package->translated_features))
@@ -1199,35 +1203,35 @@
 
                     @if (!empty($apartment->places) && $apartment->places->count())
                         @foreach ($apartment->places as $place)
-                        <a
-                            href="{{ $place->url ?? '#' }}"
-                            {{ $place->url ? 'target="_blank" rel="noopener noreferrer"' : '' }}
-                            @click.prevent="focusMarker({{ $place->id }}, {{ $place->latitude }}, {{ $place->longitude }})"
-                            @mouseover="toggleMarkerHover({{ $place->id }}, true)"
-                            @mouseout="toggleMarkerHover({{ $place->id }}, false)"
-                            :class="hoveredPlaceId === {{ $place->id }} ? 'border-purple shadow-md' : 'border-border'"
-                            class="hover:border-purple group flex cursor-pointer gap-3 rounded-xl border-[1px] bg-white px-6 py-4 transition-all duration-200 hover:shadow-md"
-                        >
-                            <span
-                                :class="hoveredPlaceId === {{ $place->id }} ? 'scale-110' : ''"
-                                class="my-auto text-3xl transition-transform duration-200 group-hover:scale-110"
+                            <a
+                                href="{{ $place->url ?? '#' }}"
+                                {{ $place->url ? 'target="_blank" rel="noopener noreferrer"' : '' }}
+                                @click.prevent="focusMarker({{ $place->id }}, {{ $place->latitude }}, {{ $place->longitude }})"
+                                @mouseover="toggleMarkerHover({{ $place->id }}, true)"
+                                @mouseout="toggleMarkerHover({{ $place->id }}, false)"
+                                :class="hoveredPlaceId === {{ $place->id }} ? 'border-purple shadow-md' : 'border-border'"
+                                class="hover:border-purple group flex cursor-pointer gap-3 rounded-xl border-[1px] bg-white px-6 py-4 transition-all duration-200 hover:shadow-md"
                             >
-                                {{ $place->icon }}
-                            </span>
-                            <div class="flex flex-col justify-center">
-                                <p class="text-navy ml-1 text-sm font-bold">
-                                    {{ $place->name }}
-                                </p>
-                                <span class="text-muted mt-0.5 text-xs">
-                                    {{ $place->distance_text }}
+                                <span
+                                    :class="hoveredPlaceId === {{ $place->id }} ? 'scale-110' : ''"
+                                    class="my-auto text-3xl transition-transform duration-200 group-hover:scale-110"
+                                >
+                                    {{ $place->icon }}
                                 </span>
-                                @if ($place->description)
-                                    <p class="text-muted mt-1.5 ml-1 line-clamp-2 text-xs">
-                                        {{ $place->description }}
+                                <div class="flex flex-col justify-center">
+                                    <p class="text-navy ml-1 text-sm font-bold">
+                                        {{ $place->name }}
                                     </p>
-                                @endif
-                            </div>
-                        </a>
+                                    <span class="text-muted mt-0.5 text-xs">
+                                        {{ $place->distance_text }}
+                                    </span>
+                                    @if ($place->description)
+                                        <p class="text-muted mt-1.5 ml-1 line-clamp-2 text-xs">
+                                            {{ $place->description }}
+                                        </p>
+                                    @endif
+                                </div>
+                            </a>
                         @endforeach
                     @endif
                 </div>

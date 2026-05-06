@@ -245,11 +245,17 @@
         >
             @if (empty($messages))
                 <div class="flex justify-start">
-                    <div class="px-4 py-2 rounded-2xl max-w-[85%] text-sm shadow-sm bg-white border border-[#E2DCF5] text-[#1C1530] rounded-bl-none">
+                    <div
+                        class="max-w-[85%] rounded-2xl rounded-bl-none border border-[#E2DCF5] bg-white px-4 py-2 text-sm text-[#1C1530] shadow-sm"
+                    >
                         <div
                             class="chat-markdown break-words"
                             x-data="{ text: @js(__('Hello, how can I help you?')) }"
-                            x-html="typeof marked !== 'undefined' ? marked.parse(text) : text"
+                            x-html="
+                                typeof marked !== 'undefined'
+                                    ? marked.parse(text)
+                                    : text
+                            "
                         ></div>
                     </div>
                 </div>
