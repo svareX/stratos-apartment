@@ -15,7 +15,7 @@
         "laravel/nightwatch": "^1.26",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0.2",
-        "leandrocfe/filament-apex-charts": "^4.0",
+        "leandrocfe/filament-apex-charts": "^5.1",
         "livewire/flux": "^2.13",
         "livewire/flux-pro": "^2.13",
         "livewire/livewire": "^3.6.4",
