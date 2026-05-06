@@ -106,20 +106,20 @@
                         @if (!empty($apartments) && $apartments->count())
                             <ul class="py-1">
                                 @foreach ($apartments as $apartment)
-                                <li>
-                                    @php
+                                    <li>
+                                        @php
                                         $isActive = url()->current() === route('apartments.show', $apartment->slug)
                                             || ($currentRoute === 'apartments.show' && (
                                                 request()->route('apartment') == $apartment->slug
                                                 || (is_object(request()->route('apartment')) && optional(request()->route('apartment'))->slug == $apartment->slug)
                                             ));
                                     @endphp
-                                    <a
-                                        href="{{ route('apartments.show', $apartment->slug) }}"
-                                        class="block px-4 py-2 text-sm transition-colors duration-150 {{ $isActive ? 'font-bold text-purple bg-purplePale' : 'text-text hover:bg-purplePale hover:text-purple' }}"
-                                        >{{ $apartment->name }}</a
-                                    >
-                                </li>
+                                        <a
+                                            href="{{ route('apartments.show', $apartment->slug) }}"
+                                            class="block px-4 py-2 text-sm transition-colors duration-150 {{ $isActive ? 'font-bold text-purple bg-purplePale' : 'text-text hover:bg-purplePale hover:text-purple' }}"
+                                            >{{ $apartment->name }}</a
+                                        >
+                                    </li>
                                 @endforeach
                             </ul>
                         @endif
@@ -242,18 +242,18 @@
                         >
                             @if (!empty($apartments) && $apartments->count())
                                 @foreach ($apartments as $apartment)
-                                @php
+                                    @php
                                     $isActive = url()->current() === route('apartments.show', $apartment->slug)
                                         || ($currentRoute === 'apartments.show' && (
                                             request()->route('apartment') == $apartment->slug
                                             || (is_object(request()->route('apartment')) && optional(request()->route('apartment'))->slug == $apartment->slug)
                                         ));
                                 @endphp
-                                <a
-                                    href="{{ route('apartments.show', $apartment->slug) }}"
-                                    class="{{ $isActive ? 'text-purple' : 'text-muted hover:text-purple' }} transition-colors"
-                                    >{{ $apartment->name }}</a
-                                >
+                                    <a
+                                        href="{{ route('apartments.show', $apartment->slug) }}"
+                                        class="{{ $isActive ? 'text-purple' : 'text-muted hover:text-purple' }} transition-colors"
+                                        >{{ $apartment->name }}</a
+                                    >
                                 @endforeach
                             @endif
                         </div>
