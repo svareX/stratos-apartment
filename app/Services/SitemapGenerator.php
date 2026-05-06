@@ -194,6 +194,7 @@ class SitemapGenerator
                             }
                         } catch (\Throwable $e) {
                             Log::warning('SitemapGenerator: skipping faq '.($faq->id ?? 'n/a').': '.$e->getMessage());
+
                             continue;
                         }
                     }
