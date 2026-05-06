@@ -44,7 +44,6 @@ class CreateApartment extends CreateRecord
             $data['tags_cs'] = $tags_cs;
             $data['tags_de'] = $tags_de;
 
-            // keep legacy tags column in sync with English tags
             $data['tags'] = $tags_en;
         }
 

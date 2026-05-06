@@ -37,6 +37,24 @@ class BookingReviewsService
 
             $items = data_get($data, 'result.reviews', data_get($data, 'reviews', data_get($data, 'result', [])));
 
+            // Prefetch existing reviews to avoid repeated queries inside loop
+            $externalIds = [];
+            foreach ($items as $it) {
+                $externalId = data_get($it, 'review_id') ?: data_get($it, 'id') ?: data_get($it, 'review.id');
+                if (! empty($externalId)) {
+                    $externalIds[] = $externalId;
+                }
+            }
+
+            $existing = [];
+            if (count($externalIds)) {
+                $existing = Review::whereIn('external_id', $externalIds)
+                    ->where('source', ReviewSource::External)
+                    ->get()
+                    ->keyBy('external_id')
+                    ->all();
+            }
+
             foreach ($items as $item) {
                 $externalId = data_get($item, 'review_id') ?: data_get($item, 'id') ?: data_get($item, 'review.id');
                 if (empty($externalId)) {
@@ -89,7 +107,7 @@ class BookingReviewsService
                 $language = data_get($item, 'language') ?? $locale;
                 $reviewedAt = data_get($item, 'review_date') ?? data_get($item, 'created_at') ?? null;
 
-                $review = Review::firstOrNew([
+                $review = $existing[$externalId] ?? new Review([
                     'external_id' => $externalId,
                     'source' => ReviewSource::External,
                 ]);

@@ -42,51 +42,57 @@ class GenerateSeoSitemap extends Command
             }
         }
 
-        foreach (Apartment::where('active', true)->get() as $apartment) {
-            $url = route('apartments.show', $apartment->slug);
-            $tag = Url::create($url)->setLastModificationDate($apartment->updated_at);
+        Apartment::where('active', true)
+            ->with('photosMain')
+            ->chunkById(100, function ($apartments) use ($sitemap) {
+                foreach ($apartments as $apartment) {
+                    $url = route('apartments.show', $apartment->slug);
+                    $tag = Url::create($url)->setLastModificationDate($apartment->updated_at);
 
-            try {
-                $seo = $apartment->getDynamicSEOData();
-                if (! empty($seo->image)) {
-                    $tag->addImage($seo->image);
-                }
-            } catch (\Throwable $_) {
-                // ignore apartments without dynamic SEO data
-            }
-
-            $sitemap->add($tag);
-        }
-
-        foreach (Place::all() as $place) {
-            $placeApartment = $place->apartment;
-            /** @var \App\Models\Apartment|null $placeApartment */
-            if ($placeApartment) {
-                $url = route('apartments.show', $placeApartment->slug).'#nearby';
-                $tag = Url::create($url)->setLastModificationDate($place->updated_at ?: now());
-
-                try {
-                    $seo = $place->getDynamicSEOData();
-                    if (! empty($seo->image)) {
-                        $tag->addImage($seo->image);
+                    try {
+                        $seo = $apartment->getDynamicSEOData();
+                        if (! empty($seo->image)) {
+                            $tag->addImage($seo->image);
+                        }
+                    } catch (\Throwable $_) {
                     }
-                } catch (\Throwable $_) {
-                    // ignore
+
+                    $sitemap->add($tag);
                 }
+            });
 
-                $sitemap->add($tag);
-            }
-        }
+        Place::with('apartment')->chunkById(100, function ($places) use ($sitemap) {
+            foreach ($places as $place) {
+                $placeApartment = $place->apartment;
+                /** @var \App\Models\Apartment|null $placeApartment */
+                if ($placeApartment) {
+                    $url = route('apartments.show', $placeApartment->slug).'#nearby';
+                    $tag = Url::create($url)->setLastModificationDate($place->updated_at ?: now());
 
-        foreach (Hike::all() as $hike) {
-            $hikeApartment = $hike->apartment;
-            /** @var \App\Models\Apartment|null $hikeApartment */
-            if ($hikeApartment) {
-                $url = route('apartments.show', $hikeApartment->slug).'#hikes';
-                $tag = Url::create($url)->setLastModificationDate($hike->updated_at ?: now());
-                $sitemap->add($tag);
+                    try {
+                        $seo = $place->getDynamicSEOData();
+                        if (! empty($seo->image)) {
+                            $tag->addImage($seo->image);
+                        }
+                    } catch (\Throwable $_) {
+                    }
+
+                    $sitemap->add($tag);
+                }
             }
-        }
+        });
+
+        Hike::with('apartment')->chunkById(100, function ($hikes) use ($sitemap) {
+            foreach ($hikes as $hike) {
+                $hikeApartment = $hike->apartment;
+                /** @var \App\Models\Apartment|null $hikeApartment */
+                if ($hikeApartment) {
+                    $url = route('apartments.show', $hikeApartment->slug).'#hikes';
+                    $tag = Url::create($url)->setLastModificationDate($hike->updated_at ?: now());
+                    $sitemap->add($tag);
+                }
+            }
+        });
 
         $generator = app(SitemapGenerator::class);
         $path = $generator->generate();

@@ -54,7 +54,10 @@ class SitemapGenerator
                     }
                 }
 
-                foreach (Apartment::where('active', true)->get() as $apartment) {
+                Apartment::where('active', true)
+                    ->with(['photos' => fn($q) => $q->orderBy('position')])
+                    ->chunkById(100, function ($apartments) use ($sitemap, $locale) {
+                        foreach ($apartments as $apartment) {
                     try {
                         try {
                             $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
@@ -66,7 +69,12 @@ class SitemapGenerator
                             $url->setLastModificationDate($apartment->updated_at);
                         }
 
-                        $photos = $apartment->photos()->orderBy('position')->get();
+                        if ($apartment->relationLoaded('photos')) {
+                            $photos = collect($apartment->photos)->sortBy('position');
+                        } else {
+                            $photos = $apartment->photos()->orderBy('position')->get();
+                        }
+
                         if ($photos->isNotEmpty()) {
                             foreach ($photos as $photo) {
                                 if (! empty($photo->path)) {
@@ -76,7 +84,6 @@ class SitemapGenerator
                                     try {
                                         $url->addImage($imageUrl, $title, $caption);
                                     } catch (\TypeError $te) {
-                                        // Defensive: ensure strings are passed to addImage
                                         $url->addImage($imageUrl, (string) $title, (string) $caption);
                                     }
                                 }
@@ -88,11 +95,9 @@ class SitemapGenerator
                                     try {
                                         $url->addImage($seo->image);
                                     } catch (\TypeError $te) {
-                                        // ignore image if Spatie expects different signature
                                     }
                                 }
                             } catch (\Throwable $_) {
-                                // ignore
                             }
                         }
 
@@ -102,10 +107,12 @@ class SitemapGenerator
 
                         continue;
                     }
-                }
+                        }
+                    });
 
-                foreach (Place::all() as $place) {
-                    $placeApartment = $place->apartment;
+                Place::with('apartment')->chunkById(100, function ($places) use ($sitemap, $locale) {
+                    foreach ($places as $place) {
+                        $placeApartment = $place->apartment;
                     /** @var \App\Models\Apartment|null $placeApartment */
                     if (! $placeApartment) {
                         continue;
@@ -128,11 +135,9 @@ class SitemapGenerator
                                 try {
                                     $url->addImage($seo->image);
                                 } catch (\TypeError $te) {
-                                    // ignore
                                 }
                             }
                         } catch (\Throwable $_) {
-                            // ignore
                         }
 
                         $sitemap->add($url);
@@ -141,10 +146,12 @@ class SitemapGenerator
 
                         continue;
                     }
-                }
+                    }
+                });
 
-                foreach (Hike::all() as $hike) {
-                    $hikeApartment = $hike->apartment;
+                Hike::with('apartment')->chunkById(100, function ($hikes) use ($sitemap, $locale) {
+                    foreach ($hikes as $hike) {
+                        $hikeApartment = $hike->apartment;
                     /** @var \App\Models\Apartment|null $hikeApartment */
                     if (! $hikeApartment) {
                         continue;
@@ -166,11 +173,14 @@ class SitemapGenerator
 
                         continue;
                     }
-                }
+                    }
+                });
 
-                foreach (FrequentlyAskedQuestion::where('is_active', true)->get() as $faq) {
-                    $sitemap->add(SitemapUrl::create(url($locale.'/'))->setLastModificationDate(now()));
-                }
+                FrequentlyAskedQuestion::where('is_active', true)->chunkById(100, function ($faqs) use ($sitemap, $locale) {
+                    foreach ($faqs as $faq) {
+                        $sitemap->add(SitemapUrl::create(url($locale.'/'))->setLastModificationDate(now()));
+                    }
+                });
             }
 
             $sitemap->writeToFile($path);

@@ -17,7 +17,16 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $apartments = Apartment::where('active', true)->get();
+        $apartments = Apartment::where('active', true)
+            ->select([
+                'id', 'slug', 'name_en', 'name_cs', 'name_de', 'base_price', 'base_price_eur',
+                'cleaning_fee', 'cleaning_fee_eur', 'days_for_cleaning_fee', 'address', 'capacity', 'updated_at'
+            ])
+            ->with([
+                'photosOther' => fn($q) => $q->select('id', 'apartment_id', 'path', 'position', 'is_main'),
+                'photosMain' => fn($q) => $q->where('is_main', true)->select('id', 'apartment_id', 'path', 'position', 'is_main'),
+            ])
+            ->get();
 
         $settings = HomepageSettings::first();
         $heroSlides = $settings ? ($settings->hero_slides ?? []) : [];

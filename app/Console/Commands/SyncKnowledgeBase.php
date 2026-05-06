@@ -45,11 +45,15 @@ class SyncKnowledgeBase extends Command
         $this->storeInKb($contactText, 'contact', $contact->id);
 
         // 2. APARTMÁNY, CENY A BALÍČKY
-        $apartments = Apartment::where('active', true)->with(['packages'])->get();
-        foreach ($apartments as $apt) {
+        Apartment::where('active', true)
+            ->with(['packages', 'reservations' => function ($q) {
+                $q->where('check_out', '>=', now());
+            }])
+            ->chunkById(50, function ($apartments) {
+                foreach ($apartments as $apt) {
             $aptText = "=== INFORMACE O KONKRÉTNÍM UBYTOVÁNÍ ===\n";
             $aptText .= "NÁZEV APARTMÁNU: {$apt->name}\n";
-            $aptText .= "PŘESNÁ ADRESA PRO NAVIGACI: {$apt->address}\n"; // Zde je tvůj sloupec address
+            $aptText .= "PŘESNÁ ADRESA PRO NAVIGACI: {$apt->address}\n";
             $aptText .= "Kapacita: {$apt->capacity} osoby\n";
             $aptText .= "Cena: {$apt->base_price} Kč/noc\n";
             $aptText .= "Popis: {$apt->description}\n";
@@ -58,7 +62,7 @@ class SyncKnowledgeBase extends Command
             $tags = is_array($apt->tags) ? array_filter($apt->tags, 'is_scalar') : [];
             $aptText .= 'Tagy: '.implode(', ', $tags)."\n";
 
-            foreach ($apt->packages()->get() as $pkg) {
+            foreach ($apt->packages as $pkg) {
                 /** @var \App\Models\ApartmentPackage $pkg */
                 $features = is_array($pkg->translated_features) ? implode(', ', $pkg->translated_features) : (is_array($pkg->features) ? implode(', ', $pkg->features) : '');
                 $aptText .= "BALÍČEK: {$pkg->name_cs} — cena: {$pkg->price} Kč. Obsahuje: {$features}\n";
@@ -76,36 +80,44 @@ class SyncKnowledgeBase extends Command
                 $this->storeInKb($pkgText, 'apartment_package', $pkg->id);
             }
 
-            $this->storeInKb($aptText, 'apartment', $apt->id);
+                $this->storeInKb($aptText, 'apartment', $apt->id);
 
-            // 3. OBSAZENOST (Kalendář pro AI)
-            $res = $apt->reservations()->where('check_out', '>=', now())->get();
-            if ($res->isNotEmpty()) {
-                $occText = "TERMÍNY OBSAZENOSTI PRO {$apt->name}:\n";
-                foreach ($res as $r) {
-                    /** @var \App\Models\Reservation $r */
-                    $occText .= "- Obsazeno: {$r->check_in->format('d.m.Y')} až {$r->check_out->format('d.m.Y')}\n";
+                // 3. OBSAZENOST (Kalendář pro AI)
+                $res = $apt->reservations;
+                if ($res->isNotEmpty()) {
+                    $occText = "TERMÍNY OBSAZENOSTI PRO {$apt->name}:\n";
+                    foreach ($res as $r) {
+                        /** @var \App\Models\Reservation $r */
+                        $occText .= "- Obsazeno: {$r->check_in->format('d.m.Y')} až {$r->check_out->format('d.m.Y')}\n";
+                    }
+                    $this->storeInKb($occText, 'occupancy', $apt->id);
                 }
-                $this->storeInKb($occText, 'occupancy', $apt->id);
             }
-        }
+        });
+        
 
         // 4. FAQ
-        foreach (FrequentlyAskedQuestion::where('is_active', true)->get() as $faq) {
-            $this->storeInKb("ČASTÝ DOTAZ: {$faq->question_cs}\nODPOVĚĎ: {$faq->answer_cs}", 'faq', $faq->id);
-        }
+        FrequentlyAskedQuestion::where('is_active', true)->chunkById(100, function ($faqs) {
+            foreach ($faqs as $faq) {
+                $this->storeInKb("ČASTÝ DOTAZ: {$faq->question_cs}\nODPOVĚĎ: {$faq->answer_cs}", 'faq', $faq->id);
+            }
+        });
 
         // 5. VÝLETY A OKOLÍ
-        foreach (Hike::all() as $hike) {
-            $hikeText = "VÝLET/TRASA: {$hike->name_cs}\nPopis: {$hike->description_cs}\n";
-            $hikeText .= "Délka: {$hike->length} km, Obtížnost: {$hike->difficulty->value}\n";
-            $hikeText .= $hike->is_for_families ? 'Vhodné pro rodiny s dětmi.' : 'Náročnější trasa.';
-            $this->storeInKb($hikeText, 'hike', $hike->id);
-        }
+        Hike::chunkById(100, function ($hikes) {
+            foreach ($hikes as $hike) {
+                $hikeText = "VÝLET/TRASA: {$hike->name_cs}\nPopis: {$hike->description_cs}\n";
+                $hikeText .= "Délka: {$hike->length} km, Obtížnost: {$hike->difficulty->value}\n";
+                $hikeText .= $hike->is_for_families ? 'Vhodné pro rodiny s dětmi.' : 'Náročnější trasa.';
+                $this->storeInKb($hikeText, 'hike', $hike->id);
+            }
+        });
 
-        foreach (Place::all() as $place) {
-            $this->storeInKb("ZAJÍMAVÉ MÍSTO: {$place->name_cs}\nPopis: {$place->description_cs}\nVzdálenost: {$place->distance_text_cs}", 'place', $place->id);
-        }
+        Place::chunkById(100, function ($places) {
+            foreach ($places as $place) {
+                $this->storeInKb("ZAJÍMAVÉ MÍSTO: {$place->name_cs}\nPopis: {$place->description_cs}\nVzdálenost: {$place->distance_text_cs}", 'place', $place->id);
+            }
+        });
 
         // 6. HOMEPAGE SLOGANY
         $home = HomepageSettings::first();

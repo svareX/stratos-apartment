@@ -28,7 +28,10 @@ class ReservationWidget extends Component
 
     public function mount()
     {
-        $this->apartments = Apartment::where('active', true)->get();
+        $this->apartments = Apartment::where('active', true)
+            ->select(['id', 'slug', 'name_en', 'name_cs', 'name_de'])
+            ->get();
+
         $this->apartment_id = $this->apartments->first()->id ?? null;
 
         $now = Carbon::now();
@@ -65,7 +68,7 @@ class ReservationWidget extends Component
     {
         $slug = null;
         if ($this->apartment_id) {
-            $slug = Apartment::find($this->apartment_id)?->slug;
+            $slug = $this->apartments->firstWhere('id', $this->apartment_id)?->slug;
         }
 
         $params = [

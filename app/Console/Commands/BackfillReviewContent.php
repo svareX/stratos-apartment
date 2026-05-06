@@ -39,7 +39,6 @@ class BackfillReviewContent extends Command
             foreach ($reviews as $review) {
                 $meta = $review->meta ?? [];
 
-                // Try to find title as well as content in meta or other locale columns
                 $title = $review->title_en ?? $review->title_cs ?? $review->title_de ?? null;
                 if (empty($title)) {
                     $title = data_get($meta, 'title') ?? data_get($meta, 'title_translated') ?? data_get($meta, 'review_title') ?? null;

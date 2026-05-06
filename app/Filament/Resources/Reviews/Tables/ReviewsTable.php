@@ -15,11 +15,17 @@ class ReviewsTable
     {
         return $table
             ->columns([
-                TextColumn::make('author_name')->label(__('Author')),
-                TextColumn::make('hotel_id')->label(__('Hotel ID')),
-                TextColumn::make('score')->label(__('Score')),
-                TextColumn::make('locale')->label(__('Locale')),
-                // reviewed_at removed from table view; admins handle review lifecycle
+                TextColumn::make('author_name')
+                    ->label(__('Author'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('hotel_id')
+                    ->label(__('Hotel ID'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('score')
+                    ->label(__('Score'))
+                    ->sortable(),
             ])
             ->recordActions([
                 EditAction::make(),

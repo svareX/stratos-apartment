@@ -25,7 +25,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
 
     public function __construct(Reservation $reservation)
     {
-        $this->reservation = $reservation;
+        $this->reservation = $reservation->loadMissing(['apartment', 'apartmentPackage']);
     }
 
     public function envelope(): Envelope
@@ -52,7 +52,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
 
     private function calculateEurAmount()
     {
-        $apt = $this->reservation->apartment()->first();
+        $apt = $this->reservation->apartment;
         /** @var \App\Models\Apartment|null $apt */
         $rate = Cache::remember('cnb_eur_rate', 3600, function () {
             $response = Http::get('https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt');
@@ -71,16 +71,13 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             return 25.00;
         });
 
-        // We'll track whether the EUR amount was computed from explicit EUR fields
         $usedConverted = false;
 
-        // If apartment has explicit EUR pricing, use those values to compute EUR total
         if ($apt && $apt->base_price_eur !== null) {
             $nights = Carbon::parse($this->reservation->check_in)->diffInDays(Carbon::parse($this->reservation->check_out));
             $totalEur = $nights * $apt->base_price_eur;
 
-            // package price: prefer package's explicit EUR value when available
-            $pkg = $this->reservation->apartmentPackage()->first();
+            $pkg = $this->reservation->apartmentPackage;
             /** @var \App\Models\ApartmentPackage|null $pkg */
             if ($pkg && $pkg->price_eur !== null) {
                 $totalEur += $pkg->price_eur;
@@ -89,7 +86,6 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
                 $usedConverted = true;
             }
 
-            // cleaning fee applies if nights <= days_for_cleaning_fee
             if ($nights > 0 && $nights <= ($apt->days_for_cleaning_fee ?? 0)) {
                 if ($apt->cleaning_fee_eur !== null) {
                     $totalEur += $apt->cleaning_fee_eur;
@@ -102,14 +98,12 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             return ['amount' => round($totalEur, 2), 'converted' => $usedConverted];
         }
 
-        // fallback: convert total CZK price to EUR using exchange rate
         return ['amount' => round($this->reservation->price / $rate, 2), 'converted' => true];
     }
 
     private function generateQrCode(string $content): string
     {
         try {
-            // Prefer Imagick backend when available
             if (extension_loaded('imagick') && class_exists(ImagickImageBackEnd::class)) {
                 $backend = new ImagickImageBackEnd;
             } elseif (class_exists(\BaconQrCode\Renderer\Image\SvgImageBackEnd::class)) {
@@ -117,7 +111,6 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             } elseif (class_exists(\BaconQrCode\Renderer\Image\GdImageBackEnd::class)) {
                 $backend = new \BaconQrCode\Renderer\Image\GdImageBackEnd;
             } else {
-                // No suitable backend available, return empty string to avoid failing mail generation in tests
                 return '';
             }
 
@@ -126,7 +119,6 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
 
             return $writer->writeString($content);
         } catch (\Throwable $e) {
-            // If QR generation fails (e.g. Imagick not usable), return empty string and log if needed
             return '';
         }
     }

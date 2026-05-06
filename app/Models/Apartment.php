@@ -20,6 +20,7 @@ use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\App as AppFacade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -140,16 +141,33 @@ class Apartment extends Model
 
     public function getDynamicSEOData(): SEOData
     {
-        $photo = $this->photosMain()->first();
-        /** @var \App\Models\Photo|null $photo */
-        $image = $photo?->path;
+        $cacheKey = 'apartment_seo_'.$this->id;
+
+        $data = Cache::remember($cacheKey, 3600, function () {
+            if ($this->relationLoaded('photosMain')) {
+                $photo = $this->photosMain->first();
+            } else {
+                $photo = $this->photosMain()->first();
+            }
+
+            /** @var \App\Models\Photo|null $photo */
+            $image = $photo?->path;
+
+            return [
+                'title' => $this->name,
+                'description' => (string) Str::of(strip_tags((string) $this->description))->trim()->limit(155),
+                'image' => $image ? Storage::url($image) : route('og.image', ['type' => 'apartment', 'identifier' => $this->slug]),
+                'url' => route('apartments.show', ['locale' => (app()->getLocale() ?: config('app.locale')), 'apartment' => $this->slug]),
+                'type' => 'apartment',
+            ];
+        });
 
         return new SEOData(
-            title: $this->name,
-            description: Str::of(strip_tags((string) $this->description))->trim()->limit(155),
-            image: $image ? Storage::url($image) : route('og.image', ['type' => 'apartment', 'identifier' => $this->slug]),
-            url: route('apartments.show', ['locale' => (app()->getLocale() ?: config('app.locale')), 'apartment' => $this->slug]),
-            type: 'apartment',
+            title: $data['title'],
+            description: $data['description'],
+            image: $data['image'],
+            url: $data['url'],
+            type: $data['type'],
         );
     }
 
@@ -167,7 +185,6 @@ class Apartment extends Model
     {
         $locale = AppFacade::getLocale();
 
-        // For English locale keep existing behavior (English or legacy tags)
         if ($locale === 'en') {
             $val = $this->getAttributeValue('tags_en');
             if (! empty($val)) {
@@ -183,7 +200,6 @@ class Apartment extends Model
             return [];
         }
 
-        // For non-English locales only return localized tags if present, otherwise empty array
         $column = "tags_{$locale}";
         $val = $this->getAttributeValue($column);
         if (! empty($val)) {
