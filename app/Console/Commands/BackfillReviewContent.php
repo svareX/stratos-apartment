@@ -35,8 +35,9 @@ class BackfillReviewContent extends Command
         $processed = 0;
 
         $query->limit($limit)->chunk(100, function ($reviews) use (&$processed) {
-            /** @var \Illuminate\Database\Eloquent\Collection $reviews */
+            /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews */
             foreach ($reviews as $review) {
+                /** @var \App\Models\Review $review */
                 $meta = $review->meta ?? [];
 
                 $title = $review->title_en ?? $review->title_cs ?? $review->title_de ?? null;

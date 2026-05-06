@@ -20,7 +20,7 @@ class SyncReviewsJob implements ShouldQueue
             $hotelIds = config('services.booking.hotel_ids', null);
 
             if (empty($hotelIds)) {
-                $single = env('BOOKING_HOTEL_ID');
+                $single = config('services.booking.hotel_id') ?: null;
                 if (! empty($single)) {
                     $hotelIds = [$single];
                 }
