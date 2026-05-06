@@ -42,8 +42,8 @@ class HomeControllerGalleryTest extends TestCase
             'position' => 2,
         ]);
 
-        $controller = new HomeController();
-        $view = $controller->__invoke(new Request());
+        $controller = new HomeController;
+        $view = $controller->__invoke(new Request);
 
         $data = $view->getData();
 

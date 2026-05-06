@@ -41,6 +41,7 @@ class BackfillReviewContent extends Command
             foreach ($reviews as $review) {
                 if ($processed >= $limit) {
                     $stopped = true;
+
                     return false;
                 }
                 /** @var \App\Models\Review $review */
@@ -91,6 +92,7 @@ class BackfillReviewContent extends Command
                     $processed++;
                     if ($processed >= $limit) {
                         $stopped = true;
+
                         return false;
                     }
                 }
