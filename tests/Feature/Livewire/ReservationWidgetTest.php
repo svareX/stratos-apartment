@@ -28,4 +28,3 @@ class ReservationWidgetTest extends TestCase
             });
     }
 }
-

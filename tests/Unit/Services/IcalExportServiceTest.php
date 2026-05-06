@@ -2,14 +2,13 @@
 
 namespace Tests\Unit\Services;
 
+use App\Enums\BookingSource;
+use App\Enums\ReservationStatus;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use App\Services\Ical\IcalExportService;
-use App\Enums\ReservationStatus;
-use App\Enums\BookingSource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\CarbonImmutable;
 
 class IcalExportServiceTest extends TestCase
 {
@@ -36,11 +35,10 @@ class IcalExportServiceTest extends TestCase
             'booking_source' => BookingSource::Local->value,
         ]);
 
-        $svc = new IcalExportService();
+        $svc = new IcalExportService;
         $ical = $svc->forApartment($apt);
 
         $this->assertStringContainsString("reservation-{$res->id}", $ical);
         $this->assertStringContainsString('DTSTART', $ical);
     }
 }
-

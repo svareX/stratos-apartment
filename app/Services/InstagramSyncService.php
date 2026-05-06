@@ -27,6 +27,7 @@ class InstagramSyncService
                 'status' => $response->status(),
                 'body' => $response->body(),
             ]);
+
             return;
         }
 

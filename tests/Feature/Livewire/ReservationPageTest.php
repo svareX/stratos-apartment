@@ -25,4 +25,3 @@ class ReservationPageTest extends TestCase
             ->assertStatus(200);
     }
 }
-

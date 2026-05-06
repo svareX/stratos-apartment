@@ -28,6 +28,7 @@ class SyncReviewsJob implements ShouldQueue
 
             if (empty($hotelIds)) {
                 Log::warning('SyncReviewsJob: no hotel IDs configured (services.booking.hotel_ids or BOOKING_HOTEL_ID)');
+
                 return;
             }
 

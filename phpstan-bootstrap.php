@@ -6,14 +6,12 @@ if (! function_exists('mb_split')) {
      * Split multibyte string by regular expression using preg_split fallback.
      * Note: This is a best-effort shim for static analysis tools only.
      *
-     * @param string $pattern
-     * @param string $string
-     * @param int $limit
      * @return array|false
      */
     function mb_split(string $pattern, string $string, int $limit = -1)
     {
-        $regex = '/' . $pattern . '/u';
+        $regex = '/'.$pattern.'/u';
+
         return preg_split($regex, $string, $limit === -1 ? 0 : $limit);
     }
 }

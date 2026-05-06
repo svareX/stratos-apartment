@@ -23,8 +23,8 @@ class ChatbotComponentTest extends TestCase
             ->set('userInput', 'Hello')
             ->call('sendMessage')
             ->assertSet('isOpen', true)
-                ->assertSet('messages', function ($m) {
-                    return is_array($m) && count($m) > 0;
-                });
+            ->assertSet('messages', function ($m) {
+                return is_array($m) && count($m) > 0;
+            });
     }
 }

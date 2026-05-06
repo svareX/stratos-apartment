@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\InstagramPost;
 use App\Services\InstagramSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -38,7 +37,7 @@ class InstagramNoImageTest extends TestCase
             'https://instagram-looter2.p.rapidapi.com/*' => Http::response($payload, 200),
         ]);
 
-        $svc = new InstagramSyncService();
+        $svc = new InstagramSyncService;
         $svc->sync('user-y', 1);
 
         $this->assertDatabaseHas('instagram_posts', ['instagram_id' => 'inst_noimg', 'caption' => 'No image']);

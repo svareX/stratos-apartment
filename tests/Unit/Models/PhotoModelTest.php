@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Apartment;
-use App\Models\Photo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;

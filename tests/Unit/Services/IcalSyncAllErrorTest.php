@@ -39,7 +39,7 @@ class IcalSyncAllErrorTest extends TestCase
             'https://example.com/bad.ics' => Http::response('', 500),
         ]);
 
-        $svc = new IcalImportService();
+        $svc = new IcalImportService;
         $result = $svc->syncAll();
 
         $this->assertArrayHasKey('errors', $result);

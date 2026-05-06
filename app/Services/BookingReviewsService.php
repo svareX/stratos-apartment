@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\ReviewSource;
 use App\Models\Review;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class BookingReviewsService
@@ -29,6 +28,7 @@ class BookingReviewsService
                 'page_number' => $pageNumber,
                 'status' => $response->status(),
             ]);
+
             return;
         }
 

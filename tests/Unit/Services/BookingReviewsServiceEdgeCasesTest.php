@@ -31,7 +31,7 @@ class BookingReviewsServiceEdgeCasesTest extends TestCase
             ], 200),
         ]);
 
-        $svc = new BookingReviewsService();
+        $svc = new BookingReviewsService;
         $svc->import(99);
 
         $this->assertDatabaseHas('reviews', ['external_id' => 'r-proscons', 'hotel_id' => 99]);
@@ -59,7 +59,7 @@ class BookingReviewsServiceEdgeCasesTest extends TestCase
             ], 200),
         ]);
 
-        $svc = new BookingReviewsService();
+        $svc = new BookingReviewsService;
         $svc->import(100);
 
         $r = Review::where('external_id', 'r-title')->firstOrFail();
@@ -84,13 +84,13 @@ class BookingReviewsServiceEdgeCasesTest extends TestCase
             ], 200),
         ]);
 
-        $svc = new BookingReviewsService();
+        $svc = new BookingReviewsService;
         $svc->import(200, 'cs-cz');
 
         $r = Review::where('external_id', 'r-cs')->firstOrFail();
         $this->assertEquals('Skvělý pobyt', $r->content_cs);
         $this->assertEquals('Skvělý pobyt', $r->content_en);
         $this->assertIsInt($r->score);
-        $this->assertEquals((int)round(2 / 4 * 10), $r->score);
+        $this->assertEquals((int) round(2 / 4 * 10), $r->score);
     }
 }

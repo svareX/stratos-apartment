@@ -6,8 +6,8 @@ use App\Jobs\GenerateSitemap;
 use App\Jobs\SyncBookingJob;
 use App\Jobs\SyncKnowledgeBaseJob;
 use App\Jobs\SyncReviewsJob;
-use App\Services\Ical\IcalImportService;
 use App\Services\BookingReviewsService;
+use App\Services\Ical\IcalImportService;
 use App\Services\SitemapGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -23,7 +23,7 @@ class JobsTest extends TestCase
         $mock = Mockery::mock(IcalImportService::class);
         $mock->shouldReceive('syncAll')->once();
 
-        $job = new SyncBookingJob();
+        $job = new SyncBookingJob;
         $job->handle($mock);
     }
 
@@ -35,7 +35,7 @@ class JobsTest extends TestCase
         // 2 hotels * 4 locales => 8 calls
         $mock->shouldReceive('import')->times(8);
 
-        $job = new SyncReviewsJob();
+        $job = new SyncReviewsJob;
         $job->handle($mock);
     }
 
@@ -46,7 +46,7 @@ class JobsTest extends TestCase
 
         $this->app->instance(SitemapGenerator::class, $mock);
 
-        $job = new GenerateSitemap();
+        $job = new GenerateSitemap;
         $job->handle();
     }
 
@@ -54,7 +54,7 @@ class JobsTest extends TestCase
     {
         Artisan::shouldReceive('call')->once()->with('knowledge:sync');
 
-        $job = new SyncKnowledgeBaseJob();
+        $job = new SyncKnowledgeBaseJob;
         $job->handle();
     }
 }

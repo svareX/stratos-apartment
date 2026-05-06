@@ -30,7 +30,7 @@ class BookingReviewsServiceMetaTest extends TestCase
             ], 200),
         ]);
 
-        $svc = new BookingReviewsService();
+        $svc = new BookingReviewsService;
         $svc->import(555);
 
         $r = Review::where('external_id', 'r-meta')->firstOrFail();

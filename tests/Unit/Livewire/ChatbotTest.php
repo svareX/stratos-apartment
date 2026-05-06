@@ -15,7 +15,7 @@ class ChatbotTest extends TestCase
 
     public function test_send_message_recaptcha_fails_appends_error_message()
     {
-        $comp = new Chatbot();
+        $comp = new Chatbot;
         $comp->userInput = 'hello';
 
         Http::fake([
@@ -32,7 +32,7 @@ class ChatbotTest extends TestCase
 
     public function test_send_message_success_adds_user_and_assistant_placeholder()
     {
-        $comp = new Chatbot();
+        $comp = new Chatbot;
         $comp->userInput = 'hi there';
 
         Http::fake([
@@ -52,10 +52,16 @@ class ChatbotTest extends TestCase
     {
         // Mock Embeddings static chain
         $embMock = Mockery::mock('alias:Laravel\\Ai\\Embeddings');
-        $chain = new class {
-            public function dimensions($d) { return $this; }
-            public function generate($lab, $model) {
-                return (object)['embeddings' => [[0.1, 0.2]]];
+        $chain = new class
+        {
+            public function dimensions($d)
+            {
+                return $this;
+            }
+
+            public function generate($lab, $model)
+            {
+                return (object) ['embeddings' => [[0.1, 0.2]]];
             }
         };
         $embMock->shouldReceive('for')->andReturn($chain);
@@ -64,9 +70,9 @@ class ChatbotTest extends TestCase
         $botMock = Mockery::mock('overload:App\\Ai\\Agents\\SupportBot');
         $botMock->shouldReceive('prompt')->andThrow(new Exception('AI down'));
 
-        $comp = new Chatbot();
+        $comp = new Chatbot;
         // Prepare messages so last index exists
-        $comp->messages = [ ['role' => 'user', 'content' => 'q'], ['role' => 'assistant', 'content' => '', 'is_typing' => true] ];
+        $comp->messages = [['role' => 'user', 'content' => 'q'], ['role' => 'assistant', 'content' => '', 'is_typing' => true]];
 
         $comp->generateResponse('question');
 
@@ -78,19 +84,25 @@ class ChatbotTest extends TestCase
     public function test_generate_response_success_updates_message_content()
     {
         $embMock = Mockery::mock('alias:Laravel\\Ai\\Embeddings');
-        $chain = new class {
-            public function dimensions($d) { return $this; }
-            public function generate($lab, $model) {
-                return (object)['embeddings' => [[0.1, 0.2]]];
+        $chain = new class
+        {
+            public function dimensions($d)
+            {
+                return $this;
+            }
+
+            public function generate($lab, $model)
+            {
+                return (object) ['embeddings' => [[0.1, 0.2]]];
             }
         };
         $embMock->shouldReceive('for')->andReturn($chain);
 
         $botMock = Mockery::mock('overload:App\\Ai\\Agents\\SupportBot');
-        $botMock->shouldReceive('prompt')->andReturn((object)['text' => 'This is a helpful reply']);
+        $botMock->shouldReceive('prompt')->andReturn((object) ['text' => 'This is a helpful reply']);
 
-        $comp = new Chatbot();
-        $comp->messages = [ ['role' => 'user', 'content' => 'q'], ['role' => 'assistant', 'content' => '', 'is_typing' => true] ];
+        $comp = new Chatbot;
+        $comp->messages = [['role' => 'user', 'content' => 'q'], ['role' => 'assistant', 'content' => '', 'is_typing' => true]];
 
         $comp->generateResponse('hello');
 

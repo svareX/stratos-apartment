@@ -38,9 +38,9 @@ class BookingReviewsServiceTest extends TestCase
             ],
         ];
 
-        Http::fake([ '*' => Http::response($fake, 200) ]);
+        Http::fake(['*' => Http::response($fake, 200)]);
 
-        $svc = new BookingReviewsService();
+        $svc = new BookingReviewsService;
 
         $svc->import(99, 'en-gb');
 
@@ -59,4 +59,3 @@ class BookingReviewsServiceTest extends TestCase
         $this->assertEquals(ReviewSource::External, $r2->source);
     }
 }
-

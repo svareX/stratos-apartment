@@ -37,7 +37,7 @@ class ReservationEdgeCaseTest extends TestCase
                 'check_out' => now()->addDay()->toDateString(),
                 'price' => 200,
             ],
-        ], ['external_booking_id','apartment_id'], ['price']);
+        ], ['external_booking_id', 'apartment_id'], ['price']);
 
         $res->refresh();
         $this->assertEquals(200.00, round($res->price, 2));

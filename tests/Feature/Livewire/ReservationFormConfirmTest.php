@@ -6,7 +6,6 @@ use App\Livewire\ReservationForm;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -47,9 +46,8 @@ class ReservationFormConfirmTest extends TestCase
             ->set('city', 'City')
             ->set('postal_code', '12345')
             ->set('country', 'Country')
-                ->call('nextStep')
-                ->call('nextStep')
-                ->assertHasErrors(['email']);
+            ->call('nextStep')
+            ->call('nextStep')
+            ->assertHasErrors(['email']);
     }
 }
-

@@ -20,7 +20,7 @@ class IcalExportEdgeCasesTest extends TestCase
             'base_price' => 100,
         ]);
 
-        $svc = new IcalExportService();
+        $svc = new IcalExportService;
         $ical = $svc->forApartment($apartment);
 
         $this->assertStringContainsString('BEGIN:VCALENDAR', $ical);

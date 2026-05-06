@@ -30,7 +30,7 @@ class ReservationFormTest extends TestCase
             'price' => 200,
         ]);
 
-        $comp = new ReservationForm();
+        $comp = new ReservationForm;
         $comp->apartment_id = $apt->id;
         $comp->updateApartmentDetails();
 
@@ -50,7 +50,7 @@ class ReservationFormTest extends TestCase
             'active' => true,
         ]);
 
-        $comp = new ReservationForm();
+        $comp = new ReservationForm;
         $comp->apartment_id = $apt->id;
         $comp->pricePerNight = 100;
         $comp->cleaningFee = 600;
@@ -67,7 +67,7 @@ class ReservationFormTest extends TestCase
 
         $this->assertEquals(900, $comp->total());
 
-        Http::fake([ '*' => Http::response("EMU|euro|1|EUR|25,50\n") ]);
+        Http::fake(['*' => Http::response("EMU|euro|1|EUR|25,50\n")]);
 
         $eur = $comp->totalEur();
         $this->assertEquals(round(900 / 25.5, 2), $eur);

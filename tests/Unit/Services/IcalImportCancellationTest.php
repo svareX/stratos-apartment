@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services;
 
+use App\Enums\ReservationStatus;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use App\Services\Ical\IcalImportService;
-use App\Enums\ReservationStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -40,7 +40,7 @@ class IcalImportCancellationTest extends TestCase
 
         Http::fake(['https://example.com/*' => Http::response($ics, 200)]);
 
-        $svc = new IcalImportService();
+        $svc = new IcalImportService;
         $res = $svc->syncApartment($apartment);
 
         $this->assertEquals(1, $res['cancelled']);

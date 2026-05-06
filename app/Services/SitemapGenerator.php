@@ -55,42 +55,82 @@ class SitemapGenerator
                 }
 
                 Apartment::where('active', true)
-                    ->with(['photos' => fn($q) => $q->orderBy('position')])
+                    ->with(['photos' => fn ($q) => $q->orderBy('position')])
                     ->chunkById(100, function ($apartments) use ($sitemap, $locale) {
                         foreach ($apartments as $apartment) {
-                    try {
-                        try {
-                            $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
-                        } catch (\Throwable $e) {
-                            $url = SitemapUrl::create(url($locale.'/apartments/'.$apartment->slug));
-                        }
+                            try {
+                                try {
+                                    $url = SitemapUrl::create(route('apartments.show', ['locale' => $locale, 'apartment' => $apartment->slug]));
+                                } catch (\Throwable $e) {
+                                    $url = SitemapUrl::create(url($locale.'/apartments/'.$apartment->slug));
+                                }
 
-                        if ($apartment->updated_at) {
-                            $url->setLastModificationDate($apartment->updated_at);
-                        }
+                                if ($apartment->updated_at) {
+                                    $url->setLastModificationDate($apartment->updated_at);
+                                }
 
-                        if ($apartment->relationLoaded('photos')) {
-                            $photos = collect($apartment->photos)->sortBy('position');
-                        } else {
-                            $photos = $apartment->photos()->orderBy('position')->get();
-                        }
+                                if ($apartment->relationLoaded('photos')) {
+                                    $photos = collect($apartment->photos)->sortBy('position');
+                                } else {
+                                    $photos = $apartment->photos()->orderBy('position')->get();
+                                }
 
-                        if ($photos->isNotEmpty()) {
-                            foreach ($photos as $photo) {
-                                if (! empty($photo->path)) {
-                                    $imageUrl = Storage::url($photo->path);
-                                    $title = $photo->title_en ?? $photo->title ?? '';
-                                    $caption = $photo->description_en ?? $photo->description ?? '';
+                                if ($photos->isNotEmpty()) {
+                                    foreach ($photos as $photo) {
+                                        if (! empty($photo->path)) {
+                                            $imageUrl = Storage::url($photo->path);
+                                            $title = $photo->title_en ?? $photo->title ?? '';
+                                            $caption = $photo->description_en ?? $photo->description ?? '';
+                                            try {
+                                                $url->addImage($imageUrl, $title, $caption);
+                                            } catch (\TypeError $te) {
+                                                $url->addImage($imageUrl, (string) $title, (string) $caption);
+                                            }
+                                        }
+                                    }
+                                } else {
                                     try {
-                                        $url->addImage($imageUrl, $title, $caption);
-                                    } catch (\TypeError $te) {
-                                        $url->addImage($imageUrl, (string) $title, (string) $caption);
+                                        $seo = $apartment->getDynamicSEOData();
+                                        if (! empty($seo->image)) {
+                                            try {
+                                                $url->addImage($seo->image);
+                                            } catch (\TypeError $te) {
+                                            }
+                                        }
+                                    } catch (\Throwable $_) {
                                     }
                                 }
+
+                                $sitemap->add($url);
+                            } catch (\Throwable $e) {
+                                Log::warning('SitemapGenerator: skipping apartment '.$apartment->id.': '.$e->getMessage());
+
+                                continue;
                             }
-                        } else {
+                        }
+                    });
+
+                Place::with('apartment')->chunkById(100, function ($places) use ($sitemap, $locale) {
+                    foreach ($places as $place) {
+                        $placeApartment = $place->apartment;
+                        /** @var \App\Models\Apartment|null $placeApartment */
+                        if (! $placeApartment) {
+                            continue;
+                        }
+
+                        try {
                             try {
-                                $seo = $apartment->getDynamicSEOData();
+                                $u = route('apartments.show', ['locale' => $locale, 'apartment' => $placeApartment->slug]).'#nearby';
+                            } catch (\Throwable $e) {
+                                $u = url($locale.'/apartments/'.$placeApartment->slug).'#nearby';
+                            }
+                            $url = SitemapUrl::create($u);
+                            if ($place->updated_at) {
+                                $url->setLastModificationDate($place->updated_at);
+                            }
+
+                            try {
+                                $seo = $place->getDynamicSEOData();
                                 if (! empty($seo->image)) {
                                     try {
                                         $url->addImage($seo->image);
@@ -99,80 +139,40 @@ class SitemapGenerator
                                 }
                             } catch (\Throwable $_) {
                             }
-                        }
 
-                        $sitemap->add($url);
-                    } catch (\Throwable $e) {
-                        Log::warning('SitemapGenerator: skipping apartment '.$apartment->id.': '.$e->getMessage());
-
-                        continue;
-                    }
-                        }
-                    });
-
-                Place::with('apartment')->chunkById(100, function ($places) use ($sitemap, $locale) {
-                    foreach ($places as $place) {
-                        $placeApartment = $place->apartment;
-                    /** @var \App\Models\Apartment|null $placeApartment */
-                    if (! $placeApartment) {
-                        continue;
-                    }
-
-                    try {
-                        try {
-                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $placeApartment->slug]).'#nearby';
+                            $sitemap->add($url);
                         } catch (\Throwable $e) {
-                            $u = url($locale.'/apartments/'.$placeApartment->slug).'#nearby';
-                        }
-                        $url = SitemapUrl::create($u);
-                        if ($place->updated_at) {
-                            $url->setLastModificationDate($place->updated_at);
-                        }
+                            Log::warning('SitemapGenerator: skipping place '.$place->id.': '.$e->getMessage());
 
-                        try {
-                            $seo = $place->getDynamicSEOData();
-                            if (! empty($seo->image)) {
-                                try {
-                                    $url->addImage($seo->image);
-                                } catch (\TypeError $te) {
-                                }
-                            }
-                        } catch (\Throwable $_) {
+                            continue;
                         }
-
-                        $sitemap->add($url);
-                    } catch (\Throwable $e) {
-                        Log::warning('SitemapGenerator: skipping place '.$place->id.': '.$e->getMessage());
-
-                        continue;
-                    }
                     }
                 });
 
                 Hike::with('apartment')->chunkById(100, function ($hikes) use ($sitemap, $locale) {
                     foreach ($hikes as $hike) {
                         $hikeApartment = $hike->apartment;
-                    /** @var \App\Models\Apartment|null $hikeApartment */
-                    if (! $hikeApartment) {
-                        continue;
-                    }
+                        /** @var \App\Models\Apartment|null $hikeApartment */
+                        if (! $hikeApartment) {
+                            continue;
+                        }
 
-                    try {
                         try {
-                            $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hikeApartment->slug]).'#hikes';
+                            try {
+                                $u = route('apartments.show', ['locale' => $locale, 'apartment' => $hikeApartment->slug]).'#hikes';
+                            } catch (\Throwable $e) {
+                                $u = url($locale.'/apartments/'.$hikeApartment->slug).'#hikes';
+                            }
+                            $url = SitemapUrl::create($u);
+                            if ($hike->updated_at) {
+                                $url->setLastModificationDate($hike->updated_at);
+                            }
+                            $sitemap->add($url);
                         } catch (\Throwable $e) {
-                            $u = url($locale.'/apartments/'.$hikeApartment->slug).'#hikes';
-                        }
-                        $url = SitemapUrl::create($u);
-                        if ($hike->updated_at) {
-                            $url->setLastModificationDate($hike->updated_at);
-                        }
-                        $sitemap->add($url);
-                    } catch (\Throwable $e) {
-                        Log::warning('SitemapGenerator: skipping hike '.$hike->id.': '.$e->getMessage());
+                            Log::warning('SitemapGenerator: skipping hike '.$hike->id.': '.$e->getMessage());
 
-                        continue;
-                    }
+                            continue;
+                        }
                     }
                 });
 

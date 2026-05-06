@@ -30,7 +30,7 @@ class SitemapGeneratorTest extends TestCase
             @unlink($path);
         }
 
-        $gen = new SitemapGenerator();
+        $gen = new SitemapGenerator;
         $written = $gen->generate($path);
 
         $this->assertFileExists($written);
@@ -38,4 +38,3 @@ class SitemapGeneratorTest extends TestCase
         $this->assertStringContainsString('<urlset', $contents);
     }
 }
- 

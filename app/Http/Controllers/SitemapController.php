@@ -25,9 +25,9 @@ class SitemapController
         }
 
         if (! is_writable(dirname($sitemapPath))) {
-            $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-            $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-            $xml .= '</urlset>' . "\n";
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+            $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+            $xml .= '</urlset>'."\n";
 
             return response($xml, 200)->header('Content-Type', 'application/xml');
         }
@@ -95,20 +95,20 @@ class SitemapController
                 'lastmod' => optional($apartment->updated_at)->toAtomString(),
             ];
         }
-        
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
 
         foreach ($urls as $u) {
             $xml .= "    <url>\n";
-            $xml .= '        <loc>' . e($u['loc']) . "</loc>\n";
+            $xml .= '        <loc>'.e($u['loc'])."</loc>\n";
             if (! empty($u['lastmod'])) {
-                $xml .= '        <lastmod>' . e($u['lastmod']) . "</lastmod>\n";
+                $xml .= '        <lastmod>'.e($u['lastmod'])."</lastmod>\n";
             }
             $xml .= "    </url>\n";
         }
 
-        $xml .= '</urlset>' . "\n";
+        $xml .= '</urlset>'."\n";
 
         try {
             \Illuminate\Support\Facades\Log::info('SitemapController: returning XML fallback', ['length' => strlen($xml), 'snippet' => substr($xml, 0, 200)]);

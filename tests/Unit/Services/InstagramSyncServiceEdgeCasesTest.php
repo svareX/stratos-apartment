@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\InstagramPost;
 use App\Services\InstagramSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -19,7 +18,7 @@ class InstagramSyncServiceEdgeCasesTest extends TestCase
             'https://instagram-looter2.p.rapidapi.com/*' => Http::response(['data' => ['user' => ['edge_owner_to_timeline_media' => ['edges' => [['node' => []], ['node' => null]]]]]], 200),
         ]);
 
-        $svc = new InstagramSyncService();
+        $svc = new InstagramSyncService;
         $svc->sync('user-x', 2);
 
         $this->assertDatabaseCount('instagram_posts', 0);
@@ -54,7 +53,7 @@ class InstagramSyncServiceEdgeCasesTest extends TestCase
             $imageUrl => Http::response('', 500),
         ]);
 
-        $svc = new InstagramSyncService();
+        $svc = new InstagramSyncService;
         $svc->sync('user-x', 1);
 
         $this->assertDatabaseHas('instagram_posts', ['instagram_id' => 'inst2', 'caption' => 'Caption here']);

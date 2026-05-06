@@ -15,7 +15,7 @@ class SitemapGeneratorWriteFailureTest extends TestCase
         // choose a path that's likely unwritable (root)
         $path = '/root/sitemap_nowrite.xml';
 
-        $generator = new SitemapGenerator();
+        $generator = new SitemapGenerator;
         $written = $generator->generate($path);
 
         $this->assertIsString($written);

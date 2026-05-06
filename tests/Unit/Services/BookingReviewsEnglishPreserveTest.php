@@ -39,7 +39,7 @@ class BookingReviewsEnglishPreserveTest extends TestCase
             ], 200),
         ]);
 
-        $svc = new BookingReviewsService();
+        $svc = new BookingReviewsService;
         $svc->import(999, 'cs-cz');
 
         $r = Review::where('external_id', 'r-preserve')->firstOrFail();

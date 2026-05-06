@@ -17,7 +17,7 @@ class ApartmentExtraTest extends TestCase
             'address' => 'Somewhere',
             'capacity' => 3,
             'base_price' => 120,
-            'tags_en' => ['wifi','balcony'],
+            'tags_en' => ['wifi', 'balcony'],
             'tags_cs' => ['cs-tag'],
         ]);
 
@@ -33,6 +33,6 @@ class ApartmentExtraTest extends TestCase
 
         // tags for en locale
         app()->setLocale('en');
-        $this->assertEquals(['wifi','balcony'], $apt->tags);
+        $this->assertEquals(['wifi', 'balcony'], $apt->tags);
     }
 }

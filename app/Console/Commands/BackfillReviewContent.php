@@ -59,8 +59,12 @@ class BackfillReviewContent extends Command
                     $pros = data_get($meta, 'pros') ?? data_get($meta, 'pros_translated');
                     $cons = data_get($meta, 'cons') ?? data_get($meta, 'cons_translated');
                     $parts = [];
-                    if (! empty($pros)) $parts[] = trim($pros);
-                    if (! empty($cons)) $parts[] = trim($cons);
+                    if (! empty($pros)) {
+                        $parts[] = trim($pros);
+                    }
+                    if (! empty($cons)) {
+                        $parts[] = trim($cons);
+                    }
                     $content = count($parts) ? implode("\n\n", $parts) : null;
                 }
 
@@ -84,6 +88,7 @@ class BackfillReviewContent extends Command
         });
 
         $this->info("\nDone. Backfilled {$processed} reviews.");
+
         return 0;
     }
 }

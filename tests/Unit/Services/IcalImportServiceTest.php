@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Apartment;
-use App\Models\Reservation;
 use App\Services\Ical\IcalImportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -29,7 +28,7 @@ class IcalImportServiceTest extends TestCase
 
         Http::fake(['https://example.com/*' => Http::response($ics, 200)]);
 
-        $svc = new IcalImportService();
+        $svc = new IcalImportService;
         $res = $svc->syncApartment($apt);
 
         $this->assertEquals(1, $res['created']);
@@ -50,10 +49,9 @@ class IcalImportServiceTest extends TestCase
 
         Http::fake(['https://example.com/*' => Http::response('error', 500)]);
 
-        $svc = new IcalImportService();
+        $svc = new IcalImportService;
 
         $this->expectException(\RuntimeException::class);
         $svc->syncApartment($apt);
     }
 }
- 

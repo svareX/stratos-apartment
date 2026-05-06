@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\InstagramPost;
 use App\Services\InstagramSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -42,7 +41,7 @@ class InstagramSyncServiceTest extends TestCase
             $imageUrl => Http::response('IMAGE_BYTES', 200),
         ]);
 
-        $svc = new InstagramSyncService();
+        $svc = new InstagramSyncService;
         $svc->sync('user123', 1);
 
         $this->assertDatabaseHas('instagram_posts', [

@@ -27,7 +27,7 @@ class IcalImportEdgeCasesTest extends TestCase
 
         Http::fake(['https://example.com/*' => Http::response($ics, 200)]);
 
-        $svc = new IcalImportService();
+        $svc = new IcalImportService;
         $first = $svc->syncApartment($apartment);
         $this->assertGreaterThanOrEqual(1, $first['created']);
 

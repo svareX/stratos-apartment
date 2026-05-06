@@ -20,7 +20,7 @@ class SyncReviewsJobTest extends TestCase
         $mock->shouldReceive('import')->times(2 * 4); // two hotels * four locales
         $this->instance(BookingReviewsService::class, $mock);
 
-        $job = new SyncReviewsJob();
+        $job = new SyncReviewsJob;
         $job->handle($mock);
 
         $this->assertTrue(true);
@@ -34,7 +34,7 @@ class SyncReviewsJobTest extends TestCase
         $mock = Mockery::mock(BookingReviewsService::class);
         $this->instance(BookingReviewsService::class, $mock);
 
-        $job = new SyncReviewsJob();
+        $job = new SyncReviewsJob;
         $job->handle($mock);
 
         $this->assertTrue(true);

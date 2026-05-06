@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Apartment;
 use App\Models\HomepageSettings;
 use App\Models\InstagramPost;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Review;
 
 class HomeController extends Controller
 {
@@ -20,11 +20,11 @@ class HomeController extends Controller
         $apartments = Apartment::where('active', true)
             ->select([
                 'id', 'slug', 'name_en', 'name_cs', 'name_de', 'base_price', 'base_price_eur',
-                'cleaning_fee', 'cleaning_fee_eur', 'days_for_cleaning_fee', 'address', 'capacity', 'updated_at'
+                'cleaning_fee', 'cleaning_fee_eur', 'days_for_cleaning_fee', 'address', 'capacity', 'updated_at',
             ])
             ->with([
-                'photosOther' => fn($q) => $q->select('id', 'apartment_id', 'path', 'position', 'is_main'),
-                'photosMain' => fn($q) => $q->where('is_main', true)->select('id', 'apartment_id', 'path', 'position', 'is_main'),
+                'photosOther' => fn ($q) => $q->select('id', 'apartment_id', 'path', 'position', 'is_main'),
+                'photosMain' => fn ($q) => $q->where('is_main', true)->select('id', 'apartment_id', 'path', 'position', 'is_main'),
             ])
             ->get();
 
