@@ -80,11 +80,17 @@ class Chatbot extends Component
                 ->dimensions(768)
                 ->generate(Lab::Gemini, 'gemini-embedding-001');
 
-            $contextData = KnowledgeBase::query()
-                ->whereVectorSimilarTo('embedding', $embeddingResponse->embeddings[0])
-                ->limit(10)
-                ->pluck('content')
-                ->implode("\n---\n");
+            // Resolve nearby knowledge base context if available — be resilient to DB/driver issues
+            try {
+                $contextData = KnowledgeBase::query()
+                    ->whereVectorSimilarTo('embedding', $embeddingResponse->embeddings[0])
+                    ->limit(10)
+                    ->pluck('content')
+                    ->implode("\n---\n");
+            } catch (Exception $kbEx) {
+                Log::warning('KnowledgeBase vector lookup failed: '.$kbEx->getMessage());
+                $contextData = '';
+            }
 
             $agent = new SupportBot;
 
