@@ -8,6 +8,7 @@ use App\Livewire\ContactComponent;
 use App\Models\ContactSettings;
 use App\Models\FrequentlyAskedQuestion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\View\View;
 use Tests\TestCase;
 
 class ContactComponentTest extends TestCase
@@ -33,7 +34,7 @@ class ContactComponentTest extends TestCase
         $component = new ContactComponent;
         $view = $component->render();
 
-        $this->assertInstanceOf(\Illuminate\View\View::class, $view);
+        $this->assertInstanceOf(View::class, $view);
         $data = $view->getData();
 
         $this->assertArrayHasKey('faqs', $data);

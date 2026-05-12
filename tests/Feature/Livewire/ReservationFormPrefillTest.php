@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\ReservationForm;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,7 +33,7 @@ class ReservationFormPrefillTest extends TestCase
             'icon' => '☕',
         ]);
 
-        Livewire::test(\App\Livewire\ReservationForm::class, ['apartment' => $apt->slug, 'apartment_id' => $apt->id, 'package' => $pkg->id])
+        Livewire::test(ReservationForm::class, ['apartment' => $apt->slug, 'apartment_id' => $apt->id, 'package' => $pkg->id])
             ->assertSet('apartment_id', $apt->id)
             ->assertSet('apartment_package_id', (string) $pkg->id)
             ->assertSet('packagePrice', 150.0)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Apartment;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class ApartmentDetailController extends Controller
 
         $slides = [];
         foreach ($apartment->photosMain as $photo) {
-            /** @var \App\Models\Photo $photo */
+            /** @var Photo $photo */
             $slides[] = [
                 'image_url' => Storage::url($photo->path),
                 'is_new' => $photo->is_new,
@@ -52,7 +53,7 @@ class ApartmentDetailController extends Controller
         $galleryPhotos = $apartment->photosOther;
         $apartmentImages = [];
         foreach ($galleryPhotos as $photo) {
-            /** @var \App\Models\Photo $photo */
+            /** @var Photo $photo */
             $apartmentImages[] = Storage::url($photo->path);
         }
 

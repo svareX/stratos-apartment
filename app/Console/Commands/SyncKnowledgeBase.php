@@ -3,12 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Models\Apartment;
+use App\Models\ApartmentPackage;
 use App\Models\ContactSettings;
 use App\Models\FrequentlyAskedQuestion;
 use App\Models\Hike;
 use App\Models\HomepageSettings;
 use App\Models\KnowledgeBase;
 use App\Models\Place;
+use App\Models\Reservation;
 use Illuminate\Console\Command;
 use Laravel\Ai\Embeddings;
 use Laravel\Ai\Enums\Lab;
@@ -63,7 +65,7 @@ class SyncKnowledgeBase extends Command
                     $aptText .= 'Tagy: '.implode(', ', $tags)."\n";
 
                     foreach ($apt->packages as $pkg) {
-                        /** @var \App\Models\ApartmentPackage $pkg */
+                        /** @var ApartmentPackage $pkg */
                         $features = is_array($pkg->translated_features) ? implode(', ', $pkg->translated_features) : (is_array($pkg->features) ? implode(', ', $pkg->features) : '');
                         $aptText .= "BALÍČEK: {$pkg->name_cs} — cena: {$pkg->price} Kč. Obsahuje: {$features}\n";
 
@@ -87,7 +89,7 @@ class SyncKnowledgeBase extends Command
                     if ($res->isNotEmpty()) {
                         $occText = "TERMÍNY OBSAZENOSTI PRO {$apt->name}:\n";
                         foreach ($res as $r) {
-                            /** @var \App\Models\Reservation $r */
+                            /** @var Reservation $r */
                             $occText .= "- Obsazeno: {$r->check_in->format('d.m.Y')} až {$r->check_out->format('d.m.Y')}\n";
                         }
                         $this->storeInKb($occText, 'occupancy', $apt->id);

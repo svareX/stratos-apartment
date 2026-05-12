@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\InstagramPost;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class InstagramPostModelTest extends TestCase
@@ -20,6 +21,6 @@ class InstagramPostModelTest extends TestCase
             'posted_at' => now(),
         ]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $post->posted_at);
+        $this->assertInstanceOf(Carbon::class, $post->posted_at);
     }
 }

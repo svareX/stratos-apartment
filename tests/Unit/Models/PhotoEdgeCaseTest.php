@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Apartment;
 use App\Models\Photo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -12,7 +13,7 @@ class PhotoEdgeCaseTest extends TestCase
 
     public function test_tag_returns_empty_string_when_missing_and_locale_behaviour()
     {
-        $apt = \App\Models\Apartment::create([
+        $apt = Apartment::create([
             'name_en' => 'Photo Apt',
             'address' => 'Addr',
             'capacity' => 1,

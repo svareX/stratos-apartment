@@ -3,7 +3,7 @@
 namespace App\Models;
 
 /**
- * @property-read \App\Models\Apartment|null $apartment
+ * @property-read Apartment|null $apartment
  * @property int $id
  * @property string|null $path
  * @property bool|null $is_new

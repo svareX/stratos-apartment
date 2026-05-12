@@ -20,7 +20,7 @@ class HomeControllerTest extends TestCase
         \DB::table('homepage_settings')->delete();
 
         // ensure at least one apartment exists so navigation can generate apartment routes
-        \App\Models\Apartment::create([
+        Apartment::create([
             'name_en' => 'Nav Apt',
             'address' => 'Addr',
             'capacity' => 2,

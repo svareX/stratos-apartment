@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\KnowledgeBase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class KnowledgeBaseEdgeCaseTest extends TestCase
@@ -12,7 +13,7 @@ class KnowledgeBaseEdgeCaseTest extends TestCase
 
     public function test_non_pg_embedding_stored_as_json_string_and_retrieved_as_array()
     {
-        $driver = \Illuminate\Support\Facades\DB::getDriverName();
+        $driver = DB::getDriverName();
 
         if ($driver === 'pgsql') {
             // Postgres vector column expects 768 dims in this app migrations

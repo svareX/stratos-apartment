@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\ReservationWidget;
 use App\Models\Apartment;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +29,7 @@ class ReservationWidgetBehaviorTest extends TestCase
         $prev = Carbon::create($now->year, $now->month, 1)->subMonth();
         $next = Carbon::create($now->year, $now->month, 1)->addMonth();
 
-        Livewire::test(\App\Livewire\ReservationWidget::class)
+        Livewire::test(ReservationWidget::class)
             ->call('prevMonth')
             ->assertSet('displayMonth', $prev->month)
             ->call('nextMonth')
@@ -46,7 +47,7 @@ class ReservationWidgetBehaviorTest extends TestCase
             'active' => true,
         ]);
 
-        Livewire::test(\App\Livewire\ReservationWidget::class)
+        Livewire::test(ReservationWidget::class)
             ->set('dateStart', '2026-06-10')
             ->set('dateEnd', '2026-06-12')
             ->call('selectDate', '2026-06-09')
@@ -64,7 +65,7 @@ class ReservationWidgetBehaviorTest extends TestCase
             'active' => true,
         ]);
 
-        $test = Livewire::test(\App\Livewire\ReservationWidget::class)
+        $test = Livewire::test(ReservationWidget::class)
             ->set('dateStart', '2026-09-10')
             ->set('dateEnd', null)
             ->call('selectDate', '2026-09-12');

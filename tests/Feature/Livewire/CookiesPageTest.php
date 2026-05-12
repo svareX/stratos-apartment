@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
+use App\Models\Apartment;
 use App\Models\ContactSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -17,7 +18,7 @@ class CookiesPageTest extends TestCase
         ContactSettings::current();
 
         // Create an apartment for navigation links
-        \App\Models\Apartment::create([
+        Apartment::create([
             'name_en' => 'Nav Apt',
             'address' => 'Addr',
             'capacity' => 2,

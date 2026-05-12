@@ -10,6 +10,7 @@ use App\Models\ApartmentPackage;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class ReservationModelTest extends TestCase
@@ -45,7 +46,7 @@ class ReservationModelTest extends TestCase
             'status' => ReservationStatus::Pending,
         ]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $res->check_in);
+        $this->assertInstanceOf(Carbon::class, $res->check_in);
         $this->assertSame('2026-06-01', $res->check_in->toDateString());
 
         $this->assertInstanceOf(ReservationStatus::class, $res->status);

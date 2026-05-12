@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\ReservationForm;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,7 +32,7 @@ class ReservationFormBehaviorTest extends TestCase
             'icon' => '☕',
         ]);
 
-        Livewire::test(\App\Livewire\ReservationForm::class)
+        Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->set('apartment_package_id', $pkg->id)
@@ -48,7 +49,7 @@ class ReservationFormBehaviorTest extends TestCase
             'active' => true,
         ]);
 
-        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+        $test = Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->call('selectDate', '2026-06-10')
@@ -63,7 +64,7 @@ class ReservationFormBehaviorTest extends TestCase
 
     public function test_next_step_validates_and_adds_errors_when_missing(): void
     {
-        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+        $test = Livewire::test(ReservationForm::class)
             ->call('nextStep')
             ->assertHasErrors('apartment_id');
 

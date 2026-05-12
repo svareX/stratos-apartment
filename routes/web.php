@@ -17,6 +17,9 @@ use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SocialPreviewController;
 use App\Http\Controllers\TermsController;
+use App\Http\Middleware\EnsureApartmentState;
+use App\Http\Middleware\RequireWebsitePassword;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,18 +59,18 @@ $locales = ['cs', 'en', 'de'];
 Route::group([
     'prefix' => '{locale}',
     'where' => ['locale' => implode('|', $locales)],
-    'middleware' => [\App\Http\Middleware\SetLocale::class, \App\Http\Middleware\RequireWebsitePassword::class],
+    'middleware' => [SetLocale::class, RequireWebsitePassword::class],
 ], function () {
 
     Route::get('/', HomeController::class)->name('home');
 
     Route::get('/apartments/{apartment:slug}/unavailable', ApartmentUnavailableController::class)
         ->name('apartments.unavailable')
-        ->middleware(\App\Http\Middleware\EnsureApartmentState::class.':inactive');
+        ->middleware(EnsureApartmentState::class.':inactive');
 
     Route::get('/apartments/{apartment:slug}', ApartmentDetailController::class)
         ->name('apartments.show')
-        ->middleware(\App\Http\Middleware\EnsureApartmentState::class.':active');
+        ->middleware(EnsureApartmentState::class.':active');
 
     Route::get('/contact', ContactController::class)->name('contact');
 

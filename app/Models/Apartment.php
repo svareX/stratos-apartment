@@ -3,12 +3,12 @@
 namespace App\Models;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reservation[] $reservations
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosMain
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photosOther
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ApartmentPackage[] $packages
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Place[] $places
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Hike[] $hikes
+ * @property-read Collection|Reservation[] $reservations
+ * @property-read Collection|Photo[] $photosMain
+ * @property-read Collection|Photo[] $photosOther
+ * @property-read Collection|ApartmentPackage[] $packages
+ * @property-read Collection|Place[] $places
+ * @property-read Collection|Hike[] $hikes
  * @property string $slug
  * @property float|null $base_price_eur
  * @property float|null $cleaning_fee_eur
@@ -17,6 +17,8 @@ namespace App\Models;
 
 use App\Enums\ApartmentType;
 use App\Traits\HasTranslations;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -166,7 +168,7 @@ class Apartment extends Model
                 $photo = $this->photosMain()->first();
             }
 
-            /** @var \App\Models\Photo|null $photo */
+            /** @var Photo|null $photo */
             $image = $photo?->path;
 
             return [
@@ -232,7 +234,7 @@ class Apartment extends Model
         }
 
         try {
-            return \Carbon\Carbon::parse($this->check_in_time)->format('H:i');
+            return Carbon::parse($this->check_in_time)->format('H:i');
         } catch (\Exception $e) {
             return $this->check_in_time;
         }
@@ -245,7 +247,7 @@ class Apartment extends Model
         }
 
         try {
-            return \Carbon\Carbon::parse($this->check_out_time)->format('H:i');
+            return Carbon::parse($this->check_out_time)->format('H:i');
         } catch (\Exception $e) {
             return $this->check_out_time;
         }

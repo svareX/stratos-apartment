@@ -2,8 +2,12 @@
 
 namespace App\Mail;
 
+use App\Models\Apartment;
+use App\Models\ApartmentPackage;
 use App\Models\Reservation;
+use BaconQrCode\Renderer\Image\GdImageBackEnd;
 use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
@@ -53,7 +57,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
     private function calculateEurAmount()
     {
         $apt = $this->reservation->apartment;
-        /** @var \App\Models\Apartment|null $apt */
+        /** @var Apartment|null $apt */
         $rate = Cache::remember('cnb_eur_rate', 3600, function () {
             $response = Http::get('https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt');
 
@@ -78,7 +82,7 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
             $totalEur = $nights * $apt->base_price_eur;
 
             $pkg = $this->reservation->apartmentPackage;
-            /** @var \App\Models\ApartmentPackage|null $pkg */
+            /** @var ApartmentPackage|null $pkg */
             if ($pkg && $pkg->price_eur !== null) {
                 $totalEur += $pkg->price_eur;
             } elseif (! empty($this->reservation->package_price)) {
@@ -106,10 +110,10 @@ class ReservationConfirmation extends Mailable implements ShouldQueue
         try {
             if (extension_loaded('imagick') && class_exists(ImagickImageBackEnd::class)) {
                 $backend = new ImagickImageBackEnd;
-            } elseif (class_exists(\BaconQrCode\Renderer\Image\SvgImageBackEnd::class)) {
-                $backend = new \BaconQrCode\Renderer\Image\SvgImageBackEnd;
-            } elseif (class_exists(\BaconQrCode\Renderer\Image\GdImageBackEnd::class)) {
-                $backend = new \BaconQrCode\Renderer\Image\GdImageBackEnd;
+            } elseif (class_exists(SvgImageBackEnd::class)) {
+                $backend = new SvgImageBackEnd;
+            } elseif (class_exists(GdImageBackEnd::class)) {
+                $backend = new GdImageBackEnd;
             } else {
                 return '';
             }

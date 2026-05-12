@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\ReservationPage;
 use App\Models\Apartment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -21,7 +22,7 @@ class ReservationPageTest extends TestCase
             'active' => true,
         ]);
 
-        Livewire::test(\App\Livewire\ReservationPage::class)
+        Livewire::test(ReservationPage::class)
             ->assertStatus(200);
     }
 }

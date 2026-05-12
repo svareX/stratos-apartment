@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\GenerateSitemap;
+use App\Services\Ical\IcalImportService;
 use App\Services\InstagramSyncService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -10,7 +11,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('reservations:sync-ical', function (\App\Services\Ical\IcalImportService $importService) {
+Artisan::command('reservations:sync-ical', function (IcalImportService $importService) {
     $result = $importService->syncAll();
 
     $this->info('iCal sync completed.');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Apartment;
 use App\Services\SitemapGenerator;
 use Illuminate\Support\Facades\Log;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 class SitemapController
 {
@@ -46,20 +48,20 @@ class SitemapController
             return response()->file($sitemapPath, ['Content-Type' => 'application/xml']);
         }
 
-        if (is_writable(dirname($sitemapPath)) && class_exists(\Spatie\Sitemap\Sitemap::class)) {
+        if (is_writable(dirname($sitemapPath)) && class_exists(Sitemap::class)) {
             try {
-                $sitemap = \Spatie\Sitemap\Sitemap::create();
+                $sitemap = Sitemap::create();
 
-                $sitemap->add(\Spatie\Sitemap\Tags\Url::create(url('/'))->setLastModificationDate(now()));
+                $sitemap->add(Url::create(url('/'))->setLastModificationDate(now()));
 
                 $static = ['about', 'contact', 'packages', 'activities', 'pricing', 'reservation', 'terms-and-conditions', 'cookies'];
                 foreach ($static as $path) {
-                    $sitemap->add(\Spatie\Sitemap\Tags\Url::create(url($path)));
+                    $sitemap->add(Url::create(url($path)));
                 }
 
                 $apartments = Apartment::where('active', true)->get();
                 foreach ($apartments as $apartment) {
-                    $url = \Spatie\Sitemap\Tags\Url::create(url('/apartments/'.$apartment->slug));
+                    $url = Url::create(url('/apartments/'.$apartment->slug));
                     if ($apartment->updated_at) {
                         $url->setLastModificationDate($apartment->updated_at);
                     }
@@ -111,7 +113,7 @@ class SitemapController
         $xml .= '</urlset>'."\n";
 
         try {
-            \Illuminate\Support\Facades\Log::info('SitemapController: returning XML fallback', ['length' => strlen($xml), 'snippet' => substr($xml, 0, 200)]);
+            Log::info('SitemapController: returning XML fallback', ['length' => strlen($xml), 'snippet' => substr($xml, 0, 200)]);
         } catch (\Throwable $_) {
         }
 

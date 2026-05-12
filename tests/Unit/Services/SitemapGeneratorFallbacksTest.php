@@ -8,6 +8,7 @@ use App\Models\Apartment;
 use App\Models\FrequentlyAskedQuestion;
 use App\Services\SitemapGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\RouteCollection;
 use Tests\TestCase;
 
 class SitemapGeneratorFallbacksTest extends TestCase
@@ -35,7 +36,7 @@ class SitemapGeneratorFallbacksTest extends TestCase
         ]);
 
         // clear named routes to force route() to throw and exercise url() fallback
-        $this->app['router']->setRoutes(new \Illuminate\Routing\RouteCollection);
+        $this->app['router']->setRoutes(new RouteCollection);
 
         $generator = new SitemapGenerator;
         $written = $generator->generate($path);

@@ -78,7 +78,7 @@ class SitemapControllerTest extends TestCase
             }
         };
 
-        $this->app->instance(\App\Services\SitemapGenerator::class, $thrower);
+        $this->app->instance(SitemapGenerator::class, $thrower);
 
         $publicPath = public_path();
         $oldPerms = fileperms($publicPath) & 0777;
