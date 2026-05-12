@@ -25,7 +25,7 @@
                 @if ($apartment->packages->isNotEmpty())
                     @if ($apartment->packages->count() > 3)
                         <div
-                            class="[&::-webkit-scrollbar]:h-2 flex touch-pan-x snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:thin]"
+                            class="[&::-webkit-scrollbar]:h-2 flex touch-pan-x snap-x snap-mandatory [scrollbar-width:thin] gap-5 overflow-x-auto pb-2"
                         >
                             @foreach ($apartment->packages as $package)
                                 <div

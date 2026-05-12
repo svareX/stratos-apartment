@@ -306,7 +306,7 @@
             class="w-full"
         >
             <div
-                class="[&::-webkit-scrollbar]:hidden flex touch-pan-x snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden"
+                class="[&::-webkit-scrollbar]:hidden flex touch-pan-x snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] md:hidden"
             >
                 <template x-for="(img, idx) in images" :key="idx">
                     <div
@@ -659,7 +659,7 @@
                     class="absolute bottom-0 left-0 z-40 w-full bg-linear-to-t from-black/90 via-black/60 to-transparent px-4 pt-12 pb-6"
                 >
                     <div
-                        class="[&::-webkit-scrollbar]:hidden mx-auto flex w-full max-w-6xl touch-pan-x items-center justify-center gap-3 overflow-x-auto pt-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none]"
+                        class="[&::-webkit-scrollbar]:hidden mx-auto flex w-full max-w-6xl touch-pan-x [scrollbar-width:none] items-center justify-center gap-3 overflow-x-auto pt-1 pb-2 [-ms-overflow-style:none]"
                     >
                         <template x-for="(img, idx) in images" :key="idx">
                             <button
