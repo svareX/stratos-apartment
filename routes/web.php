@@ -21,11 +21,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/password', function () {
+    abort_if((string) config('app.website_password', '') === '', 404);
+
     return view('website-password');
 })->name('password.form');
 
 Route::post('/password', function (Request $request) {
-    $password = env('WEBSITE_PASSWORD', '');
+    $password = (string) config('app.website_password', '');
+
+    abort_if($password === '', 404);
 
     if ($password !== '' && $request->input('website_password') === $password) {
         $request->session()->put('website_authenticated', true);

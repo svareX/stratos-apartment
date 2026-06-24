@@ -29,11 +29,19 @@ class RequireWebsitePasswordTest extends TestCase
 
     public function test_allows_password_route_when_set(): void
     {
-        putenv('WEBSITE_PASSWORD=1');
+        config(['app.website_password' => '1']);
 
         $res = $this->get('/password');
 
         $res->assertStatus(200);
+    }
+
+    public function test_password_route_is_not_accessible_when_password_not_set(): void
+    {
+        config(['app.website_password' => '']);
+
+        $this->get('/password')->assertNotFound();
+        $this->post('/password', ['website_password' => 'anything'])->assertNotFound();
     }
 
     public function test_allows_access_when_password_not_set(): void
