@@ -5,6 +5,7 @@ namespace App\Services\Ical;
 use App\Enums\BookingSource;
 use App\Enums\ReservationStatus;
 use App\Models\Apartment;
+use App\Models\Reservation;
 use Carbon\CarbonImmutable;
 use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Components\Event;
@@ -22,7 +23,7 @@ class IcalExportService
             ->get();
 
         foreach ($reservations as $reservation) {
-            /** @var \App\Models\Reservation $reservation */
+            /** @var Reservation $reservation */
             $start = CarbonImmutable::parse($reservation->check_in)->startOfDay();
 
             $endExclusive = CarbonImmutable::parse($reservation->check_out)->startOfDay();

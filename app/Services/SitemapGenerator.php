@@ -113,7 +113,7 @@ class SitemapGenerator
                 Place::with('apartment')->chunkById(100, function ($places) use ($sitemap, $locale) {
                     foreach ($places as $place) {
                         $placeApartment = $place->apartment;
-                        /** @var \App\Models\Apartment|null $placeApartment */
+                        /** @var Apartment|null $placeApartment */
                         if (! $placeApartment) {
                             continue;
                         }
@@ -152,7 +152,7 @@ class SitemapGenerator
                 Hike::with('apartment')->chunkById(100, function ($hikes) use ($sitemap, $locale) {
                     foreach ($hikes as $hike) {
                         $hikeApartment = $hike->apartment;
-                        /** @var \App\Models\Apartment|null $hikeApartment */
+                        /** @var Apartment|null $hikeApartment */
                         if (! $hikeApartment) {
                             continue;
                         }

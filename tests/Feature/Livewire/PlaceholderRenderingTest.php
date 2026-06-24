@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\ContactComponent;
+use App\Livewire\CookiesPage;
+use App\Livewire\TermsPage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\View\View;
 use Tests\TestCase;
 
 class PlaceholderRenderingTest extends TestCase
@@ -13,19 +17,19 @@ class PlaceholderRenderingTest extends TestCase
 
     public function test_terms_and_cookies_placeholders_render(): void
     {
-        $terms = new \App\Livewire\TermsPage;
+        $terms = new TermsPage;
         $view = $terms->placeholder();
-        $this->assertInstanceOf(\Illuminate\View\View::class, $view);
+        $this->assertInstanceOf(View::class, $view);
 
-        $cookies = new \App\Livewire\CookiesPage;
+        $cookies = new CookiesPage;
         $view2 = $cookies->placeholder();
-        $this->assertInstanceOf(\Illuminate\View\View::class, $view2);
+        $this->assertInstanceOf(View::class, $view2);
     }
 
     public function test_contact_placeholder_renders(): void
     {
-        $comp = new \App\Livewire\ContactComponent;
+        $comp = new ContactComponent;
         $view = $comp->placeholder();
-        $this->assertInstanceOf(\Illuminate\View\View::class, $view);
+        $this->assertInstanceOf(View::class, $view);
     }
 }

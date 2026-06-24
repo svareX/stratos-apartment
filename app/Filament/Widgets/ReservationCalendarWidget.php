@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Enums\ReservationStatus;
 use App\Models\Apartment;
 use App\Models\Reservation;
+use App\Models\User;
 use Carbon\Carbon;
 use Filament\Widgets\Widget;
 
@@ -64,11 +65,11 @@ class ReservationCalendarWidget extends Widget
 
             while ($start->lte($end)) {
                 $guest = $reservation->user()->first();
-                /** @var \App\Models\User|null $guest */
+                /** @var User|null $guest */
                 $guestName = $guest ? ($guest->name ?? 'N/A') : 'N/A';
 
                 $apt = $reservation->apartment()->first();
-                /** @var \App\Models\Apartment|null $apt */
+                /** @var Apartment|null $apt */
                 $apartmentName = $apt ? ($apt->name ?? 'N/A') : 'N/A';
 
                 $dates[] = [

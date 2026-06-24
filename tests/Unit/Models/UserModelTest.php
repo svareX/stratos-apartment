@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Apartment;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +16,7 @@ class UserModelTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $apt = \App\Models\Apartment::create([
+        $apt = Apartment::create([
             'name_en' => 'User Apt',
             'address' => 'Addr',
             'capacity' => 2,

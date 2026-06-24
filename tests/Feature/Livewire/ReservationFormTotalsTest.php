@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\ReservationForm;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,7 +33,7 @@ class ReservationFormTotalsTest extends TestCase
         $start = now()->addDays(10)->toDateString();
         $end = now()->addDays(12)->toDateString(); // 2 nights
 
-        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+        $test = Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->set('apartment_package_id', $pkg->id)

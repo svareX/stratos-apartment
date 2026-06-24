@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
+use App\Models\Apartment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +14,7 @@ class StaticPagesTest extends TestCase
 
     public function test_contact_terms_and_about_pages_render_with_auth(): void
     {
-        \App\Models\Apartment::create([
+        Apartment::create([
             'name_en' => 'Nav Apt',
             'slug' => 'nav-apt',
             'address' => 'Addr',

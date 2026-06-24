@@ -63,7 +63,7 @@ class ReservationForm
                     ->label(__('External booking id'))
                     ->placeholder(__('Enter booking id from external system'))
                     ->nullable()
-                    ->visible(fn ($get) => $get('booking_source') === \App\Enums\BookingSource::External->value),
+                    ->visible(fn ($get) => $get('booking_source') === BookingSource::External->value),
             ]);
     }
 }

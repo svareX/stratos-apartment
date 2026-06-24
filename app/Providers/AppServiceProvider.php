@@ -281,7 +281,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $hasOgType = $tags->first(fn ($t) => $t instanceof OpenGraphTag && $t->collectAttributes()->get('property') === 'og:type');
                 if (! $hasOgType) {
-                    $routeName = \Illuminate\Support\Facades\Route::currentRouteName();
+                    $routeName = Route::currentRouteName();
                     $ogType = 'website';
                     if ($routeName === 'apartments.show' || request()->route('apartment')) {
                         $ogType = 'product';

@@ -256,7 +256,7 @@ class ReservationForm extends Component
 
             $packagesArr = [];
             foreach ($apt->packages as $p) {
-                /** @var \App\Models\ApartmentPackage $p */
+                /** @var ApartmentPackage $p */
                 $packagesArr[] = [
                     'id' => $p->id,
                     'name' => $p->name,

@@ -64,7 +64,7 @@ class GenerateSeoSitemap extends Command
         Place::with('apartment')->chunkById(100, function ($places) use ($sitemap) {
             foreach ($places as $place) {
                 $placeApartment = $place->apartment;
-                /** @var \App\Models\Apartment|null $placeApartment */
+                /** @var Apartment|null $placeApartment */
                 if ($placeApartment) {
                     $url = route('apartments.show', $placeApartment->slug).'#nearby';
                     $tag = Url::create($url)->setLastModificationDate($place->updated_at ?: now());
@@ -85,7 +85,7 @@ class GenerateSeoSitemap extends Command
         Hike::with('apartment')->chunkById(100, function ($hikes) use ($sitemap) {
             foreach ($hikes as $hike) {
                 $hikeApartment = $hike->apartment;
-                /** @var \App\Models\Apartment|null $hikeApartment */
+                /** @var Apartment|null $hikeApartment */
                 if ($hikeApartment) {
                     $url = route('apartments.show', $hikeApartment->slug).'#hikes';
                     $tag = Url::create($url)->setLastModificationDate($hike->updated_at ?: now());

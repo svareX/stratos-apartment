@@ -3,20 +3,22 @@
 namespace App\Models;
 
 /**
- * @property-read \App\Models\Apartment|null $apartment
- * @property-read \App\Models\User|null $user
- * @property-read \App\Models\ApartmentPackage|null $apartmentPackage
+ * @property-read Apartment|null $apartment
+ * @property-read User|null $user
+ * @property-read ApartmentPackage|null $apartmentPackage
  * @property int $total
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $check_in
- * @property \Illuminate\Support\Carbon|null $check_out
+ * @property Carbon|null $check_in
+ * @property Carbon|null $check_out
  * @property float|null $price
  * @property float|null $package_price
  */
 
+use App\Enums\ReservationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 class Reservation extends Model
 {
@@ -40,7 +42,7 @@ class Reservation extends Model
         'check_in' => 'date',
         'check_out' => 'date',
         'price' => 'decimal:2',
-        'status' => \App\Enums\ReservationStatus::class,
+        'status' => ReservationStatus::class,
         'package_price' => 'decimal:2',
         'external_last_synced_at' => 'datetime',
     ];

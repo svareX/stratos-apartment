@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration;
 
+use App\Livewire\ReservationForm;
 use App\Mail\ReservationConfirmation;
 use App\Models\Apartment;
 use App\Models\ApartmentPackage;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class TestReservationForm extends \App\Livewire\ReservationForm
+class TestReservationForm extends ReservationForm
 {
     protected function rules()
     {
@@ -33,8 +34,8 @@ class ReservationFlowTest extends TestCase
         Mail::fake();
 
         // Avoid DNS-based email validation in tests by binding a test subclass
-        $this->app->bind(\App\Livewire\ReservationForm::class, function ($app) {
-            return new class extends \App\Livewire\ReservationForm
+        $this->app->bind(ReservationForm::class, function ($app) {
+            return new class extends ReservationForm
             {
                 protected function rules()
                 {

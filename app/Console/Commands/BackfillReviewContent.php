@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Review;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 
 class BackfillReviewContent extends Command
 {
@@ -37,14 +38,14 @@ class BackfillReviewContent extends Command
         $stopped = false;
 
         $query->chunkById(100, function ($reviews) use (&$processed, $limit, &$stopped) {
-            /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews */
+            /** @var Collection<int, Review> $reviews */
             foreach ($reviews as $review) {
                 if ($processed >= $limit) {
                     $stopped = true;
 
                     return false;
                 }
-                /** @var \App\Models\Review $review */
+                /** @var Review $review */
                 $meta = $review->meta ?? [];
 
                 $title = $review->title_en ?? $review->title_cs ?? $review->title_de ?? null;

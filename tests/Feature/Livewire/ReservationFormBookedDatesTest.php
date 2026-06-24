@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire;
 
 use App\Enums\ReservationStatus;
+use App\Livewire\ReservationForm;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,7 +34,7 @@ class ReservationFormBookedDatesTest extends TestCase
             'status' => ReservationStatus::Confirmed->value,
         ]);
 
-        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+        $test = Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->call('loadBookedDates');
@@ -64,7 +65,7 @@ class ReservationFormBookedDatesTest extends TestCase
             'status' => ReservationStatus::Confirmed->value,
         ]);
 
-        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+        $test = Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->call('loadBookedDates');
@@ -93,7 +94,7 @@ class ReservationFormBookedDatesTest extends TestCase
             'status' => ReservationStatus::Confirmed->value,
         ]);
 
-        $test = Livewire::test(\App\Livewire\ReservationForm::class)
+        $test = Livewire::test(ReservationForm::class)
             ->set('apartment_id', $apt->id)
             ->call('updateApartmentDetails')
             ->call('loadBookedDates');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Routes;
 
+use App\Models\Apartment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +15,7 @@ class ReservationRoutesTest extends TestCase
     public function test_reservation_page_requires_website_auth_and_renders(): void
     {
         // ensure navigation can build apartment links
-        \App\Models\Apartment::create([
+        Apartment::create([
             'name_en' => 'Nav Apt',
             'slug' => 'nav-apt',
             'address' => 'Addr',
@@ -31,7 +32,7 @@ class ReservationRoutesTest extends TestCase
 
     public function test_reservation_result_page_requires_website_auth_and_renders(): void
     {
-        \App\Models\Apartment::create([
+        Apartment::create([
             'name_en' => 'Nav Apt',
             'slug' => 'nav-apt',
             'address' => 'Addr',

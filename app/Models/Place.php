@@ -3,7 +3,7 @@
 namespace App\Models;
 
 /**
- * @property-read \App\Models\Apartment|null $apartment
+ * @property-read Apartment|null $apartment
  */
 
 use App\Traits\HasTranslations;
@@ -62,7 +62,7 @@ class Place extends Model
         $description = Str::of(strip_tags((string) $this->description))->trim()->limit(155);
 
         $apt = $this->apartment;
-        /** @var \App\Models\Apartment|null $apt */
+        /** @var Apartment|null $apt */
         $locale = app()->getLocale() ?: config('app.locale');
         $url = $apt ? route('apartments.show', ['locale' => $locale, 'apartment' => $apt->slug]).'#nearby' : null;
 

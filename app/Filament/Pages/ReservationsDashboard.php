@@ -9,6 +9,9 @@ use App\Filament\Widgets\ReservationsOverviewStatsWidget;
 use App\Filament\Widgets\ReservationsPerApartmentWidget;
 use App\Filament\Widgets\ReservationsStatusDonutWidget;
 use App\Filament\Widgets\ReservationsTrendWidget;
+use App\Jobs\SyncBookingJob;
+use App\Jobs\SyncKnowledgeBaseJob;
+use App\Jobs\SyncReviewsJob;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -56,7 +59,7 @@ class ReservationsDashboard extends Dashboard
                 ->icon(Heroicon::ArrowPath)
                 ->color('primary')
                 ->action(function () {
-                    dispatch(new \App\Jobs\SyncKnowledgeBaseJob);
+                    dispatch(new SyncKnowledgeBaseJob);
                     Notification::make()->success()->title(__('Knowledge sync queued'))->send();
                 }),
 
@@ -65,7 +68,7 @@ class ReservationsDashboard extends Dashboard
                 ->icon(Heroicon::ArrowPath)
                 ->color('primary')
                 ->action(function () {
-                    dispatch(new \App\Jobs\SyncBookingJob);
+                    dispatch(new SyncBookingJob);
                     Notification::make()->success()->title(__('Booking sync queued'))->send();
                 }),
 
@@ -74,7 +77,7 @@ class ReservationsDashboard extends Dashboard
                 ->icon(Heroicon::ArrowPath)
                 ->color('primary')
                 ->action(function () {
-                    dispatch(new \App\Jobs\SyncReviewsJob);
+                    dispatch(new SyncReviewsJob);
                     Notification::make()->success()->title(__('Reviews sync queued'))->send();
                 }),
         ];
